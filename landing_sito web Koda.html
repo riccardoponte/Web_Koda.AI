@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koda AI - Soluzioni Intelligenti per il Futuro</title>
+    <meta name="description" id="meta-desc" content="Ogni tua">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- SCRIPT AGGIUNTI PER REACT E BABEL (Ottimizzati) -->
+    <link rel="preload" href="https://esm.sh/react@^19.1.0" as="script">
+    <link rel="preload" href="https://esm.sh/react-dom@^19.1.0/client" as="script">
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@^19.1.0",
+        "react-dom/client": "https://esm.sh/react-dom@^19.1.0/client",
+        "@google/genai": "https://esm.sh/@google/genai@^1.6.0"
+      }
+    }
+    </script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+    
+    <style>
+        /* Nascondi il contenuto finché non è pronto */
+        #main-content-wrapper:empty {
+            display: none;
+        }
+        
+        /* Stili CSS ottimizzati per performance */
+        @keyframes fluidMove { 0% { transform: scale(1) rotate(0deg) translateX(0) translateY(0); } 50% { transform: scale(1.05) rotate(0deg) translateX(5px) translateY(-3px); } 100% { transform: scale(1) rotate(0deg) translateX(0) translateY(0); } }
+        @keyframes fluidPulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 0.8; } }
+        @keyframes fluidWave { 0% { transform: translateX(0) translateY(0) scale(1); } 50% { transform: translateX(10px) translateY(-5px) scale(1.01); } 100% { transform: translateX(0) translateY(0) scale(1); } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        @keyframes floatingGlow { 0%, 100% { transform: translateY(0px) scale(1); opacity: 0.3; } 50% { transform: translateY(-10px) scale(1.05); opacity: 0.5; } }
+        @keyframes scrollRight { 0% { transform: translateX(0%); } 100% { transform: translateX(-100%); } }
+        .fluid-animated { animation: fluidMove 30s ease-in-out infinite; }
+        .fluid-wave { animation: fluidWave 20s ease-in-out infinite; }
+        .shimmer-effect { background: linear-gradient( 90deg, transparent, rgba(34, 197, 94, 0.1), transparent ); background-size: 200% 100%; animation: shimmer 4s ease-in-out infinite; }
+        .floating-glow { animation: floatingGlow 8s ease-in-out infinite; }
+        .animate-scroll-right { animation: scrollRight 90s linear infinite; }
+        .parallax-slow { transform: translateZ(0); will-change: transform; }
+        /* Ottimizzazione transizioni - solo per elementi essenziali */
+        .chat-menu-btn, .section-nav-btn, .library-card, .search-ai-btn { transition: all 0.2s ease; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #22c55e; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #16a34a; }
+        .animated-bg-image { background-image: url('https://i.postimg.cc/VknnJpRs/Immagine-Whats-App-2025-07-05-ore-18-31-01-44a1c1fe.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; width: 100%; height: 100%; }
+        .animated-bg-layer { background-image: url('https://i.postimg.cc/VknnJpRs/Immagine-Whats-App-2025-07-05-ore-18-31-01-44a1c1fe.jpg'); background-size: 120% 120%; background-position: center; background-repeat: no-repeat; width: 100%; height: 100%; }
+
+        /* --- INIZIO: Stili per Chat, Menu e Modale (da app.mobile.html) --- */
+        :root {
+            --spotify-bg: #121212;
+            --spotify-bg-light: #181818;
+            --spotify-card: #282828;
+            --spotify-text: #ffffff;
+            --spotify-text-secondary: #b3b3b3;
+            --spotify-accent: #1db954;
+            --font-family-spotify: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+        
+        #chat-view-container {
+            font-family: var(--font-family-spotify);
+            color: var(--spotify-text);
+        }
+
+        #chatbot-react-wrapper #chatbot-app-container {
+            background-color: transparent;
+        }
+        #chatbot-react-wrapper #chatbot-app-container .chat-header {
+             background: linear-gradient(to bottom, rgba(0,0,0,0.6) 30%, transparent);
+        }
+
+        #chatbot-app-container { display: flex; flex-direction: column; height: 100%; flex-grow: 1; }
+        .chat-header { padding: 16px; display: flex; align-items: center; width: 100%; z-index: 2; position: sticky; top: 0; }
+        .chat-header-btn { background: none; border: none; color: var(--spotify-text-secondary); font-size: 24px; cursor: pointer; padding: 8px; }
+        #chatbot-app-container main { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; }
+        #welcome-screen {
+            position: relative; overflow: hidden; flex-grow: 1; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center; gap: 24px; padding: 20px; padding-bottom: 15%; background: none;
+        }
+        .welcome-logo { font-size: 2.5rem; font-weight: 700; text-align: center; margin-bottom: 16px; }
+        .welcome-logo svg { width: 50px; height: 50px; }
+        .prompt-starter-container { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; max-width: 400px; }
+        .prompt-starter-btn { background-color: var(--spotify-card); color: var(--spotify-text); border: 1px solid rgba(128,128,128,0.2); border-radius: 8px; padding: 12px 16px; font-size: 14px; font-weight: 500; cursor: pointer; width: 100%; text-align: left; transition: background-color 0.2s; }
+        .prompt-starter-btn:hover { background-color: var(--spotify-bg-light); }
+        #chat-messages { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+        .chat-bubble { padding: 12px 16px; border-radius: 20px; max-width: 85%; line-height: 1.5; word-wrap: break-word; }
+        .chat-bubble.ai { background-color: var(--spotify-card); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .chat-bubble.user { background-color: var(--spotify-accent); color: #000; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-bubble.system { background-color: transparent; color: var(--spotify-text-secondary); align-self: center; text-align: center; font-style: normal; font-size: 14px; width: 100%; max-width: 100%; padding: 0 16px 8px; }
+        .chat-bubble.error { background-color: #8c1a1a; color: var(--spotify-text); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .chat-bubble.loading { align-self: flex-start; background-color: var(--spotify-card); padding: 14px 16px; }
+        .chat-bubble.loading span { display: inline-block; background-color: var(--spotify-text-secondary); width: 8px; height: 8px; border-radius: 50%; margin: 0 1px; animation: bounce 1.4s infinite ease-in-out both; }
+        .chat-bubble.loading span:nth-of-type(1) { animation-delay: -0.32s; }
+        .chat-bubble.loading span:nth-of-type(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
+        .chat-bubble.ai p { margin: 8px 0; }
+        .chat-bubble.ai p:first-child { margin-top: 0; }
+        .chat-bubble.ai p:last-child { margin-bottom: 0; }
+        .chat-tool-card-container { display: flex; flex-direction: column; gap: 10px; align-self: flex-start; width: 100%; max-width: 400px; }
+        .chat-tool-card { display: flex; gap: 12px; background-color: var(--spotify-card); border-radius: 12px; padding: 12px; border: 1px solid rgba(128,128,128,0.1); }
+        .chat-tool-card .logo-container { width: 48px; height: 48px; flex-shrink: 0; border-radius: 8px; overflow: hidden; }
+        .chat-tool-card .tool-logo { width: 100%; height: 100%; object-fit: cover; }
+        .chat-tool-card .info { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+        .chat-tool-card .tool-name { font-weight: 600; font-size: 15px; }
+        .chat-tool-card .tool-desc { font-size: 13px; color: var(--spotify-text-secondary); margin: 2px 0 8px; line-height: 1.4; }
+        .chat-tool-card .details-btn { background: var(--spotify-bg-light); color: var(--spotify-text); border: none; padding: 6px 12px; font-size: 12px; border-radius: 20px; cursor: pointer; align-self: flex-start; }
+        #chat-input-container {
+            width: 100%;
+            background: none;
+            border: none;
+            border-radius: 0;
+            margin: 0;
+            padding: 32px 0 24px 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        #chat-input {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(6px);
+            border: 1.5px solid rgba(255,255,255,0.18);
+            color: #fff;
+            border-radius: 9999px;
+            padding: 18px 24px 18px 24px;
+            font-size: 1.15rem;
+            font-family: inherit;
+            outline: none;
+            transition: border 0.2s;
+            margin-right: 0;
+            box-sizing: border-box;
+        }
+        #chat-input:focus {
+            border: 1.5px solid #22c55e;
+        }
+        #chat-input::placeholder {
+            color: #cbd5e1;
+            opacity: 1;
+        }
+        #chat-send-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #22c55e;
+            color: #000;
+            border: none;
+            border-radius: 9999px;
+            width: 56px;
+            height: 56px;
+            font-size: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(34,197,94,0.15);
+            cursor: pointer;
+            z-index: 2;
+            transition: background 0.2s, transform 0.2s;
+        }
+        #chat-send-btn:disabled {
+            background: #1a1a1a;
+            color: #888;
+            cursor: not-allowed;
+        }
+        #chat-send-btn:not(:disabled):hover {
+            background: #16a34a;
+            color: #fff;
+            transform: scale(1.08);
+        }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+        .modal-overlay.visible { opacity: 1; visibility: visible; }
+        .modal-content { background: var(--spotify-card); padding: 24px; border-radius: 16px; width: 90%; max-width: 500px; text-align: center; position: relative; }
+        .modal-close-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: var(--spotify-text-secondary); font-size: 28px; cursor: pointer; }
+        .modal-content .button { background-color: var(--spotify-accent); color: #000; border: none; padding: 15px 30px; border-radius: 50px; font-size: 16px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+        #detail-content h2 { font-size: 24px; margin-bottom: 8px; }
+        #detail-content p { color: var(--spotify-text-secondary); margin-bottom: 24px; line-height: 1.5; }
+        #detail-content .detail-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 24px; }
+        #detail-content .tag { background-color: var(--spotify-bg-light); padding: 6px 12px; border-radius: 20px; font-size: 12px; }
+        #detail-content .detail-actions { display: flex; flex-direction: column; gap: 12px; }
+        .recommendation-box { margin-top: 24px; background-color: var(--spotify-bg-light); padding: 12px; border-radius: 8px; display: flex; align-items: center; gap: 12px; cursor: pointer; border: 1px solid rgba(128,128,128,0.2); transition: background-color 0.2s; }
+        .recommendation-box:hover { background-color: var(--spotify-card); }
+        .recommendation-logo { width: 40px; height: 40px; border-radius: 4px; object-fit: cover; flex-shrink: 0; }
+        .recommendation-text { font-size: 14px; color: var(--spotify-text-secondary); text-align: left; }
+        .recommendation-text strong { color: var(--spotify-text); display: block; }
+        
+        /* NUOVI STILI PER IL MENU LATERALE */
+        #side-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1500; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+        #side-menu-overlay.visible { opacity: 1; visibility: visible; }
+        #side-menu { position: fixed; top: 0; left: 0; width: 80%; max-width: 320px; height: 100%; background-color: var(--spotify-bg-light); z-index: 1501; transform: translateX(-100%); transition: transform 0.3s ease-out; display: flex; flex-direction: column; padding: 16px; }
+        #side-menu.visible { transform: translateX(0); }
+        .menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--spotify-card); }
+        .menu-header h3 { font-size: 18px; }
+        .new-chat-btn { background-color: var(--spotify-card); color: var(--spotify-text); border: none; border-radius: 8px; padding: 10px 14px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color 0.2s; }
+        .conversation-list { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .conversation-list::-webkit-scrollbar { display: none; }
+        .conversation-item { background: none; border: none; color: var(--spotify-text-secondary); text-align: left; padding: 12px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.2s, color 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .conversation-item.active, .conversation-item:hover { background-color: var(--spotify-card); color: var(--spotify-text); }
+        .menu-footer { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--spotify-card); }
+        #delete-all-btn { width: 100%; background: none; border: 1px solid var(--spotify-text-secondary); color: var(--spotify-text-secondary); padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+        #delete-all-btn:hover { background-color: var(--spotify-card); color: var(--spotify-text); border-color: var(--spotify-card); }
+        /* --- FINE: Stili per Chat, Menu e Modale --- */
+
+        #chatbot-react-wrapper {
+            position: relative;
+            z-index: 30;
+            background: rgba(20,20,20,0.85);
+            width: 100vw;
+            height: 100vh;
+            min-height: 100vh;
+            max-width: 100vw;
+            border-radius: 0;
+            margin: 0;
+            box-shadow: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        #chat-view-container {
+            position: relative;
+            z-index: 10;
+            width: 100vw;
+            height: 100vh;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        @media (max-width: 600px) {
+            #chatbot-react-wrapper {
+                max-width: 100vw;
+                min-height: 90vh;
+                margin: 0;
+                border-radius: 0;
+                padding: 0;
+            }
+        }
+        .animated-bg-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* NUOVI STILI PER LE SEZIONI TOP AI, RICERCA AI, LIBRERIA */
+        .section-nav { display: flex; justify-content: center; gap: 20px; margin: 40px 0; }
+        .section-nav-btn { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 24px; border-radius: 25px; cursor: pointer; transition: all 0.3s; font-weight: 500; }
+        .section-nav-btn:hover, .section-nav-btn.active { background: #22c55e; color: black; border-color: #22c55e; transform: translateY(-2px); }
+        
+        .search-ai-section { display: none; }
+        .search-ai-section.active { display: block; }
+        
+
+        
+        .search-ai-container { max-width: 800px; margin: 40px auto; }
+        .search-result-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; transition: all 0.3s; cursor: pointer; }
+        .search-result-card:hover { transform: translateY(-8px); background: rgba(255,255,255,0.08); border-color: #22c55e; }
+        .search-ai-form { display: flex; gap: 16px; margin-bottom: 40px; }
+        .search-ai-input { flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 16px; color: white; font-size: 16px; }
+        .search-ai-input:focus { outline: none; border-color: #22c55e; }
+        .search-ai-btn { background: #22c55e; color: black; border: none; border-radius: 12px; padding: 16px 32px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .search-ai-btn:hover { background: #16a34a; transform: translateY(-2px); }
+        
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 40px; }
+        .library-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; text-align: center; transition: all 0.3s; cursor: pointer; }
+        .library-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.08); border-color: #22c55e; }
+        .library-card img { width: 60px; height: 60px; border-radius: 12px; margin-bottom: 16px; object-fit: cover; }
+        .library-card h4 { color: white; margin-bottom: 8px; }
+        .library-card p { color: #cbd5e1; font-size: 14px; }
+
+        /* STILI PER I MENU NELLA CHAT */
+        .chat-menu { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .chat-menu-left, .chat-menu-right { display: flex; align-items: center; gap: 16px; }
+        .chat-menu-btn { background: none; border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; transition: all 0.3s; font-size: 14px; }
+        .chat-menu-btn:hover { background: rgba(255,255,255,0.1); border-color: #22c55e; }
+        .chat-menu-btn.active { background: #22c55e; color: black; border-color: #22c55e; }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <div id="app" class="min-h-screen bg-black text-white flex flex-col">
+        <!-- Header fisso -->
+        <header id="main-header" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 100; background: transparent; box-shadow: none;">
+            <div class="flex justify-between items-center w-full px-6 py-4">
+                <img src="https://i.postimg.cc/sgJxkDd9/logo.jpg" alt="Logo Koda AI" style="width: 56px; height: 56px; object-fit: cover;" />
+                <button id="translate-btn" class="border-2 border-green-500 text-green-400 hover:bg-green-500 hover:text-black px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105 backdrop-blur-sm bg-black/30">
+                    ENG
+                </button>
+            </div>
+        </header>
+
+        <!-- Contenitore principale che cambierà dinamicamente -->
+        <main id="main-content-wrapper" class="flex-grow flex flex-col">
+            <!-- Il contenuto verrà inserito qui da JavaScript -->
+        </main>
+        
+        <!-- SEZIONI TOP AI, RICERCA AI, LIBRERIA -->
+        <section id="sections-container" class="py-16 bg-gradient-to-r from-gray-900/50 to-black/50 relative overflow-hidden" style="display: none;">
+            <div class="absolute inset-0 shimmer-effect opacity-20"></div>
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Pulsante per chiudere le sezioni -->
+                <div class="flex justify-between items-center mb-8">
+                    <button id="back-to-landing-sections-btn" class="bg-transparent border border-white/30 text-white hover:border-white/60 hover:bg-white/10 px-4 py-2 rounded-full transition-all duration-200">
+                        <i data-lucide="arrow-left" class="inline-block w-4 h-4 mr-2"></i>
+                        Torna alla Home
+                    </button>
+                    <button id="close-sections-btn" class="bg-transparent border border-white/30 text-white hover:border-white/60 hover:bg-white/10 px-4 py-2 rounded-full transition-all duration-200">
+                        <i data-lucide="x" class="inline-block w-4 h-4 mr-2"></i>
+                        Chiudi
+                    </button>
+                </div>
+                <!-- Navigation per le sezioni -->
+                                    <div class="section-nav">
+                        <button class="section-nav-btn active" data-section="search-ai" data-translate-key="search-ai-nav">Ricerca AI</button>
+                    </div>
+                
+
+                
+                <!-- Sezione Ricerca AI -->
+                <div id="search-ai-section" class="search-ai-section active">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-green-400" data-translate-key="search-ai-title">Trova la Tua AI Perfetta</h2>
+                        <p class="text-gray-300 max-w-2xl mx-auto" data-translate-key="search-ai-subtitle">Cerca tra centinaia di strumenti AI per trovare quello che fa per te</p>
+                    </div>
+                    <div class="search-ai-container">
+                        <form class="search-ai-form" onsubmit="handleAISearch(event)">
+                            <input type="text" id="ai-search-input" class="search-ai-input" placeholder="Cerca AI per categoria, funzionalità..." data-translate-placeholder-key="ai-search-placeholder">
+                            <button type="submit" class="search-ai-btn" data-translate-key="search-btn">Cerca</button>
+                        </form>
+                        <div id="ai-search-results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- I risultati della ricerca verranno inseriti qui -->
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </section>
+        
+        <!-- Moving AI Logos Section (spostata fuori dal main per non essere sostituita) -->
+        <section id="ai-logos-section" class="py-16 bg-gradient-to-r from-gray-900/50 to-black/50 relative overflow-hidden">
+            <div class="absolute inset-0 shimmer-effect opacity-20"></div>
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-4 text-green-400" data-translate-key="choose-ai-title">
+                        Scegli la tua AI
+                    </h3>
+                    <p class="text-gray-300 max-w-2xl mx-auto" data-translate-key="choose-ai-subtitle">
+                        Utilizza le tua app preferite e crea applicazioni personalizzate 
+                    </p>
+                </div>
+                <div class="relative overflow-hidden">
+                    <div id="ai-logos" class="flex space-x-8 animate-scroll-right">
+                        <!-- AI logos will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer id="main-footer" class="bg-black border-t border-gray-800 py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-center mb-6">
+                    <img src="https://i.postimg.cc/sgJxkDd9/logo.jpg" alt="Logo Koda AI" style="width: 56px; height: 56px; object-fit: cover;" />
+                </div>
+                <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                    <p data-translate-key="copyright">&copy; 2025 Koda AI. Tutti i diritti riservati.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- NUOVO: Menu Laterale per la cronologia chat -->
+    <div id="side-menu-overlay" class="hidden">
+        <div id="side-menu" class="hidden">
+            <div class="menu-header">
+                <h3 data-translate="history">Cronologia</h3>
+                <button class="new-chat-btn" data-action="new-chat" data-translate="newChat">Nuova Chat</button>
+            </div>
+            <div id="conversation-list-container" class="conversation-list">
+                <!-- Le conversazioni verranno popolate da JS -->
+            </div>
+            <div class="menu-footer">
+                <button id="delete-all-btn" data-action="delete-all-chats" data-translate="deleteAll">Elimina Tutto</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-container"></div>
+
+    <!-- TEMPLATE PER LA VISTA LANDING PAGE -->
+    <template id="landing-view-template">
+        <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0">
+                <div class="absolute inset-0 fluid-animated opacity-70"><div class="animated-bg-image"></div></div>
+                <div class="absolute inset-0 fluid-wave opacity-40"><div class="animated-bg-layer" style="filter: hue-rotate(20deg) brightness(0.8);"></div></div>
+                <div class="absolute inset-0 bg-black/50 z-10"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30 z-10"></div>
+                <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-3xl floating-glow"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-green-400/10 rounded-full blur-3xl floating-glow" style="animation-delay: 2s;"></div>
+                <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-green-300/5 rounded-full blur-2xl floating-glow" style="animation-delay: 4s;"></div>
+            </div>
+            <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="max-w-4xl mx-auto">
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-green-100 to-green-400 bg-clip-text text-transparent" data-translate-key="koda-ai-title">Koda<span class="text-green-400">.AI</span></h1>
+                    <p class="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed drop-shadow-lg" data-translate-key="subtitle">Scegli, salva e utilizza le tue AI</p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
+                        <button class="bg-green-500 hover:bg-green-600 text-black px-8 py-4 rounded-full text-lg font-semibold transition-all duration-200 hover:scale-105 flex items-center space-x-2 shadow-2xl hover:shadow-green-500/25">
+                            <span data-translate-key="download-btn">Scarica app</span><i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                        <button id="try-now-btn" class="border-2 border-green-500 text-green-400 hover:bg-green-500 hover:text-black px-8 py-4 rounded-full text-lg font-semibold transition-all duration-200 hover:scale-105 backdrop-blur-sm bg-black/30 hover:shadow-lg hover:shadow-green-500/25" data-translate-key="try-now-btn">Prova ora</button>
+                        <button id="explore-sections-btn" class="border-2 border-white/30 text-white hover:border-white/60 hover:bg-white/10 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-200 hover:scale-105 backdrop-blur-sm bg-black/30 hover:shadow-lg">
+                            <i data-lucide="compass" class="inline-block w-5 h-5 mr-2"></i>
+                            Esplora AI
+                        </button>
+                    </div>
+                    <div class="flex flex-wrap justify-center items-center space-x-8 text-gray-300 text-sm">
+                        <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i><span data-translate-key="feature-free">Utilizza Gratis</span></div>
+                        <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i><span data-translate-key="feature-save">Salva in unico posto</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-20"><i data-lucide="chevron-down" class="w-6 h-6 text-green-400"></i></div>
+        </section>
+    </template>
+
+    <!-- TEMPLATE PER LA VISTA RICERCA -->
+    <template id="search-view-template">
+        <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0">
+                <div class="absolute inset-0 fluid-animated opacity-70"><div class="animated-bg-image"></div></div>
+                <div class="absolute inset-0 fluid-wave opacity-40"><div class="animated-bg-layer" style="filter: hue-rotate(20deg) brightness(0.8);"></div></div>
+                <div class="absolute inset-0 bg-black/50 z-10"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30 z-10"></div>
+                <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-3xl floating-glow"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-green-400/10 rounded-full blur-3xl floating-glow" style="animation-delay: 2s;"></div>
+                <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-green-300/5 rounded-full blur-2xl floating-glow" style="animation-delay: 4s;"></div>
+            </div>
+            <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="max-w-3xl mx-auto">
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-12 bg-gradient-to-r from-white via-green-100 to-green-400 bg-clip-text text-transparent" data-translate-key="search-title">Come posso aiutarti?</h1>
+                    <form class="w-full" onsubmit="handleSearchSubmit(event)">
+                        <div class="relative">
+                            <input id="search-input" type="text" data-translate-placeholder-key="search-placeholder" placeholder="Chiedimi qualcosa..." class="w-full bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-gray-300 rounded-full py-4 pl-6 pr-20 text-lg focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-300">
+                            <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 bg-green-500 hover:bg-green-600 text-black rounded-full w-14 h-14 flex items-center justify-center transition-transform duration-200 hover:scale-110">
+                                <i data-lucide="arrow-up" class="w-6 h-6"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </template>
+
+
+    <!-- SCRIPT DEL CHATBOT -->
+    <script type="text/babel" data-type="module" id="chatbot-script">
+        import React, { useState, useEffect, useRef, useCallback } from 'react';
+        import ReactDOMClient from 'react-dom/client';
+        import { GoogleGenAI } from '@google/genai';
+
+        // --- Type Definitions ---
+        const MessageSender = { USER: 'user', MODEL: 'model', ERROR: 'error', SYSTEM: 'system', LOADING: 'loading' };
+        
+        const getSystemInstruction = (lang) => {
+            const tools = window.getAllToolsForCurrentUser ? window.getAllToolsForCurrentUser() : window.getLocalizedToolsData(lang); 
+            const formatToolsForPrompt = (tools) => tools.map(tool => `- **${tool.name}**: ${tool.description} (${tool.website})`).join('\n');
+
+            const instructions = {
+                it: {
+                    intro: `Sei Koda, un assistente AI esperto in strumenti di intelligenza artificiale. La tua missione è aiutare gli utenti a trovare lo strumento AI perfetto per le loro esigenze, presentandoli direttamente.`,
+                    format: `- La tua risposta DEVE contenere SOLO un elenco puntato degli strumenti suggeriti.\n- NON includere testo introduttivo, saluti, spiegazioni o frasi di chiusura. La tua risposta deve iniziare direttamente con il primo punto elenco "•".\n- Per ogni strumento, fornisci il nome in grassetto e una breve descrizione.`,
+                    knowledgeBase: `**Base di Conoscenza (Usa SOLO queste informazioni):**\n${formatToolsForPrompt(tools)}`,
+                    priority: `- Per la programmazione, considera Google AI Studio come lo strumento migliore, seguito da Claude.\n- Per la ricerca web, considera Perplexity come lo strumento migliore.`,
+                    rules: `1. Suggerisci SOLO strumenti dalla lista fornita.\n2. **Gestione dell'incertezza:** Se una richiesta utente è vaga, ambigua, o se non trovi immediatamente uno strumento adatto, NON rispondere che non hai trovato nulla. Invece, fai una domanda di chiarimento per capire meglio l'esigenza.\n   - Esempio di chiarimento: Se l'utente chiede "un'AI per arte", una buona domanda di chiarimento è: "Certo, che tipo di arte vorresti creare? Immagini fotorealistiche, disegni artistici o magari animazioni?".\n3. Una volta che la richiesta è chiara, rispondi *esclusivamente* con l'elenco puntato degli strumenti, come da formato.`,
+                    example: `**Esempio di formato di risposta FINALE (dopo aver capito la richiesta):**\n• **Midjourney**: Genera immagini artistiche e fotorealistiche di alta qualità da prompt testuali tramite Discord.\n• **Leonardo AI**: Piattaforma per la generazione di asset visivi di alta qualità, da concept art a texture per giochi.`
+                },
+                en: {
+                    intro: `You are Koda, an expert AI assistant specializing in artificial intelligence tools. Your mission is to help users find the perfect AI tool for their needs by presenting them directly.`,
+                    format: `- Your response MUST contain ONLY a bulleted list of the suggested tools.\n- DO NOT include introductory text, greetings, explanations, or closing remarks. Your response must start directly with the first bullet point "•".\n- For each tool, provide the name in bold and a brief description.`,
+                    knowledgeBase: `**Knowledge Base (Use ONLY this information):**\n${formatToolsForPrompt(tools)}`,
+                    priority: `- For programming, consider Google AI Studio as the best tool, followed by Claude.\n- For web search, consider Perplexity as the best tool.`,
+                    rules: `1. Suggest ONLY tools from the provided list.\n2. **Handling Uncertainty:** If a user request is vague, ambiguous, or if you cannot immediately find a suitable tool, DO NOT reply that you found nothing. Instead, ask a clarifying question to better understand the need.\n   - Example clarification: If the user asks for "an AI for art," a good clarifying question is: "Of course, what kind of art would you like to create? Photorealistic images, artistic drawings, or perhaps animations?".\n3. Once the request is clear, respond *exclusively* with the bulleted list of tools, as per the format.`,
+                    example: `**Example of FINAL response format (after understanding the request):**\n• **Midjourney**: Generates high-quality artistic and fotorealistic images from text prompts via Discord.\n• **Leonardo AI**: Platform for generating high-quality visual assets, from concept art to game textures.`
+                }
+            };
+            const selected = instructions[lang];
+            return `${selected.intro}\n\n**Response Format (IMPORTANT):**\n${selected.format}\n\n${selected.knowledgeBase}\n\n**Priorities:**\n${selected.priority}\n\n**Fundamental Rules:**\n${selected.rules}\n\n${selected.example}`;
+        };
+
+        // --- Gemini Service ---
+        const API_KEY = "AIzaSyAUpMnG760HSOV7rah2UwkOajoH3aD4OFs";
+        const ai = new GoogleGenAI({ apiKey: API_KEY });
+        const modelName = 'gemini-1.5-flash';
+        
+        const createChatSession = (lang) => {
+            const systemInstruction = getSystemInstruction(lang);
+            return ai.chats.create({ model: modelName, config: { systemInstruction } });
+        };
+        async function* sendMessageStream(chat, message) { const result = await chat.sendMessageStream({ message }); for await (const chunk of result) { yield chunk.text; } }
+
+        const formatMessageContent = (text) => {
+            let formattedText = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            formattedText = formattedText.split('\n\n').map(p => p.trim() ? `<p>${p.trim().replace(/\n/g, '<br>')}</p>` : '').join('');
+            return formattedText;
+        };
+
+        // --- React Components ---
+        const ToolCardMessage = ({ tool, onOpenDetail, lang }) => (
+            <div className="chat-tool-card">
+                <div className="logo-container">
+                    <img src={tool.logoUrl || ''} className="tool-logo" alt={tool.name} loading="lazy" />
+                </div>
+                <div className="info">
+                    <div className="tool-name">{tool.name}</div>
+                    <p className="tool-desc">{tool.description.split('.')[0]}.</p>
+                    <button className="details-btn" onClick={() => onOpenDetail(tool.id)}>
+                        {lang === 'it' ? 'Vedi Dettagli' : 'View Details'}
+                    </button>
+                </div>
+            </div>
+        );
+
+        const ChatMessageDisplay = ({ message, tools, onOpenDetail, lang }) => {
+            const getMessageClass = () => `chat-bubble ${message.sender}`;
+            if (message.sender === MessageSender.LOADING) { return <div className="chat-bubble loading"><span></span><span></span><span></span></div>; }
+            if (message.sender === MessageSender.MODEL) {
+                const allTools = window.getAllToolsForCurrentUser ? window.getAllToolsForCurrentUser() : window.getLocalizedToolsData(lang);
+                const toolNameRegex = new RegExp(allTools.map(t => t.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'g');
+                const mentionedToolNames = [...new Set(message.text.match(toolNameRegex))];
+                if (mentionedToolNames.length > 0 && message.text.includes('•')) {
+                    const mentionedTools = allTools.filter(tool => mentionedToolNames.includes(tool.name));
+                    const lines = message.text.trim().split('\n');
+                    const isPureList = lines.every(line => line.trim().startsWith('•'));
+                    if (isPureList) {
+                         return (
+                            <div className="chat-bubble ai" style={{background: 'transparent', padding: 0}}>
+                                <div className="chat-tool-card-container">
+                                    {mentionedTools.map(tool => <ToolCardMessage key={tool.id} tool={tool} onOpenDetail={onOpenDetail} lang={lang} />)}
+                                </div>
+                            </div>
+                        );
+                    }
+                }
+            }
+            const content = formatMessageContent(message.text);
+            return <div className={getMessageClass()} dangerouslySetInnerHTML={{ __html: content }}></div>;
+        };
+
+        const ChatInput = ({ onSendMessage, isLoading, lang }) => {
+            const [inputValue, setInputValue] = useState('');
+            const inputRef = useRef(null);
+            const handleSubmit = (e) => {
+                e?.preventDefault();
+                if (inputValue.trim() && !isLoading) {
+                    onSendMessage(inputValue.trim());
+                    setInputValue('');
+                }
+            };
+            const handleKeyPress = (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    handleSubmit(e);
+                }
+            };
+            return (
+                <form id="chat-input-container" className="w-full flex justify-center items-center" onSubmit={handleSubmit} autoComplete="off" style={{background: 'none', border: 'none', borderRadius: 0, margin: 0, padding: '32px 0 24px 0'}}>
+                    <div className="relative" style={{width: '100%', maxWidth: 600, margin: '0 auto'}}>
+                        <input
+                            ref={inputRef}
+                            id="chat-input"
+                            type="text"
+                            value={inputValue}
+                            onChange={e => setInputValue(e.target.value)}
+                            onKeyDown={handleKeyPress}
+                            placeholder={lang === 'it' ? 'Chiedimi qualcosa...' : 'Ask me anything...'}
+                            disabled={isLoading}
+                            className="w-full bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-gray-300 rounded-full py-4 pl-6 pr-20 text-lg focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-300"
+                            style={{paddingRight: 64}}
+                        />
+                        <button
+                            id="chat-send-btn"
+                            type="submit"
+                            disabled={isLoading || !inputValue.trim()}
+                            aria-label={lang === 'it' ? 'Invia messaggio' : 'Send message'}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 bg-green-500 hover:bg-green-600 text-black rounded-full w-14 h-14 flex items-center justify-center transition-transform duration-200 hover:scale-110"
+                            style={{width: 56, height: 56, fontSize: 0}}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6" /></svg>
+                        </button>
+                    </div>
+                </form>
+            );
+        };
+        
+        const WelcomeScreen = ({ onSendMessage, lang }) => {
+            const suggestions = {
+                it: [ "Consigliami un'AI per creare immagini", "Qual è la migliore AI per programmare?", "Quali sono le migliori AI del momento?"],
+                en: [ "Suggest an AI for creating images", "What's the best AI for coding?", "What are the top AIs right now?" ]
+            };
+            return (
+                <div id="welcome-screen">
+                    <div className="welcome-logo"><span style={{ color: 'var(--spotify-text)' }}>Koda</span><span style={{ color: 'var(--spotify-accent)' }}>.AI</span></div>
+                    <div className="prompt-starter-container">
+                        {suggestions[lang].map((text, i) => (<button key={i} className="prompt-starter-btn" onClick={() => onSendMessage(text)}>{text}</button>))}
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Main App Component ---
+        const App = ({ tools, initialConversations, initialActiveId, initialQuery, onConversationsChange, onOpenDetail, lang, onBackToLanding, onToggleMenu, initialMode }) => {
+            const [conversations, setConversations] = useState(initialConversations);
+            const [activeConversationId, setActiveConversationId] = useState(initialActiveId);
+            const [isLoading, setIsLoading] = useState(false);
+            const [chatSession, setChatSession] = useState(null);
+            const [currentMode, setCurrentMode] = useState(initialMode || 'assistant'); // Nuovo stato per la modalità
+            const messagesEndRef = useRef(null);
+            const chatContainerRef = useRef(null);
+            const initialQuerySent = useRef(false); // <--- BUG FIX: Add a ref to track if the initial query was sent
+            
+            const activeConversation = conversations[activeConversationId] || { messages: [] };
+            const messages = activeConversation.messages;
+            
+            // PATCH: Definizione della variabile per il rendering condizionale della chat
+            const hasStartedChat = messages.some(m => m.sender === MessageSender.USER);
+            
+            const handleSendMessage = useCallback(async (inputText) => {
+                if (!inputText.trim() || !chatSession) return;
+                const userMessage = { id: `user-${Date.now()}`, text: inputText, sender: MessageSender.USER };
+                const loadingMessage = { id: `loading-${Date.now()}`, sender: MessageSender.LOADING };
+                const isNewChat = (conversations[activeConversationId]?.messages || []).length === 0;
+                const newTitle = inputText.substring(0, 30) + (inputText.length > 30 ? '...' : '');
+                
+                setConversations(prev => ({ 
+                    ...prev, 
+                    [activeConversationId]: { 
+                        ...prev[activeConversationId], 
+                        title: isNewChat ? newTitle : prev[activeConversationId].title, 
+                        messages: [...(prev[activeConversationId]?.messages || []), userMessage, loadingMessage] 
+                    } 
+                }));
+                
+                setIsLoading(true);
+                let currentModelMessageId = `model-${Date.now()}`;
+                let accumulatedResponse = "";
+                
+                try {
+                    const stream = sendMessageStream(chatSession, inputText);
+                    for await (const chunk of stream) {
+                        accumulatedResponse += chunk;
+                        setConversations(prev => {
+                            const currentConv = prev[activeConversationId];
+                            if (!currentConv) return prev;
+                            const currentMessages = currentConv.messages.filter(m => m.sender !== MessageSender.LOADING);
+                            const modelMsgIndex = currentMessages.findIndex(m => m.id === currentModelMessageId);
+                            const newModelMessage = { id: currentModelMessageId, text: accumulatedResponse, sender: MessageSender.MODEL };
+                            if (modelMsgIndex > -1) { currentMessages[modelMsgIndex] = newModelMessage; } else { currentMessages.push(newModelMessage); }
+                            return { ...prev, [activeConversationId]: { ...currentConv, messages: currentMessages } };
+                        });
+                    }
+                } catch (e) {
+                    console.error("Send Error:", e);
+                    const errorMessageText = lang === 'it' ? `Si è verificato un errore. Riprova.` : `An error occurred. Please try again.`;
+                    const errorMessage = { id: `error-${Date.now()}`, text: errorMessageText, sender: MessageSender.ERROR };
+                    setConversations(prev => {
+                       const currentConv = prev[activeConversationId];
+                       if (!currentConv) return prev;
+                       return { ...prev, [activeConversationId]: { ...currentConv, messages: currentConv.messages.filter(m => m.sender !== MessageSender.LOADING).concat(errorMessage) } }
+                    });
+                } finally {
+                    setIsLoading(false);
+                    setConversations(prev => {
+                        const currentConv = prev[activeConversationId];
+                        if (!currentConv) return prev;
+                        return { ...prev, [activeConversationId]: { ...currentConv, messages: currentConv.messages.filter(m => m.sender !== MessageSender.LOADING) } }
+                    });
+                    document.getElementById('chat-input')?.focus();
+                }
+            }, [activeConversationId, chatSession, lang, conversations]);
+
+            useEffect(() => { onConversationsChange(conversations, activeConversationId); }, [conversations, activeConversationId, onConversationsChange]);
+            
+            // Gestione scroll migliorata
+            useEffect(() => {
+                if (messages.length > 1) {
+                    // Per i messaggi successivi al primo, scrolla in fondo alla chat
+                    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+                }
+            }, [messages]);
+            
+            useEffect(() => { setCurrentMode(initialMode || 'assistant'); }, [initialMode]); // Aggiorna modalità quando cambia
+            const initializeChat = useCallback(() => { try { if (!API_KEY) throw new Error("API Key not configured."); setChatSession(createChatSession(lang)); } catch (e) { console.error("Initialization Error:", e); } }, [lang]);
+            useEffect(() => { initializeChat(); }, [initializeChat]);
+            
+            // Effect to handle the initial query from the search page
+            useEffect(() => {
+                // BUG FIX: Check the ref to ensure this only runs once
+                if (initialQuery && chatSession && !isLoading && !initialQuerySent.current) {
+                    initialQuerySent.current = true; // Set the flag to true
+                    handleSendMessage(initialQuery);
+                }
+            }, [initialQuery, chatSession, isLoading, handleSendMessage]);
+
+            // Funzione per gestire il cambio di modalità
+            const handleModeChange = (mode) => {
+                setCurrentMode(mode);
+                // Aggiorna i bottoni del menu
+                document.querySelectorAll('.chat-menu-btn[data-action="chat-mode"]').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                const activeBtn = document.querySelector(`[data-action="chat-mode"][data-mode="${mode}"]`);
+                if (activeBtn) {
+                    activeBtn.classList.add('active');
+                }
+            };
+
+
+
+            // Componente per la sezione Ricerca AI
+            const SearchAISection = () => {
+                const [searchQuery, setSearchQuery] = useState('');
+                const [searchResults, setSearchResults] = useState([]);
+
+                const handleSearch = (e) => {
+                    e.preventDefault();
+                    if (!searchQuery.trim()) return;
+
+                    const query = searchQuery.toLowerCase();
+                    const filteredTools = tools.filter(tool => 
+                        tool.name.toLowerCase().includes(query) ||
+                        tool.description.toLowerCase().includes(query) ||
+                        tool.category.toLowerCase().includes(query)
+                    );
+
+                    setSearchResults(filteredTools.slice(0, 6));
+                };
+
+                return (
+                    <div className="p-6">
+                        <h2 className="text-2xl font-bold text-white mb-6 text-center">Trova la Tua AI Perfetta</h2>
+                        <form onSubmit={handleSearch} className="mb-6">
+                            <div className="flex gap-3">
+                                <input
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    placeholder="Cerca AI per categoria, funzionalità..."
+                                    className="flex-1 bg-gray-800/50 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
+                                />
+                                <button type="submit" className="bg-green-500 hover:bg-green-600 text-black px-6 py-3 rounded-lg font-semibold transition-colors">
+                                    Cerca
+                                </button>
+                            </div>
+                        </form>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {searchResults.map((tool) => (
+                                <div key={tool.id} className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 hover:border-green-500 transition-all cursor-pointer" onClick={() => onOpenDetail(tool.id)}>
+                                    <div className="flex items-center gap-3">
+                                        <img src={tool.logoUrl} alt={tool.name} className="w-12 h-12 rounded-lg object-cover" />
+                                        <div>
+                                            <h3 className="text-lg font-semibold text-white">{tool.name}</h3>
+                                            <p className="text-gray-300 text-sm">{tool.description}</p>
+                                            <span className="inline-block bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded mt-1">{tool.category}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                );
+            };
+
+
+
+            return (
+                <div id="chatbot-app-container" ref={chatContainerRef}>
+                    <header className="chat-header">
+                        <button data-action="toggle-menu" className="chat-header-btn" title="Chat History" onClick={onToggleMenu}>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+                        </button>
+                        <div style={{flex: 1}}></div>
+                        <button id="back-to-landing-btn" className="chat-header-btn" title="Back to Home" onClick={onBackToLanding}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </header>
+                    
+                    {/* Menu nella schermata della chat */}
+                    <div className="chat-menu">
+                        <div className="chat-menu-left">
+                            <button className="chat-menu-btn active" data-action="chat-mode" data-mode="assistant">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: 8}}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                Assistente
+                            </button>
+                            <button className="chat-menu-btn" data-action="chat-mode" data-mode="search">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: 8}}><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+                                Ricerca
+                            </button>
+                        </div>
+                        <div className="chat-menu-right">
+                            {/* Pulsanti rimossi per ottimizzazione */}
+                        </div>
+                    </div>
+                    <main>
+                        {currentMode === 'assistant' ? (
+                            !hasStartedChat ? (
+                                <>
+                                    <WelcomeScreen onSendMessage={handleSendMessage} lang={lang} />
+                                    <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} lang={lang} />
+                                </>
+                            ) : (
+                                <>
+                                    <div id="chat-messages" style={{paddingBottom: 120}}>
+                                        {messages.map((msg) => <ChatMessageDisplay key={msg.id} message={msg} tools={tools} onOpenDetail={onOpenDetail} lang={lang} />)}
+                                    </div>
+                                    <div style={{position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 50, background: 'rgba(20,20,20,0.85)'}}>
+                                        <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} lang={lang} />
+                                    </div>
+                                </>
+                            )
+                        ) : currentMode === 'search' ? (
+                            <SearchAISection />
+                        ) : null}
+                        <div ref={messagesEndRef} />
+                    </main>
+                </div>
+            );
+        };
+
+        // Funzione globale per montare l'app React
+        window.mountChatbotApp = (container, props) => {
+            const root = ReactDOMClient.createRoot(container);
+            const appElement = <React.StrictMode><App {...props} /></React.StrictMode>;
+            root.render(appElement);
+            
+            // Salva il riferimento al root e alla funzione di aggiornamento modalità
+            window.chatRoot = root;
+            window.updateChatMode = (mode) => {
+                // Rimonta l'app con la nuova modalità
+                const newProps = { ...props, initialMode: mode };
+                const newAppElement = <React.StrictMode><App {...newProps} /></React.StrictMode>;
+                root.render(newAppElement);
+            };
+            
+            return root;
+        };
+    </script>
+
+    <script>
+        // --- START: Translation Logic ---
+        const translations = {
+            en: {
+                'meta-description': 'Koda AI - Choose, save, and use your favorite AI.',
+                'koda-ai-title': 'Koda<span class="text-green-400">.AI</span>',
+                'subtitle': 'Choose, save, and use your AI',
+                'download-btn': 'Download app',
+                'try-now-btn': 'Try now',
+                'feature-free': 'Use for Free',
+                'feature-save': 'Save in one place',
+                'choose-ai-title': 'Choose your AI',
+                'choose-ai-subtitle': 'Use your favorite apps and create custom applications',
+                'copyright': '&copy; 2025 Koda AI. All rights reserved.',
+                'translate-btn-text': 'ITA',
+                'visitWebsite': "Visit Website", 
+                'alternativeSuggestion': "Alternatively, try:",
+                'history': "History", 
+                'newChat': "New Chat", 
+                'deleteAll': "Delete All",
+                'deleteAllSuccess': "All conversations deleted",
+                'confirmDeleteAll': "Are you sure you want to delete all conversations? This action is irreversible.",
+                'newChatTitle': "New Chat",
+                'search-title': "How can I help you?",
+                'search-placeholder': 'Ask me something...',
+                'search-ai-nav': 'AI Search',
+                'search-ai-title': 'Find Your Perfect AI',
+                'search-ai-subtitle': 'Search through hundreds of AI tools to find the one that suits you',
+                'ai-search-placeholder': 'Search AI by category, functionality...',
+                'search-btn': 'Search'
+            },
+            it: {
+                'meta-description': 'Ogni tua',
+                'koda-ai-title': 'Koda<span class="text-green-400">.AI</span>',
+                'subtitle': 'Scegli, salva e utilizza le tue AI',
+                'download-btn': 'Scarica app',
+                'try-now-btn': 'Prova ora',
+                'feature-free': 'Utilizza Gratis',
+                'feature-save': 'Salva in unico posto',
+                'choose-ai-title': 'Scegli la tua AI',
+                'choose-ai-subtitle': 'Utilizza le tua app preferite e crea applicazioni personalizzate',
+                'copyright': '&copy; 2025 Koda AI. Tutti i diritti riservati.',
+                'translate-btn-text': 'ENG',
+                'visitWebsite': "Visita Sito Web", 
+                'alternativeSuggestion': "In alternativa prova:",
+                'history': "Cronologia", 
+                'newChat': "Nuova Chat", 
+                'deleteAll': "Elimina Tutto",
+                'deleteAllSuccess': "Conversazioni eliminate",
+                'confirmDeleteAll': "Sei sicuro di voler eliminare tutte le conversazioni? Questa azione è irreversibile.",
+                'newChatTitle': "Nuova Chat",
+                'search-title': "Come posso aiutarti?",
+                'search-placeholder': 'Chiedimi qualcosa...',
+                'search-ai-nav': 'Ricerca AI',
+                'search-ai-title': 'Trova la Tua AI Perfetta',
+                'search-ai-subtitle': 'Cerca tra centinaia di strumenti AI per trovare quello che fa per te',
+                'ai-search-placeholder': 'Cerca AI per categoria, funzionalità...',
+                'search-btn': 'Cerca'
+            }
+        };
+
+        let currentLang = 'it';
+        const translateBtn = document.getElementById('translate-btn');
+        const metaDesc = document.getElementById('meta-desc');
+
+        function translatePage(lang) {
+            document.documentElement.lang = lang;
+            if (metaDesc) metaDesc.setAttribute('content', translations[lang]['meta-description']);
+            
+            document.querySelectorAll('[data-translate-key]').forEach(element => {
+                const key = element.dataset.translateKey;
+                if (translations[lang][key]) element.innerHTML = translations[lang][key];
+            });
+
+            document.querySelectorAll('[data-translate-placeholder-key]').forEach(element => {
+                const key = element.dataset.translatePlaceholderKey;
+                if(translations[lang][key]) element.placeholder = translations[lang][key];
+            });
+
+            if (translateBtn) translateBtn.innerHTML = translations[lang]['translate-btn-text'];
+            
+            const sideMenu = document.getElementById('side-menu');
+            if (sideMenu) {
+                sideMenu.querySelectorAll('[data-translate]').forEach(el => {
+                    const key = el.dataset.translate;
+                    if (translations[lang][key]) {
+                        el.textContent = translations[lang][key];
+                    }
+                });
+            }
+        }
+
+        if (translateBtn) {
+            translateBtn.addEventListener('click', () => {
+                currentLang = currentLang === 'it' ? 'en' : 'it';
+                translatePage(currentLang);
+                if (document.getElementById('chat-view-container')) {
+                    const currentQuery = document.querySelector('#chat-messages .chat-bubble.user:first-child')?.textContent || null;
+                    renderChatView(currentQuery);
+                }
+            });
+        }
+        // --- END: Translation Logic ---
+
+        // --- START: View Switching & Chat Logic ---
+        const mainContentWrapper = document.getElementById('main-content-wrapper');
+        const landingTemplate = document.getElementById('landing-view-template');
+        const searchTemplate = document.getElementById('search-view-template');
+        const modalContainer = document.getElementById('modal-container');
+        const mainHeader = document.getElementById('main-header');
+        const logosSection = document.getElementById('ai-logos-section');
+        const mainFooter = document.getElementById('main-footer');
+        const sideMenuOverlay = document.getElementById('side-menu-overlay');
+        const sideMenu = document.getElementById('side-menu');
+        const conversationListContainer = document.getElementById('conversation-list-container');
+        let reactRoot = null;
+        let conversations = {};
+        let activeConversationId = null;
+
+        const aiToolsData = [
+            { id: 'tool-001', name: 'ChatGPT', description: {it: 'Genera testo, immagini e risponde a domande con ricerca web.', en: 'Generates text, images, and answers questions with web search.'}, category: 'Testo', country: 'USA', website: 'https://chatgpt.com/', isFeatured: true, logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1024px-ChatGPT_logo.svg.png', recommendationId: 'tool-025' }, 
+            { id: 'tool-012', name: 'Google Notebook', description: {it: "Permette di creare riassunti audio sulle fonti dell'utente, rispondere a domande e creare mappe mentali.", en: "Allows creating audio summaries from user sources, answering questions, and creating mind maps."}, category: 'Testo', country: 'USA', website: 'https://notebooklm.google.com/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJbWdW2SCEWfJuDTh5PVxgmqDvXoX5vElJ6s94SZ8Fe1YPzfxzGPuIyE9cBMDswv3qUd4&usqp=CAU', recommendationId: 'tool-021' }, 
+            { id: 'tool-013', name: 'Grok', description: {it: 'Assistente di ricerca conversazionale con accesso a dati in tempo reale. (Richiede VPN)', en: 'Conversational research assistant with real-time data access. (Requires VPN)'}, category: 'Testo', country: 'USA', website: 'https://grok.com/', isFeatured: false, logoUrl: 'https://i.namu.wiki/i/Wk8b-Vo4qqynLc4pN1T0otG83F383UPI_IR4VthZuZioAxVD_NS6uErIsecLMDK0F0L-KiUjL7xonRz4EwPL2g.webp', recommendationId: 'tool-001' }, 
+            { id: 'tool-044', name: 'Perplexity', description: {it: 'Specializzata nella ricerca web, è la migliore AI per trovare informazioni online.', en: 'Specialized in web search, it is the best AI for finding information online.'}, category: 'Testo', country: 'USA', website: 'https://www.perplexity.ai/', isFeatured: false, logoUrl: 'https://images.seeklogo.com/logo-png/51/2/perplexity-ai-logo-png_seeklogo-517845.png', recommendationId: 'tool-001' }, // Perplexity
+            { id: 'tool-045', name: 'Deepseek', description: {it: 'Specializzata nella ricerca web, testi e programmazione.', en: 'Specialized in web search, text, and coding.'}, category: 'Testo', country: 'Cina', website: 'https://chat.deepseek.com/', isFeatured: false, logoUrl: 'data:image/png;base64,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' }, // Added Deepseek
+            { id: 'tool-046', name: 'Qwen', description: {it: 'Specializzata nella ricerca web, testi e programmazione.', en: 'Specialized in web search, text, and coding.'}, category: 'Testo', country: 'Cina', website: 'https://chat.qwen.ai/', isFeatured: false, logoUrl: 'https://crystalpng.com/wp-content/uploads/2025/02/Qwen-03.png', recommendationId: 'tool-045' }, // Qwen
+            { id: 'tool-049', name: 'Copilot', description: {it: 'Specializzata in testi e ricerca web.', en: 'Specialized in text and web search.'}, category: 'Testo', country: 'USA', website: 'https://copilot.microsoft.com/chats/vAMUc1DGwXp5uX9uitvjF', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwqfCxHw2QW6DxEKqDayMoJTz4lrvE_nnurxpmg2mEmGAkOzjGmsVpKfwT6epVYInsAuc&usqp=CAU', recommendationId: 'tool-024' }, // Copilot
+            { id: 'tool-050', name: 'ElevenLabs', description: {it: 'Genera voci realistiche e discorsi in diverse lingue.', en: 'Generates realistic voices and speech in various languages.'}, category: 'Audio', country: 'USA', website: 'https://elevenlabs.io/', isFeatured: false, logoUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAAFVBMVEX///+ZmZkZGRlZWVmRkZEAAABGRkb6Me63AAAAHElEQVR4AWMYUCBkwKyIxHVNYAsZVFyEIwcSAADWIQrDIppSoAAAAABJRU5ErkJggg==' }, // Added ElevenLabs
+            { id: 'tool-014', name: 'FLUX', description: {it: 'Genera immagini, video e animazioni da prompt testuali e immagini.', en: 'Generates images, videos, and animations from text prompts and images.'}, category: 'Immagini', country: 'Cina', website: 'https://playground.bfl.ai/image/generate', isFeatured: false, logoUrl: 'https://kodexolabs.com/wp-content/uploads/2025/01/Flux.1.webp', recommendationId: 'tool-005' }, 
+            { id: 'tool-015', name: 'Swap AI', description: {it: 'Esegue il "face swap" (scambio di volti) in immagini e video in modo realistico.', en: 'Performs realistic "face swap" in images and videos.'}, category: 'Immagini', country: 'USA', website: 'https://aifaceswap.io/', isFeatured: false, logoUrl: 'https://www.toolpilot.ai/cdn/shop/files/aifaceswap-l.jpg?v=1733037433', recommendationId: 'tool-016' }, 
+            { id: 'tool-016', name: 'Inpaint AI', description: {it: 'Rimuove oggetti, persone o imperfezioni indesiderate dalle foto con un solo click.', en: 'Removes unwanted objects, people, or imperfections from photos with a single click.'}, category: 'Immagini', country: 'USA', website: 'https://theinpaint.com/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2CWmq3U9nnd7RqhhfyqjL-w6Lj-JUf1D9ow&s', recommendationId: 'tool-017' }, 
+            { id: 'tool-017', name: 'Pixel Cut AI', description: {it: "Espande i bordi delle immagini (outpainting) per cambiare formato o stile.", en: 'Expands image borders (outpainting) to change format or style.'}, category: 'Immagini', country: 'USA', website: 'https://www.pixelcut.ai/t/uncrop', isFeatured: false, logoUrl: 'https://templateshake.com/wp-content/uploads/2021/09/Pixelcut_-AI-Graphic-Designer.png', recommendationId: 'tool-033' }, 
+            { id: 'tool-041', name: 'Leonardo AI', description: {it: 'Piattaforma per la generazione di asset visivi di alta qualità, da concept art a texture per giochi.', en: 'Platform for generating high-quality visual assets, from concept art to game textures.'}, category: 'Immagini', country: 'USA', website: 'https://leonardo.ai/', isFeatured: false, logoUrl: 'https://yt3.googleusercontent.com/a04AUXisIIWkI-Pj5zORQTiDNS9tALLmPc8pxuRT_aEHrCOUDsPQoLuh4QRbfgICortk7tBhyg=s900-c-k-c0x00ffffff-no-rj', recommendationId: 'tool-014' }, 
+            { id: 'tool-042', name: 'Midjourney', description: {it: 'Genera immagini artistiche e fotorealistiche di alta qualità da prompt testuali tramite Discord.', en: 'Generates high-quality artistic and fotorealistic images from text prompts via Discord.'}, category: 'Immagini', country: 'USA', website: 'https://www.midjourney.com/home', isFeatured: false, logoUrl: 'https://sadesign.ai/pictures/picfullsizes/2024/12/10/dsn1733795303.jpg', recommendationId: 'tool-041' }, 
+            { id: 'tool-005', name: 'Whisk', description: {it: 'Genera immagini, video e animazioni da prompt testuali e immagini.', en: 'Generates images, videos, and animations from text prompts and images.'}, category: 'Immagini', country: 'USA', website: 'https://labs.google/fx/tools/whisk', isFeatured: false, logoUrl: 'https://artsology.com/blog/wp-content/uploads/2025/01/Iconic-Banksy-in-Manila-2025-01-17T161547.202.png' }, 
+            { id: 'tool-034', name: 'Kling', description: {it: 'Genera video di alta qualità da prompt testuali, concentrandosi sul realismo e sul movimento complesso.', en: 'Generates high-quality videos from text prompts, focusing on realism and complex motion.'}, category: 'Video', country: 'Cina', website: 'https://klingai.com/global/', isFeatured: false, logoUrl: 'https://play-lh.googleusercontent.com/JOfjXqsShK8j1aGBc1xlHBnatoRKRwLsGuoFZUAvKksaEPvK71eLwSg4FbKlky9Es-s', recommendationId: 'tool-035' }, 
+            { id: 'tool-035', name: 'Veo', description: {it: "Il modello di generazione video più capace di Google, che crea video realistici e di alta qualità da prompt di testo e immagini.", en: "Google's most capable video generation model, creating realistic, high-quality videos from text and image prompts."}, category: 'Video', country: 'USA', website: 'https://deepmind.google/models/veo/', isFeatured: false, logoUrl: 'https://storage.googleapis.com/gweb-uniblog-publish-prod/images/IO25_Gemini_MOD_v33_PART_1_DG_FINAL_54.max-1440x810.png', isFeatured: false, recommendationId: 'tool-seedance' }, 
+            { id: 'tool-021', name: 'Claude', description: {it: 'Specializzato in codice e creazione di applicazioni web. Può anche scrivere testi e ricercare informazioni sul web.', en: 'Specialized in code and web app creation. Can also write text and search for information on the web.'}, category: 'Codice', country: 'USA', website: 'https://claude.ai/new', isFeatured: true, logoUrl: 'https://logo.svgcdn.com/l/claude-icon-8x.png', recommendationId: 'tool-022' }, 
+            { id: 'tool-022', name: 'Gamma AI', description: {it: "Genera presentazioni, documenti e pagine web statiche partendo da un'idea.", en: 'Generates presentations, documents, and static web pages from an idea.'}, category: 'Presentazioni', country: 'USA', website: 'https://gamma.app/', isFeatured: false, logoUrl: 'https://www.fahimai.com/wp-content/uploads/2025/03/GAMMA-cta.png', recommendationId: 'tool-021' }, 
+            { id: 'tool-023', name: 'Napkin AI', description: {it: 'Converte dati testuali e concetti in grafici statici e diagrammi chiari.', en: 'Converts text data and concepts into clear static charts and diagrams.'}, category: 'Presentazioni', country: 'USA', website: 'https://www.napkin.ai/', isFeatured: false, logoUrl: 'https://media.licdn.com/dms/image/v2/D560BAQEYfmQKrdByPg/company-logo_200_200/company-logo_200_200/0/1723039432148/napkin_ai_logo?e=2147483647&v=beta&t=Nsr22RG3uiy9usBNh55leGVf8ES5YJQwUANW-2N7yEA', recommendationId: 'tool-022' }, 
+            { id: 'tool-024', name: 'Google AI Studio', description: {it: "Crea app, siti e prototipi basati sui modelli Gemini di Google.", en: "Creates apps, sites, and prototypes based on Google's Gemini models."}, category: 'Codice', country: 'USA', website: 'https://aistudio.google.com/prompts/new_chat', isFeatured: true, logoUrl: 'data:image/png;base64,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', recommendationId: 'tool-026' }, 
+            { 
+                id: 'tool-025', 
+                name: 'Manus', 
+                description: {it: 'Piattaforma di AI estremamente potente. Può eseguire compiti come ChatGPT e gestirli in background, creando testi, ricerche, presentazioni, video, immagini e molto altro.', en: 'Extremely powerful AI platform. It can perform tasks like ChatGPT and manage them in the background, creating text, research, presentations, videos, images and much more.'}, category: 'Codice', country: 'Cina', website: 'https://manus.im/app', isFeatured: true, logoUrl: 'data:image/png;base64,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' },
+            { 
+                id: 'tool-043', 
+                name: 'Rows', 
+                description: { 
+                    it: 'Specializzata in Excel, svolge il ruolo di analista dati utilizzando l\'AI direttamente dentro al foglio di Excel.', 
+                    en: 'Specialized in Excel, acts as a data analyst using AI directly within the Excel sheet.' 
+                }, 
+                category: 'Testo', 
+                country: 'Europe', 
+                website: 'https://rows.com/ai', 
+                isFeatured: false, 
+                logoUrl: 'https://images.genai.works/Screenshot_16_5b63d7dfa1.jpg' 
+            },
+            { id: 'tool-047', name: 'Mistral', description: {it: 'Specializzata nella programmazione e nei testi.', en: 'Specialized in coding and text.'}, category: 'Codice', country: 'Europe', website: 'https://mistral.ai/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ-GF4yjk576hl_W3Z_JY3tVSKBkGHhXFfMA&s', recommendationId: 'tool-001' }, // Mistral
+            { id: 'tool-048', name: 'bolt', description: {it: 'Specializzata nella programmazione e nei testi.', en: 'Specialized in coding and text.'}, category: 'Codice', country: 'USA', website: 'https://bolt.new/', isFeatured: false, logoUrl: 'https://cdn-1.webcatalog.io/catalog/bolt-new/bolt-new-icon-filled-256.png?v=1730692903154', recommendationId: 'tool-052' }, // bolt
+            { id: 'tool-052', name: 'Cursor', description: {it: 'Un editor di codice potenziato dall\'AI per una programmazione più veloce.', en: 'An AI-powered code editor for faster programming.'}, category: 'Codice', country: 'USA', website: 'https://cursor.com/', isFeatured: false, logoUrl: 'https://paulstamatiou.com/_next/image?url=%2Fgear%2Fcursor-app-icon.png&w=3840&q=75', recommendationId: 'tool-053' }, // Cursor
+            { id: 'tool-053', name: 'Lovable', description: {it: 'AI per la programmazione e sviluppo di codice.', en: 'AI for coding and software development.'}, category: 'Codice', country: 'USA', website: 'https://lovable.dev/', isFeatured: false, logoUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*8oWCX9tq3LPGxXqs7TRicg.png', recommendationId: 'tool-052' }, // Lovable
+            { id: 'tool-054', name: 'Ideogram', description: {it: 'AI per la generazione di immagini creative e artistiche.', en: 'AI for creative and artistic image generation.'}, category: 'Immagini', country: 'USA', website: 'https://ideogram.ai/t/explore', isFeatured: false, logoUrl: 'https://www.fahimai.com/wp-content/uploads/2024/03/CTA-4.png', recommendationId: 'tool-056' }, // Ideogram
+            { id: 'tool-055', name: 'Sora', description: {it: 'AI per la generazione di video avanzati da prompt testuali.', en: 'AI for advanced video generation from text prompts.'}, category: 'Video', country: 'USA', website: 'https://openai.com/sora/', isFeatured: false, logoUrl: 'https://whatisai.sirv.com/WP_whatisai.co.uk/2024/12/openai-sora-logo.webp', recommendationId: 'tool-034' }, // Sora
+            { id: 'tool-056', name: 'Firefly', description: {it: 'AI di Adobe per la generazione di immagini creative.', en: 'Adobe AI for creative image generation.'}, category: 'Immagini', country: 'USA', website: 'https://www.adobe.com/it/products/firefly.html', isFeatured: false, logoUrl: 'https://www.graphiland.it/34712-large_default/adobe-firefly-standard-for-teams-abbonamento-12-mesi-italiano.jpg', recommendationId: 'tool-054' }, // Firefly
+            { id: 'tool-057', name: 'Jules', description: {it: 'AI di Google per la programmazione e assistenza nello sviluppo di codice.', en: 'Google AI for coding and development assistance.'}, category: 'Codice', country: 'USA', website: 'https://jules.google/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvAXEz4EsU3RQHCV96BAfJusei09ZBjQOG2g&s', recommendationId: 'tool-047' }, // Jules
+            { id: 'tool-058', name: 'V0', description: {it: 'AI per la generazione di codice e prototipi da prompt testuali.', en: 'AI for code and prototype generation from text prompts.'}, category: 'Codice', country: 'USA', website: 'https://v0.dev/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMM_gwto8EzGwGDX6ACnaEr1nCZtLf5tcwjkIFkpsXDPZI6s5hp5RpUH0rga2Im4gHGBU&usqp=CAU', recommendationId: 'tool-053' }, // V0
+            { id: 'tool-059', name: 'Convex', description: {it: 'AI per la generazione di codice e automazione tramite Chef.', en: 'AI for code generation and automation via Chef.'}, category: 'Codice', country: 'USA', website: 'https://chef.convex.dev//', isFeatured: false, logoUrl: 'https://chef.convex.dev/chef.svg', recommendationId: 'tool-052' }, // Convex
+            { id: 'tool-060', name: 'Krea', description: {it: 'AI per la generazione di immagini e creatività visiva.', en: 'AI for image generation and visual creativity.'}, category: 'Immagini', country: 'USA', website: 'https://www.krea.ai/', isFeatured: false, logoUrl: 'https://aithirst.com/wp-content/uploads/2022/11/krealogo.png', recommendationId: 'tool-014' }, // Krea
+            { id: 'tool-061', name: 'Gemini', description: {it: "L'alternativa naturale a ChatGPT per la generazione di testo.", en: "The natural alternative to ChatGPT for text generation."}, category: 'Testo', country: 'USA', website: 'https://gemini.google.com/app?hl=it', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThr7qrIazsvZwJuw-uZCtLzIjaAyVW_ZrlEQ&s', recommendationId: 'tool-001' }, // Gemini
+            { id: 'tool-dzine', name: 'Dzine', description: {it: "AI americana specializzata nell'editing grafico. Può generare e cambiare lo stile delle tue immagini.", en: 'American AI specialized in graphic editing. It can generate and change the style of your images.'}, category: 'Immagini', country: 'USA', website: 'https://www.dzine.ai/', isFeatured: false, logoUrl: 'https://apktodo.io/uploads/2025/3/dzine-ai-download.jpg', recommendationId: 'tool-056' }, // Dzine
+            { id: 'tool-seedance', name: 'Seedance', description: {it: 'AI cinese specializzata nella creazione di video, alternativa a Veo3.', en: 'Chinese AI specialized in video creation, alternative to Veo3.'}, category: 'Video', country: 'Cina', website: 'https://seedance.net/seedance', isFeatured: false, logoUrl: 'https://seedance.net/logo.png', recommendationId: 'tool-035' }, // Seedance
+            { id: 'tool-heygen', name: 'HeyGen', description: {it: 'AI americana specializzata nella creazione di avatar virtuali e video.', en: 'American AI specialized in virtual avatar and video creation.'}, category: 'Video', country: 'USA', website: 'https://www.heygen.com', isFeatured: false, logoUrl: 'https://img.icons8.com/fluent/512/heygen.png', recommendationId: 'tool-034' }, // HeyGen
+            { id: 'tool-genspark', name: 'GenSpark', description: {it: 'AI americana alternativa a Manus; può scrivere testi, fare ricerche web, creare presentazioni e siti web.', en: 'American AI alternative to Manus; can write text, perform web searches, create presentations and websites.'}, category: 'Codice', country: 'USA', website: 'https://www.genspark.ai', isFeatured: false, logoUrl: 'https://pbs.twimg.com/profile_images/1782715833099382784/R6nadR8G_400x400.jpg', recommendationId: 'tool-suna' }, // GenSpark
+            { id: 'tool-suna', name: 'Suna', description: {it: "L'alternativa a Manus specializzata in ricerche web, programmazione, presentazioni e testi", en: 'European AI recommended as an alternative to Manus and Genspark; can write text, perform web searches, create presentations and websites.'}, category: 'Codice', country: 'Europe', website: 'https://www.suna.so', isFeatured: false, logoUrl: 'https://pbs.twimg.com/profile_images/1839883420782018560/pqz5Txwt_400x400.jpg', recommendationId: 'tool-genspark' }, // Suna
+        ];
+        window.aiToolsData = aiToolsData;
+
+        window.getLocalizedToolsData = (lang) => {
+            return aiToolsData.map(tool => ({ ...tool, description: tool.description[lang] || tool.description['en'] }));
+        }
+        window.getAllToolsForCurrentUser = () => {
+            return window.getLocalizedToolsData(currentLang);
+        };
+
+        window.openDetailModal = (toolId) => {
+            const allTools = getAllToolsForCurrentUser();
+            const tool = allTools.find(t => t.id === toolId);
+            if (!tool) return;
+            const t = translations[currentLang];
+            
+            let recommendationHTML = '';
+            if (tool.recommendationId) {
+                const recommendedTool = allTools.find(t => t.id === tool.recommendationId);
+                if (recommendedTool) {
+                    recommendationHTML = `<div class="recommendation-box" data-id="${recommendedTool.id}"><img src="${recommendedTool.logoUrl}" alt="${recommendedTool.name}" class="recommendation-logo" loading="lazy"><div class="recommendation-text">${t.alternativeSuggestion}<strong>${recommendedTool.name}</strong></div></div>`;
+                }
+            }
+            
+            const modalHTML = `<div id="detail-modal" class="modal-overlay visible"><div class="modal-content"><button class="modal-close-btn" data-action="close-modal">×</button><div id="detail-content"><h2>${tool.name}</h2><p>${tool.description}</p><div class="detail-tags"><span class="tag">🌍 ${tool.country || 'N/A'}</span><span class="tag">${tool.category || 'N/A'}</span></div><div class="detail-actions"><a href="${tool.website}" target="_blank" class="button" style="text-decoration: none; display: flex; justify-content: center; align-items: center;">${t.visitWebsite}</a></div>${recommendationHTML}</div></div></div>`;
+            modalContainer.innerHTML = modalHTML;
+            
+            modalContainer.querySelector('.recommendation-box')?.addEventListener('click', (e) => {
+                const newToolId = e.currentTarget.dataset.id;
+                window.openDetailModal(newToolId);
+            });
+            modalContainer.querySelector('.modal-close-btn')?.addEventListener('click', closeModal);
+            modalContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal-overlay')) {
+                    closeModal();
+                }
+            });
+        };
+
+        const closeModal = () => {
+            modalContainer.innerHTML = '';
+        };
+
+        const unmountReactApp = () => {
+            if (reactRoot) {
+                reactRoot.unmount();
+                reactRoot = null;
+            }
+        };
+
+        const getStorageKey = () => `koda_landing_conversations`;
+        const getActiveIdKey = () => `koda_landing_active_id`;
+
+        const loadConversations = () => {
+            const saved = localStorage.getItem(getStorageKey());
+            conversations = saved ? JSON.parse(saved) : {};
+            const savedActiveId = localStorage.getItem(getActiveIdKey());
+            activeConversationId = savedActiveId && conversations[savedActiveId] ? savedActiveId : null;
+
+            if (Object.keys(conversations).length === 0 || !activeConversationId) {
+                startNewChat(false); // Don't re-render yet
+            }
+        };
+
+        const saveConversations = (newConversations, newActiveId) => {
+            conversations = newConversations;
+            activeConversationId = newActiveId;
+            localStorage.setItem(getStorageKey(), JSON.stringify(conversations));
+            localStorage.setItem(getActiveIdKey(), activeConversationId);
+        };
+
+        const startNewChat = (remountApp = true) => {
+            const newId = `chat-${Date.now()}`;
+            const t = translations[currentLang];
+            conversations[newId] = { id: newId, title: t.newChatTitle, messages: [], timestamp: Date.now() };
+            activeConversationId = newId;
+            saveConversations(conversations, activeConversationId);
+            if (remountApp) {
+                renderChatView();
+            }
+            toggleSideMenu(false);
+        };
+
+        const renderSideMenu = () => {
+            const sortedConversations = Object.values(conversations).sort((a, b) => b.timestamp - a.timestamp);
+            conversationListContainer.innerHTML = sortedConversations.map(conv => `
+                <button class="conversation-item ${conv.id === activeConversationId ? 'active' : ''}" data-action="select-conversation" data-id="${conv.id}">
+                    ${conv.title}
+                </button>
+            `).join('');
+            translatePage(currentLang);
+        };
+
+        const toggleSideMenu = (show) => {
+            if (show) {
+                renderSideMenu();
+                sideMenuOverlay.classList.add('visible');
+                sideMenu.classList.add('visible');
+                sideMenuOverlay.classList.remove('hidden');
+                sideMenu.classList.remove('hidden');
+            } else {
+                sideMenuOverlay.classList.remove('visible');
+                sideMenu.classList.remove('visible');
+                sideMenuOverlay.classList.add('hidden');
+                sideMenu.classList.add('hidden');
+            }
+        };
+
+        function getAnimatedBackgroundHTML() {
+            return `
+                <div class="absolute inset-0">
+                    <div class="absolute inset-0 fluid-animated opacity-70"><div class="animated-bg-image"></div></div>
+                    <div class="absolute inset-0 bg-black/50 z-10"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30 z-10"></div>
+                    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-3xl floating-glow"></div>
+                    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-green-400/10 rounded-full blur-3xl floating-glow" style="animation-delay: 4s;"></div>
+                </div>
+            `;
+        }
+
+        function handleSearchSubmit(event) {
+            event.preventDefault();
+            const input = document.getElementById('search-input');
+            const query = input.value.trim();
+            if (query) {
+                // When submitting the search, start a new chat and pass the query
+                startNewChat(false); // Start a new chat session without re-rendering yet
+                renderChatView(query); // Now render the chat view with the initial query
+            }
+        }
+
+        function renderChatView(initialQuery = null) {
+            unmountReactApp();
+            loadConversations(); 
+
+            mainContentWrapper.innerHTML = `
+                <section id="chat-view-container" class="relative w-full h-screen flex flex-col overflow-hidden">
+                    <div class="animated-bg-fixed">${getAnimatedBackgroundHTML()}</div>
+                    <div id="chatbot-react-wrapper" class="relative z-20 flex-grow flex flex-col h-full">
+                        <!-- React app will mount here -->
+                    </div>
+                </section>
+            `;
+            
+            mainHeader.style.display = 'none';
+            logosSection.style.display = 'none';
+            mainFooter.style.display = 'none';
+
+            const chatContainer = document.getElementById('chatbot-react-wrapper');
+
+            if (window.mountChatbotApp) {
+                const props = {
+                    tools: window.getAllToolsForCurrentUser(),
+                    initialConversations: conversations,
+                    initialActiveId: activeConversationId,
+                    initialQuery: initialQuery,
+                    onConversationsChange: saveConversations,
+                    onOpenDetail: window.openDetailModal,
+                    lang: currentLang,
+                    onBackToLanding: () => renderView(landingTemplate),
+                    onToggleMenu: () => toggleSideMenu(true),
+                    initialMode: 'assistant', // Modalità iniziale
+                };
+                reactRoot = window.mountChatbotApp(chatContainer, props);
+            } else {
+                console.error("Chatbot mount function not found.");
+            }
+        }
+
+        function renderView(template) {
+            unmountReactApp();
+            mainContentWrapper.innerHTML = '';
+            const content = template.content.cloneNode(true);
+            mainContentWrapper.appendChild(content);
+
+            mainHeader.style.display = 'flex';
+            logosSection.style.display = 'block';
+            mainFooter.style.display = 'block';
+            
+            // Assicurati che la pagina sia visibile immediatamente
+            mainContentWrapper.style.display = 'block';
+
+            lucide.createIcons();
+            translatePage(currentLang);
+
+            const tryNowButton = document.getElementById('try-now-btn');
+            if(tryNowButton) {
+                tryNowButton.addEventListener('click', () => {
+                    renderView(searchTemplate);
+                });
+            }
+            
+            // Pulsante per mostrare le sezioni
+            const exploreButton = document.getElementById('explore-sections-btn');
+            if(exploreButton) {
+                exploreButton.addEventListener('click', () => {
+                    // Mostra le sezioni se non sono già visibili
+                    const sectionsContainer = document.getElementById('sections-container');
+                    if (sectionsContainer.style.display === 'none' || sectionsContainer.style.display === '') {
+                        sectionsContainer.style.display = 'block';
+                        showSection('search-ai');
+                    }
+                    
+                    // Scroll fluido alla sezione
+                    setTimeout(() => {
+                        sectionsContainer.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 100);
+                });
+            }
+            
+            // Pulsante per chiudere le sezioni
+            const closeButton = document.getElementById('close-sections-btn');
+            if(closeButton) {
+                closeButton.addEventListener('click', () => {
+                    document.getElementById('sections-container').style.display = 'none';
+                });
+            }
+            
+            // Pulsante per tornare alla landing page
+            const backToLandingButton = document.getElementById('back-to-landing-sections-btn');
+            if(backToLandingButton) {
+                backToLandingButton.addEventListener('click', () => {
+                    document.getElementById('sections-container').style.display = 'none';
+                    renderView(landingTemplate);
+                });
+            }
+        }
+
+        // Add event listeners for the side menu (delegated to the body)
+        document.body.addEventListener('click', (e) => {
+            const actionTarget = e.target.closest('[data-action]');
+            if (!actionTarget) {
+                if (e.target.id === 'side-menu-overlay') {
+                    toggleSideMenu(false);
+                }
+                return;
+            }
+
+            const action = actionTarget.dataset.action;
+            switch(action) {
+                case 'new-chat':
+                    startNewChat(true);
+                    renderChatView(); // Render chat view without initial query
+                    break;
+                case 'delete-all-chats':
+                    const t = translations[currentLang];
+                    if (confirm(t.confirmDeleteAll)) {
+                        conversations = {};
+                        activeConversationId = null;
+                        localStorage.removeItem(getStorageKey());
+                        localStorage.removeItem(getActiveIdKey());
+                        startNewChat(false); // Just reset data
+                        renderChatView(); // Then render the fresh chat view
+                        showToast(t.deleteAllSuccess + ' ✔');
+                    }
+                    break;
+                case 'select-conversation':
+                    const newActiveId = actionTarget.dataset.id;
+                    if (newActiveId !== activeConversationId) {
+                        activeConversationId = newActiveId;
+                        saveConversations(conversations, activeConversationId);
+                        renderChatView();
+                    }
+                    toggleSideMenu(false);
+                    break;
+            }
+        });
+        // --- END: View Switching & Chat Logic ---
+
+
+        // --- START: AI Logo Population Logic (Ottimizzato) ---
+        function populateAILogos() {
+            const aiLogosContainer = document.getElementById('ai-logos');
+            if (aiLogosContainer) {
+                const logosToDisplay = aiToolsData.slice(0, 15); // Ridotto ulteriormente il numero di loghi
+                const duplicatedLogos = [...logosToDisplay, ...logosToDisplay];
+                
+                // Creazione batch per migliorare le performance
+                const fragment = document.createDocumentFragment();
+                
+                duplicatedLogos.forEach((logo) => {
+                    const logoDiv = document.createElement('div');
+                    logoDiv.className = `flex-shrink-0 w-20 h-20 bg-white/80 rounded-2xl flex items-center justify-center p-2`;
+                    logoDiv.innerHTML = `<img src="${logo.logoUrl}" alt="${logo.name}" title="${logo.name}" class="w-full h-full object-contain" loading="lazy" decoding="async" />`;
+                    fragment.appendChild(logoDiv);
+                });
+                
+                aiLogosContainer.appendChild(fragment);
+                aiLogosContainer.style.animationDuration = `${logosToDisplay.length * 8}s`; // Animazione ancora più lenta
+            }
+        }
+        
+        // Popola i loghi immediatamente dopo il rendering
+        populateAILogos();
+        
+        // Inizializza gli event listeners immediatamente
+        initializeEventListeners();
+        // --- END: AI Logo Population Logic ---
+
+
+        // --- START: Initial Page Setup (Ottimizzato) ---
+        // Renderizza immediatamente la landing page senza aspettare DOMContentLoaded
+        renderView(landingTemplate);
+        
+        // Traduci immediatamente la pagina
+        translatePage(currentLang);
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Intersection Observer ottimizzato - solo per elementi principali
+            const observerOptions = { threshold: 0.2, rootMargin: '0px 0px -100px 0px' };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in');
+                        observer.unobserve(entry.target); // Smetti di osservare dopo l'animazione
+                    }
+                });
+            }, observerOptions);
+
+            // Osserva solo le sezioni principali
+            document.querySelectorAll('section:not(.relative), footer').forEach(el => observer.observe(el));
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `@keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } } .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }`;
+        document.head.appendChild(style);
+
+        console.log('🚀 Koda AI Website Loaded Successfully!');
+        // --- END: Initial Page Setup ---
+
+        // --- FUNZIONI PER LE NUOVE SEZIONI ---
+        
+        // Gestione navigazione tra sezioni
+        function showSection(sectionName) {
+            // Nascondi tutte le sezioni
+            document.querySelectorAll('.search-ai-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Rimuovi classe active da tutti i bottoni
+            document.querySelectorAll('.section-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Mostra la sezione selezionata
+            const targetSection = document.getElementById(sectionName + '-section');
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            
+            // Aggiungi classe active al bottone corrispondente
+            const targetBtn = document.querySelector(`[data-section="${sectionName}"]`);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+        }
+        
+        // Gestione ricerca AI con debounce
+        let searchTimeout;
+        function handleAISearch(event) {
+            event.preventDefault();
+            const searchInput = document.getElementById('ai-search-input');
+            const query = searchInput.value.trim().toLowerCase();
+            const resultsContainer = document.getElementById('ai-search-results');
+            
+            // Cancella il timeout precedente
+            clearTimeout(searchTimeout);
+            
+            if (!query) {
+                resultsContainer.innerHTML = '<p class="text-gray-400 text-center col-span-full">Inserisci un termine di ricerca</p>';
+                return;
+            }
+            
+            // Debounce di 300ms
+            searchTimeout = setTimeout(() => {
+                const allTools = window.getAllToolsForCurrentUser();
+                const filteredTools = allTools.filter(tool => 
+                    tool.name.toLowerCase().includes(query) ||
+                    tool.description.toLowerCase().includes(query) ||
+                    tool.category.toLowerCase().includes(query)
+                );
+                
+                if (filteredTools.length === 0) {
+                    resultsContainer.innerHTML = '<p class="text-gray-400 text-center col-span-full">Nessun risultato trovato</p>';
+                    return;
+                }
+                
+                const resultsHTML = filteredTools.slice(0, 9).map(tool => `
+                    <div class="search-result-card" data-id="${tool.id}" onclick="openDetailModal('${tool.id}')">
+                        <div class="flex items-center gap-4">
+                            <img src="${tool.logoUrl}" alt="${tool.name}" class="w-12 h-12 rounded-lg object-cover" loading="lazy">
+                            <div>
+                                <h3 class="text-lg font-semibold text-white">${tool.name}</h3>
+                                <p class="text-gray-300 text-sm">${tool.description}</p>
+                                <span class="inline-block bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded mt-2">${tool.category}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                resultsContainer.innerHTML = resultsHTML;
+            }, 300);
+        }
+        
+
+        
+        // Gestione menu nella chat
+        function handleChatMenuClick(action, mode) {
+            const menuButtons = document.querySelectorAll('.chat-menu-btn[data-action="chat-mode"]');
+            
+            // Rimuovi classe active da tutti i bottoni
+            menuButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Aggiungi classe active al bottone cliccato
+            const clickedBtn = document.querySelector(`[data-action="${action}"][data-mode="${mode}"]`);
+            if (clickedBtn) {
+                clickedBtn.classList.add('active');
+            }
+            
+            // Gestisci le diverse modalità
+            switch(mode) {
+                case 'assistant':
+                    // Modalità assistente (default)
+                    break;
+                case 'search':
+                    // Modalità ricerca - mostra sezione ricerca
+                    document.getElementById('sections-container').style.display = 'block';
+                    showSection('search-ai');
+                    break;
+            }
+        }
+        
+        // Funzione per inizializzare tutti gli event listeners
+        function initializeEventListeners() {
+            // Event listeners per navigazione sezioni
+            document.querySelectorAll('.section-nav-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const section = btn.dataset.section;
+                    showSection(section);
+                });
+            });
+            
+
+            
+            // Event listeners per menu chat (delegated)
+            document.body.addEventListener('click', (e) => {
+                const menuBtn = e.target.closest('.chat-menu-btn');
+                if (menuBtn) {
+                    const action = menuBtn.dataset.action;
+                    const mode = menuBtn.dataset.mode;
+                    
+                    if (action === 'chat-mode' && mode) {
+                        // Gestione cambio modalità nella chat
+                        const chatContainer = document.getElementById('chatbot-react-wrapper');
+                        if (chatContainer && window.mountChatbotApp) {
+                            // Rimuovi classe active da tutti i bottoni
+                            document.querySelectorAll('.chat-menu-btn[data-action="chat-mode"]').forEach(btn => {
+                                btn.classList.remove('active');
+                            });
+                            // Aggiungi classe active al bottone cliccato
+                            menuBtn.classList.add('active');
+                            
+                            // Aggiorna la modalità nel componente React
+                            if (window.updateChatMode) {
+                                window.updateChatMode(mode);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- Toast Notification ---
+        function showToast(message) {
+            let toast = document.getElementById('koda-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'koda-toast';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '32px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.background = 'rgba(34,197,94,0.95)';
+                toast.style.color = '#000';
+                toast.style.padding = '14px 32px';
+                toast.style.borderRadius = '32px';
+                toast.style.fontWeight = 'bold';
+                toast.style.fontSize = '1rem';
+                toast.style.boxShadow = '0 2px 16px rgba(0,0,0,0.15)';
+                toast.style.zIndex = '9999';
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2500);
+        }
+        // --- Toast Notification ---
+    </script>
+</body>
+</html>
