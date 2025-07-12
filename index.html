@@ -348,6 +348,167 @@
         .search-ai-btn { background: #22c55e; color: black; border: none; border-radius: 12px; padding: 16px 32px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
         .search-ai-btn:hover { background: #16a34a; transform: translateY(-2px); }
         
+        /* Stili per i filtri categoria */
+        .category-filters {
+            margin-bottom: 2rem;
+        }
+        .category-filter-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .category-filter-btn:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+        .category-filter-btn.active {
+            background: #22c55e;
+            color: black;
+            border-color: #22c55e;
+            transform: translateY(-1px);
+        }
+        
+        /* Stili per il menu a tendina dei filtri */
+        .filters-dropdown-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .filters-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .filters-dropdown-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 140px;
+            justify-content: center;
+        }
+        .filters-dropdown-btn:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+        .filters-dropdown-btn.active {
+            background: #22c55e;
+            color: black;
+            border-color: #22c55e;
+        }
+        .dropdown-arrow {
+            transition: transform 0.3s;
+        }
+        .filters-dropdown-btn.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        .filters-dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(20,20,20,0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 8px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            min-width: 280px;
+        }
+        .filters-dropdown-content.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .filter-section {
+            margin-bottom: 20px;
+        }
+        .filter-section:last-of-type {
+            margin-bottom: 0;
+        }
+        .filter-section-title {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 6px 0;
+            color: rgba(255,255,255,0.8);
+            transition: color 0.2s;
+        }
+        .filter-option:hover {
+            color: white;
+        }
+        .filter-option input[type="radio"] {
+            accent-color: #22c55e;
+            width: 16px;
+            height: 16px;
+        }
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .filter-apply-btn, .filter-reset-btn {
+            flex: 1;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .filter-apply-btn {
+            background: #22c55e;
+            color: black;
+        }
+        .filter-apply-btn:hover {
+            background: #16a34a;
+        }
+        .filter-reset-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .filter-reset-btn:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        
         .library-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px; }
         .library-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; text-align: center; transition: all 0.3s; cursor: pointer; }
         .library-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.08); border-color: #22c55e; }
@@ -632,6 +793,85 @@
                         <p class="text-gray-300 max-w-2xl mx-auto" data-translate-key="search-ai-subtitle">Cerca tra centinaia di strumenti AI per trovare quello che fa per te</p>
                     </div>
                     <div class="search-ai-container">
+                        <!-- Menu Filtri a Tendina -->
+                        <div class="filters-dropdown-container mb-8">
+                            <div class="filters-dropdown">
+                                <button class="filters-dropdown-btn" id="filters-dropdown-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                                        <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"></polygon>
+                                    </svg>
+                                    <span data-translate-key="filters-title">Filtri</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="dropdown-arrow">
+                                        <polyline points="6,9 12,15 18,9"></polyline>
+                                    </svg>
+                                </button>
+                                <div class="filters-dropdown-content" id="filters-dropdown-content">
+                                    <!-- Sezione Categoria -->
+                                    <div class="filter-section">
+                                        <h4 class="filter-section-title" data-translate-key="filter-by-category">Filtra per categoria</h4>
+                                        <div class="filter-options">
+                                            <label class="filter-option">
+                                                <input type="radio" name="category" value="all" checked>
+                                                <span data-translate-key="filter-all">Tutte</span>
+                                            </label>
+                                            <label class="filter-option">
+                                                <input type="radio" name="category" value="Testo">
+                                                <span data-translate-key="filter-text">Testo</span>
+                                            </label>
+                                            <label class="filter-option">
+                                                <input type="radio" name="category" value="Immagini">
+                                                <span data-translate-key="filter-images">Immagini</span>
+                                            </label>
+                                            <label class="filter-option">
+                                                <input type="radio" name="category" value="Video">
+                                                <span data-translate-key="filter-video">Video</span>
+                                            </label>
+                                            <label class="filter-option">
+                                                <input type="radio" name="category" value="Codice">
+                                                <span data-translate-key="filter-code">Codice</span>
+                                            </label>
+                                            <label class="filter-option">
+                                                <input type="radio" name="category" value="Presentazioni">
+                                                <span data-translate-key="filter-presentations">Presentazioni</span>
+                                            </label>
+                                            <label class="filter-option">
+                                                <input type="radio" name="category" value="Audio">
+                                                <span data-translate-key="filter-audio">Audio</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Sezione Paese -->
+                                    <div class="filter-section">
+                                        <h4 class="filter-section-title" data-translate-key="filter-by-country">Filtra per paese</h4>
+                                        <div class="filter-options">
+                                            <label class="filter-option">
+                                                <input type="radio" name="country" value="all" checked>
+                                                <span data-translate-key="filter-all-countries">Tutti i Paesi</span>
+                                            </label>
+                                            <label class="filter-option">
+                                                <input type="radio" name="country" value="USA">
+                                                <span data-translate-key="filter-usa">🇺🇸 USA</span>
+                                            </label>
+                                            <label class="filter-option">
+                                                <input type="radio" name="country" value="Cina">
+                                                <span data-translate-key="filter-china">🇨🇳 Cina</span>
+                                            </label>
+                                            <label class="filter-option">
+                                                <input type="radio" name="country" value="Europe">
+                                                <span data-translate-key="filter-europe">🇪🇺 Europa</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Pulsanti Azione -->
+                                    <div class="filter-actions">
+                                        <button class="filter-apply-btn" id="apply-filters-btn" data-translate-key="apply-filters">Applica Filtri</button>
+                                        <button class="filter-reset-btn" id="reset-filters-btn" data-translate-key="reset-filters">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <form class="search-ai-form" onsubmit="handleAISearch(event)">
                             <input type="text" id="ai-search-input" class="search-ai-input" placeholder="Cerca AI per categoria, funzionalità..." data-translate-placeholder-key="ai-search-placeholder">
                             <button type="submit" class="search-ai-btn" data-translate-key="search-btn">Cerca</button>
@@ -1130,48 +1370,342 @@
             const SearchAISection = () => {
                 const [searchQuery, setSearchQuery] = useState('');
                 const [searchResults, setSearchResults] = useState([]);
+                const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+                const [searchCategory, setSearchCategory] = useState('all');
+                const [searchCountry, setSearchCountry] = useState('all');
 
                 const handleSearch = (e) => {
                     e.preventDefault();
-                    if (!searchQuery.trim()) return;
+                    
+                    // Se non c'è query di testo, mostra tutti i tool filtrati
+                    if (!searchQuery.trim()) {
+                        let filteredTools = tools;
 
+                        // Applica filtri di categoria
+                        if (searchCategory !== 'all') {
+                            filteredTools = filteredTools.filter(tool => 
+                                tool.category === searchCategory
+                            );
+                        }
+
+                        // Applica filtri di paese
+                        if (searchCountry !== 'all') {
+                            filteredTools = filteredTools.filter(tool => 
+                                tool.country === searchCountry
+                            );
+                        }
+
+                        setSearchResults(filteredTools.slice(0, 10));
+                        return;
+                    }
+
+                    // Se c'è query di testo, applica ricerca + filtri
                     const query = searchQuery.toLowerCase();
-                    const filteredTools = tools.filter(tool => 
+                    let filteredTools = tools.filter(tool => 
                         tool.name.toLowerCase().includes(query) ||
                         tool.description.toLowerCase().includes(query) ||
-                        tool.category.toLowerCase().includes(query)
+                        (tool.category && tool.category.toLowerCase().includes(query))
                     );
 
-                    setSearchResults(filteredTools.slice(0, 6));
+                    // Applica filtri di categoria
+                    if (searchCategory !== 'all') {
+                        filteredTools = filteredTools.filter(tool => 
+                            tool.category === searchCategory
+                        );
+                    }
+
+                    // Applica filtri di paese
+                    if (searchCountry !== 'all') {
+                        filteredTools = filteredTools.filter(tool => 
+                            tool.country === searchCountry
+                        );
+                    }
+
+                    setSearchResults(filteredTools.slice(0, 10));
                 };
+
+                // Funzione per aggiornare i risultati quando cambiano i filtri
+                const updateResultsWithFilters = () => {
+                    // Se non c'è query di testo, mostra tutti i tool filtrati
+                    if (!searchQuery.trim()) {
+                        let filteredTools = tools;
+
+                        // Applica filtri di categoria
+                        if (searchCategory !== 'all') {
+                            filteredTools = filteredTools.filter(tool => 
+                                tool.category === searchCategory
+                            );
+                        }
+
+                        // Applica filtri di paese
+                        if (searchCountry !== 'all') {
+                            filteredTools = filteredTools.filter(tool => 
+                                tool.country === searchCountry
+                            );
+                        }
+
+                        setSearchResults(filteredTools.slice(0, 10));
+                        return;
+                    }
+
+                    // Se c'è query di testo, applica ricerca + filtri
+                    const query = searchQuery.toLowerCase();
+                    let filteredTools = tools.filter(tool => 
+                        tool.name.toLowerCase().includes(query) ||
+                        tool.description.toLowerCase().includes(query) ||
+                        (tool.category && tool.category.toLowerCase().includes(query))
+                    );
+
+                    // Applica filtri di categoria
+                    if (searchCategory !== 'all') {
+                        filteredTools = filteredTools.filter(tool => 
+                            tool.category === searchCategory
+                        );
+                    }
+
+                    // Applica filtri di paese
+                    if (searchCountry !== 'all') {
+                        filteredTools = filteredTools.filter(tool => 
+                            tool.country === searchCountry
+                        );
+                    }
+
+                    setSearchResults(filteredTools.slice(0, 10));
+                };
+
+                // Aggiorna i risultati quando cambiano i filtri
+                useEffect(() => {
+                    updateResultsWithFilters();
+                }, [searchCategory, searchCountry]);
+
+                const toggleSearchDropdown = () => {
+                    setShowSearchDropdown(!showSearchDropdown);
+                };
+
+                // Chiudi il dropdown quando si clicca fuori
+                useEffect(() => {
+                    const handleClickOutside = (event) => {
+                        if (showSearchDropdown && !event.target.closest('.search-dropdown-container')) {
+                            setShowSearchDropdown(false);
+                        }
+                    };
+
+                    document.addEventListener('mousedown', handleClickOutside);
+                    return () => {
+                        document.removeEventListener('mousedown', handleClickOutside);
+                    };
+                }, [showSearchDropdown]);
 
                 return (
                     <div className="p-6">
-                        <h2 className="text-2xl font-bold text-white mb-6 text-center">Qualche esigenza?</h2>
-                        <form onSubmit={handleSearch} className="mb-6">
-                            <div className="flex gap-3">
-                                <input
-                                    type="text"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    placeholder="Cerca AI per categoria, funzionalità..."
-                                    className="flex-1 bg-gray-800/50 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
-                                />
-                                <button type="submit" className="bg-green-500 hover:bg-green-600 text-black px-6 py-3 rounded-lg font-semibold transition-colors">
-                                    Cerca
+                        <div className="flex justify-center mb-6">
+                            <div className="relative search-dropdown-container">
+                                <button 
+                                    className="bg-gray-800/50 border border-gray-700 rounded-lg px-6 py-3 text-white hover:border-green-500 transition-all flex items-center gap-2"
+                                    onClick={toggleSearchDropdown}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <path d="m21 21-4.35-4.35"></path>
+                                    </svg>
+                                    <span>{lang === 'it' ? 'Cerca Strumenti AI' : 'Search AI Tools'}</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform ${showSearchDropdown ? 'rotate-180' : ''}`}>
+                                        <polyline points="6,9 12,15 18,9"></polyline>
+                                    </svg>
                                 </button>
+                                
+                                {showSearchDropdown && (
+                                    <div className="absolute top-full left-0 right-0 mt-2 bg-gray-800/95 backdrop-blur-sm border border-gray-700 rounded-lg p-4 z-50 min-w-96">
+                                        <form onSubmit={handleSearch} className="mb-4">
+                                            <div className="flex gap-2">
+                                                <input
+                                                    type="text"
+                                                    value={searchQuery}
+                                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                                    placeholder={lang === 'it' ? 'Cerca AI per categoria, funzionalità...' : 'Search AI by category, functionality...'}
+                                                    className="flex-1 bg-gray-700/50 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none text-sm"
+                                                    autoFocus
+                                                />
+                                                <button type="submit" className="bg-green-500 hover:bg-green-600 text-black px-4 py-2 rounded font-semibold transition-colors text-sm">
+                                                    {lang === 'it' ? (searchQuery.trim() ? 'Cerca' : 'Mostra Filtri') : (searchQuery.trim() ? 'Search' : 'Show Filters')}
+                                                </button>
+                                            </div>
+                                        </form>
+                                        
+                                        {/* Filtri integrati */}
+                                        <div className="mb-4 p-3 bg-gray-700/30 rounded border border-gray-600">
+                                            <h4 className="text-sm font-semibold text-white mb-3">{lang === 'it' ? 'Filtri' : 'Filters'}</h4>
+                                            
+                                            {/* Filtro Categoria */}
+                                            <div className="mb-3">
+                                                <label className="block text-xs text-gray-300 mb-2">{lang === 'it' ? 'Categoria:' : 'Category:'}</label>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {['all', 'Testo', 'Immagini', 'Video', 'Codice', 'Presentazioni', 'Audio'].map((cat) => (
+                                                        <label key={cat} className="flex items-center gap-1 cursor-pointer">
+                                                            <input
+                                                                type="radio"
+                                                                name="searchCategory"
+                                                                value={cat}
+                                                                checked={searchCategory === cat}
+                                                                onChange={(e) => {
+                                                                    setSearchCategory(e.target.value);
+                                                                    setTimeout(() => updateResultsWithFilters(), 100);
+                                                                }}
+                                                                className="w-3 h-3 text-green-500 bg-gray-600 border-gray-500 focus:ring-green-500"
+                                                            />
+                                                            <span className="text-xs text-gray-300">
+                                                                {cat === 'all' ? (lang === 'it' ? 'Tutte' : 'All') : cat}
+                                                            </span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Filtro Paese */}
+                                            <div className="mb-3">
+                                                <label className="block text-xs text-gray-300 mb-2">{lang === 'it' ? 'Paese:' : 'Country:'}</label>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {['all', 'USA', 'Cina', 'Europe'].map((country) => (
+                                                        <label key={country} className="flex items-center gap-1 cursor-pointer">
+                                                            <input
+                                                                type="radio"
+                                                                name="searchCountry"
+                                                                value={country}
+                                                                checked={searchCountry === country}
+                                                                onChange={(e) => {
+                                                                    setSearchCountry(e.target.value);
+                                                                    setTimeout(() => updateResultsWithFilters(), 100);
+                                                                }}
+                                                                className="w-3 h-3 text-green-500 bg-gray-600 border-gray-500 focus:ring-green-500"
+                                                            />
+                                                            <span className="text-xs text-gray-300">
+                                                                {country === 'all' ? (lang === 'it' ? 'Tutti' : 'All') : 
+                                                                 country === 'USA' ? '🇺🇸 USA' :
+                                                                 country === 'Cina' ? '🇨🇳 Cina' :
+                                                                 country === 'Europe' ? '🇪🇺 Europa' : country}
+                                                            </span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Pulsanti Azione */}
+                                            <div className="flex gap-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setSearchCategory('all');
+                                                        setSearchCountry('all');
+                                                        setTimeout(() => updateResultsWithFilters(), 100);
+                                                    }}
+                                                    className="text-xs bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded transition-colors"
+                                                >
+                                                    {lang === 'it' ? 'Reset' : 'Reset'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        {searchResults.length > 0 && (
+                                            <div className="space-y-2 max-h-64 overflow-y-auto">
+                                                {searchResults.map((tool) => (
+                                                    <div key={tool.id} className="bg-gray-700/50 border border-gray-600 rounded p-3 hover:border-green-500 transition-all cursor-pointer" onClick={() => onOpenDetail(tool.id)}>
+                                                        <div className="flex items-center gap-3">
+                                                            <img src={tool.logoUrl || 'https://via.placeholder.com/32x32?text=AI'} alt={tool.name} className="w-8 h-8 rounded object-cover" onError={(e) => { e.target.src = 'https://via.placeholder.com/32x32?text=AI'; }} />
+                                                            <div className="flex-1 min-w-0">
+                                                                <h4 className="text-sm font-semibold text-white truncate">{tool.name}</h4>
+                                                                <p className="text-xs text-gray-400 truncate">{tool.description}</p>
+                                                                <div className="flex gap-1 mt-1">
+                                                                    <span className="inline-block bg-green-500/20 text-green-400 text-xs px-1 py-0.5 rounded">{tool.category || 'N/A'}</span>
+                                                                    <span className="inline-block bg-blue-500/20 text-blue-400 text-xs px-1 py-0.5 rounded">{tool.country || 'N/A'}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        
+                                        {searchQuery && searchResults.length === 0 && (
+                                            <p className="text-gray-400 text-center py-4">{lang === 'it' ? 'Nessun risultato trovato' : 'No results found'}</p>
+                                        )}
+                                    </div>
+                                )}
                             </div>
-                        </form>
+                        </div>
+                        
+                        <div className="text-center">
+                            <h2 className="text-2xl font-bold text-white mb-4">{lang === 'it' ? 'Cerca Strumenti AI' : 'Search AI Tools'}</h2>
+                            <p className="text-gray-400">{lang === 'it' ? 'Clicca sul pulsante sopra per cercare tra centinaia di strumenti di intelligenza artificiale' : 'Click the button above to search through hundreds of artificial intelligence tools'}</p>
+                        </div>
+                    </div>
+                );
+            };
+
+            // Componente per la sezione Libreria
+            const LibrarySection = () => {
+                const [favoriteTools, setFavoriteTools] = useState([]);
+
+                useEffect(() => {
+                    // Ottieni i tool preferiti dall'utente corrente
+                    if (window.userFavoriteToolIds && window.userFavoriteToolIds.size > 0) {
+                        const favorites = tools.filter(tool => window.userFavoriteToolIds.has(tool.id));
+                        setFavoriteTools(favorites);
+                    } else {
+                        setFavoriteTools([]);
+                    }
+                }, [tools]);
+
+                if (favoriteTools.length === 0) {
+                    return (
+                        <div className="p-6 text-center">
+                            <h2 className="text-2xl font-bold text-white mb-4">{lang === 'it' ? 'La tua libreria' : 'Your Library'}</h2>
+                            <p className="text-gray-400 mb-6">{lang === 'it' ? 'La tua libreria è vuota. Clicca sul cuore ❤️ nelle card degli strumenti per aggiungerli qui.' : 'Your library is empty. Click the heart ❤️ in tool cards to add them here.'}</p>
+                            <div className="bg-gray-800/30 border border-gray-700 rounded-lg p-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-4 text-gray-500">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                </svg>
+                                <p className="text-gray-500">{lang === 'it' ? 'Nessuno strumento salvato' : 'No saved tools'}</p>
+                            </div>
+                        </div>
+                    );
+                }
+
+                return (
+                    <div className="p-6">
+                        <h2 className="text-2xl font-bold text-white mb-6 text-center">{lang === 'it' ? 'La tua libreria' : 'Your Library'}</h2>
+                        <p className="text-gray-400 mb-6 text-center">{lang === 'it' ? 'I tuoi strumenti di intelligenza artificiale preferiti' : 'Your favorite artificial intelligence tools'}</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {searchResults.map((tool) => (
+                            {favoriteTools.map((tool) => (
                                 <div key={tool.id} className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 hover:border-green-500 transition-all cursor-pointer" onClick={() => onOpenDetail(tool.id)}>
                                     <div className="flex items-center gap-3">
-                                        <img src={tool.logoUrl} alt={tool.name} className="w-12 h-12 rounded-lg object-cover" />
-                                        <div>
+                                        <img src={tool.logoUrl || 'https://via.placeholder.com/48x48?text=AI'} alt={tool.name} className="w-12 h-12 rounded-lg object-cover" onError={(e) => { e.target.src = 'https://via.placeholder.com/48x48?text=AI'; }} />
+                                        <div className="flex-1">
                                             <h3 className="text-lg font-semibold text-white">{tool.name}</h3>
                                             <p className="text-gray-300 text-sm">{tool.description}</p>
-                                            <span className="inline-block bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded mt-1">{tool.category}</span>
+                                            <div className="flex gap-2 mt-2">
+                                                <span className="inline-block bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded">{tool.category || 'N/A'}</span>
+                                                <span className="inline-block bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded">{tool.country || 'N/A'}</span>
+                                            </div>
                                         </div>
+                                        <button 
+                                            className="text-red-400 hover:text-red-300 transition-colors"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                if (window.toggleFavorite) {
+                                                    window.toggleFavorite(tool.id, e.target);
+                                                    // Aggiorna la lista dopo la rimozione
+                                                    setTimeout(() => {
+                                                        const updatedFavorites = tools.filter(t => window.userFavoriteToolIds.has(t.id));
+                                                        setFavoriteTools(updatedFavorites);
+                                                    }, 100);
+                                                }
+                                            }}
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0l-.5.5-.5-.5a5.5 5.5 0 0 0-7.8 7.8l.5.5L12 21.3l7.3-7.3.5-.5a5.5 5.5 0 0 0 0-7.8z"/>
+                                            </svg>
+                                        </button>
                                     </div>
                                 </div>
                             ))}
@@ -1205,6 +1739,10 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: 8}}><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
                                 Ricerca
                             </button>
+                            <button className="chat-menu-btn" data-action="chat-mode" data-mode="library">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: 8}}><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                                Libreria
+                            </button>
                         </div>
                         <div className="chat-menu-right">
                             {/* Pulsanti rimossi per ottimizzazione */}
@@ -1229,6 +1767,8 @@
                             )
                         ) : currentMode === 'search' ? (
                             <SearchAISection />
+                        ) : currentMode === 'library' ? (
+                            <LibrarySection />
                         ) : null}
                         <div ref={messagesEndRef} />
                     </main>
@@ -1670,6 +2210,27 @@
                 'library-nav': 'Library', // NUOVO
                 'library-title': 'Your library', // NUOVO
                 'library-subtitle': 'Your favorite AI tools, saved in one place.', // NUOVO
+                'filter-all': 'All',
+                'filter-text': 'Text',
+                'filter-images': 'Images',
+                'filter-video': 'Video',
+                'filter-code': 'Code',
+                'filter-presentations': 'Presentations',
+                'filter-audio': 'Audio',
+                'filter-all-countries': 'All Countries',
+                'filter-usa': '🇺🇸 USA',
+                'filter-china': '🇨🇳 China',
+                'filter-europe': '🇪🇺 Europe',
+                'filters-title': 'Filters',
+                'filter-by-category': 'Filter by Category',
+                'filter-by-country': 'Filter by Country',
+                'apply-filters': 'Apply Filters',
+                'reset-filters': 'Reset',
+                'library-title': 'Your Library',
+                'library-subtitle': 'Your favorite AI tools',
+                'library-empty': 'Your library is empty. Click the heart ❤️ in tool cards to add them here.',
+                'search-ai-tools': 'Search AI Tools',
+                'search-placeholder': 'Search AI by category, functionality...',
             },
             it: {
                 'meta-description': 'Ogni tua',
@@ -1703,6 +2264,27 @@
                 'library-nav': 'Libreria', // NUOVO
                 'library-title': 'La tua libreria', // NUOVO
                 'library-subtitle': 'I tuoi strumenti di intelligenza artificiale preferiti, salvati in un unico posto.', // NUOVO
+                'filter-all': 'Tutte',
+                'filter-text': 'Testo',
+                'filter-images': 'Immagini',
+                'filter-video': 'Video',
+                'filter-code': 'Codice',
+                'filter-presentations': 'Presentazioni',
+                'filter-audio': 'Audio',
+                'filter-all-countries': 'Tutti i Paesi',
+                'filter-usa': '🇺🇸 USA',
+                'filter-china': '🇨🇳 Cina',
+                'filter-europe': '🇪🇺 Europa',
+                'filters-title': 'Filtri',
+                'filter-by-category': 'Filtra per categoria',
+                'filter-by-country': 'Filtra per paese',
+                'apply-filters': 'Applica Filtri',
+                'reset-filters': 'Reset',
+                'library-title': 'La tua Libreria',
+                'library-subtitle': 'I tuoi strumenti AI preferiti',
+                'library-empty': 'La tua libreria è vuota. Clicca sul cuore ❤️ nelle card degli strumenti per aggiungerli qui.',
+                'search-ai-tools': 'Cerca Strumenti AI',
+                'search-placeholder': 'Cerca AI per categoria, funzionalità...',
             }
         };
 
@@ -2041,6 +2623,39 @@
         }
 
         document.body.addEventListener('click', (e) => {
+            // Gestione menu a tendina filtri
+            const filtersBtn = e.target.closest('#filters-dropdown-btn');
+            if (filtersBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleFiltersDropdown();
+                return;
+            }
+            
+            const applyBtn = e.target.closest('#apply-filters-btn');
+            if (applyBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                applyFilters();
+                return;
+            }
+            
+            const resetBtn = e.target.closest('#reset-filters-btn');
+            if (resetBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                resetFilters();
+                return;
+            }
+            
+            // Chiudi il dropdown se si clicca fuori
+            const dropdownContent = document.getElementById('filters-dropdown-content');
+            if (dropdownContent && dropdownContent.classList.contains('show')) {
+                if (!e.target.closest('.filters-dropdown')) {
+                    toggleFiltersDropdown();
+                }
+            }
+            
             const actionTarget = e.target.closest('[data-action]');
             if (!actionTarget) {
                 if (e.target.id === 'side-menu-overlay') {
@@ -2100,6 +2715,11 @@
         
         populateAILogos();
         initializeEventListeners();
+        
+        // Inizializza anche gli event listener dei filtri dopo un breve delay
+        setTimeout(() => {
+            initializeFiltersEventListeners();
+        }, 500);
         // --- END: AI Logo Population Logic ---
 
 
@@ -2217,11 +2837,39 @@
             if (targetBtn) {
                 targetBtn.classList.add('active');
             }
+            
+            // Inizializza la sezione di ricerca AI con tutti gli strumenti
+            if (sectionName === 'search-ai') {
+                currentCategoryFilter = 'all';
+                currentCountryFilter = 'all';
+                showAllTools();
+                
+                // Aspetta che il DOM sia pronto per gli elementi del dropdown
+                setTimeout(() => {
+                    // Reset del dropdown filtri
+                    const dropdownBtn = document.getElementById('filters-dropdown-btn');
+                    const dropdownContent = document.getElementById('filters-dropdown-content');
+                    if (dropdownBtn) dropdownBtn.classList.remove('active');
+                    if (dropdownContent) dropdownContent.classList.remove('show');
+                    
+                    // Reset dei radio button
+                    const categoryAll = document.querySelector('input[name="category"][value="all"]');
+                    const countryAll = document.querySelector('input[name="country"][value="all"]');
+                    if (categoryAll) categoryAll.checked = true;
+                    if (countryAll) countryAll.checked = true;
+                    
+                    // Reinizializza gli event listener per il dropdown
+                    initializeFiltersEventListeners();
+                }, 100);
+            }
         }
 
         function createToolCardHTML(tool) {
             const isLiked = userFavoriteToolIds.has(tool.id);
-            const localizedDescription = tool.description[currentLang] || tool.description['en'];
+            const localizedDescription = tool.description[currentLang] || tool.description['en'] || tool.description || 'Descrizione non disponibile';
+            const safeCategory = tool.category || 'N/A';
+            const safeCountry = tool.country || 'N/A';
+            const safeLogoUrl = tool.logoUrl || 'https://via.placeholder.com/48x48?text=AI';
             
             return `
                 <div class="search-result-card" onclick="openDetailModal('${tool.id}')">
@@ -2229,11 +2877,14 @@
                         <i data-lucide="heart" class="lucide-heart"></i>
                     </button>
                     <div class="flex items-center gap-4">
-                        <img src="${tool.logoUrl}" alt="${tool.name}" class="w-12 h-12 rounded-lg object-cover" loading="lazy">
+                        <img src="${safeLogoUrl}" alt="${tool.name}" class="w-12 h-12 rounded-lg object-cover" loading="lazy" onerror="this.src='https://via.placeholder.com/48x48?text=AI'">
                         <div>
                             <h3 class="text-lg font-semibold text-white">${tool.name}</h3>
                             <p class="text-gray-300 text-sm">${localizedDescription}</p>
-                            <span class="inline-block bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded mt-2">${tool.category}</span>
+                            <div class="flex gap-2 mt-2">
+                                <span class="inline-block bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded">${safeCategory}</span>
+                                <span class="inline-block bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded">${safeCountry}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2241,6 +2892,9 @@
         }
         
         let searchTimeout;
+        let currentCategoryFilter = 'all'; // Variabile per tenere traccia del filtro categoria corrente
+        let currentCountryFilter = 'all'; // Variabile per tenere traccia del filtro paese corrente
+        
         function handleAISearch(event) {
             event.preventDefault();
             const searchInput = document.getElementById('ai-search-input');
@@ -2249,27 +2903,207 @@
             
             clearTimeout(searchTimeout);
             
-            if (!query) {
-                resultsContainer.innerHTML = '<p class="text-gray-400 text-center col-span-full">Inserisci un termine di ricerca</p>';
-                return;
-            }
-            
             searchTimeout = setTimeout(() => {
                 const allTools = window.getAllToolsForCurrentUser();
-                const filteredTools = allTools.filter(tool => 
-                    tool.name.toLowerCase().includes(query) ||
-                    tool.description.toLowerCase().includes(query) ||
-                    tool.category.toLowerCase().includes(query)
-                );
+                let filteredTools = allTools;
+                
+                // Applica filtro categoria
+                if (currentCategoryFilter !== 'all') {
+                    filteredTools = filteredTools.filter(tool => tool.category === currentCategoryFilter);
+                }
+                
+                // Applica filtro paese
+                if (currentCountryFilter !== 'all') {
+                    filteredTools = filteredTools.filter(tool => tool.country === currentCountryFilter);
+                }
+                
+                // Applica filtro ricerca testuale
+                if (query) {
+                    filteredTools = filteredTools.filter(tool => 
+                        tool.name.toLowerCase().includes(query) ||
+                        tool.description.toLowerCase().includes(query) ||
+                        tool.category.toLowerCase().includes(query)
+                    );
+                }
                 
                 if (filteredTools.length === 0) {
-                    resultsContainer.innerHTML = '<p class="text-gray-400 text-center col-span-full">Nessun risultato trovato</p>';
+                    const noResultsMessage = query 
+                        ? '<p class="text-gray-400 text-center col-span-full">Nessun risultato trovato per la tua ricerca</p>'
+                        : '<p class="text-gray-400 text-center col-span-full">Nessuno strumento disponibile per questa categoria</p>';
+                    resultsContainer.innerHTML = noResultsMessage;
                     return;
                 }
                 
                 resultsContainer.innerHTML = filteredTools.slice(0, 9).map(tool => createToolCardHTML(tool)).join('');
                 lucide.createIcons(); // Ricrea le icone per i nuovi elementi
             }, 300);
+        }
+        
+        function handleCategoryFilter(category) {
+            currentCategoryFilter = category;
+            
+            // Aggiorna lo stato attivo dei pulsanti
+            document.querySelectorAll('.category-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-category="${category}"]`).classList.add('active');
+            
+            // Pulisci il campo di ricerca
+            const searchInput = document.getElementById('ai-search-input');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            
+            // Mostra tutti gli strumenti della categoria selezionata
+            const resultsContainer = document.getElementById('ai-search-results');
+            const allTools = window.getAllToolsForCurrentUser();
+            let filteredTools = allTools;
+            
+            // Applica filtro categoria
+            if (category !== 'all') {
+                filteredTools = filteredTools.filter(tool => tool.category === category);
+            }
+            
+            // Applica filtro paese se attivo
+            if (currentCountryFilter !== 'all') {
+                filteredTools = filteredTools.filter(tool => tool.country === currentCountryFilter);
+            }
+            
+            if (filteredTools.length === 0) {
+                resultsContainer.innerHTML = '<p class="text-gray-400 text-center col-span-full">Nessuno strumento disponibile per questa categoria</p>';
+                return;
+            }
+            
+            resultsContainer.innerHTML = filteredTools.slice(0, 9).map(tool => createToolCardHTML(tool)).join('');
+            lucide.createIcons();
+        }
+        
+        function handleCountryFilter(country) {
+            currentCountryFilter = country;
+            
+            // Aggiorna lo stato attivo dei pulsanti
+            document.querySelectorAll('.country-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-country="${country}"]`).classList.add('active');
+            
+            // Pulisci il campo di ricerca
+            const searchInput = document.getElementById('ai-search-input');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            
+            // Mostra tutti gli strumenti del paese selezionato
+            const resultsContainer = document.getElementById('ai-search-results');
+            const allTools = window.getAllToolsForCurrentUser();
+            let filteredTools = allTools;
+            
+            // Applica filtro paese
+            if (country !== 'all') {
+                filteredTools = filteredTools.filter(tool => tool.country === country);
+            }
+            
+            // Applica filtro categoria se attivo
+            if (currentCategoryFilter !== 'all') {
+                filteredTools = filteredTools.filter(tool => tool.category === currentCategoryFilter);
+            }
+            
+            if (filteredTools.length === 0) {
+                resultsContainer.innerHTML = '<p class="text-gray-400 text-center col-span-full">Nessuno strumento disponibile per questo paese</p>';
+                return;
+            }
+            
+            resultsContainer.innerHTML = filteredTools.slice(0, 9).map(tool => createToolCardHTML(tool)).join('');
+            lucide.createIcons();
+        }
+        
+        // Funzioni per il menu a tendina dei filtri
+        function toggleFiltersDropdown() {
+            const dropdownBtn = document.getElementById('filters-dropdown-btn');
+            const dropdownContent = document.getElementById('filters-dropdown-content');
+            
+            if (!dropdownBtn || !dropdownContent) {
+                console.error('Elementi del dropdown filtri non trovati');
+                return;
+            }
+            
+            console.log('Toggle dropdown filtri'); // Debug
+            dropdownBtn.classList.toggle('active');
+            dropdownContent.classList.toggle('show');
+        }
+        
+        function applyFilters() {
+            const selectedCategory = document.querySelector('input[name="category"]:checked').value;
+            const selectedCountry = document.querySelector('input[name="country"]:checked').value;
+            
+            currentCategoryFilter = selectedCategory;
+            currentCountryFilter = selectedCountry;
+            
+            // Pulisci il campo di ricerca
+            const searchInput = document.getElementById('ai-search-input');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            
+            // Applica i filtri
+            const resultsContainer = document.getElementById('ai-search-results');
+            const allTools = window.getAllToolsForCurrentUser();
+            let filteredTools = allTools;
+            
+            // Applica filtro categoria
+            if (selectedCategory !== 'all') {
+                filteredTools = filteredTools.filter(tool => tool.category === selectedCategory);
+            }
+            
+            // Applica filtro paese
+            if (selectedCountry !== 'all') {
+                filteredTools = filteredTools.filter(tool => tool.country === selectedCountry);
+            }
+            
+            if (filteredTools.length === 0) {
+                resultsContainer.innerHTML = '<p class="text-gray-400 text-center col-span-full">Nessuno strumento disponibile con i filtri selezionati</p>';
+            } else {
+                resultsContainer.innerHTML = filteredTools.slice(0, 9).map(tool => createToolCardHTML(tool)).join('');
+                lucide.createIcons();
+            }
+            
+            // Chiudi il dropdown
+            toggleFiltersDropdown();
+        }
+        
+        function resetFilters() {
+            // Reset dei radio button
+            document.querySelector('input[name="category"][value="all"]').checked = true;
+            document.querySelector('input[name="country"][value="all"]').checked = true;
+            
+            // Reset delle variabili
+            currentCategoryFilter = 'all';
+            currentCountryFilter = 'all';
+            
+            // Pulisci il campo di ricerca
+            const searchInput = document.getElementById('ai-search-input');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            
+            // Mostra tutti gli strumenti
+            showAllTools();
+            
+            // Chiudi il dropdown
+            toggleFiltersDropdown();
+        }
+        
+        function showAllTools() {
+            const resultsContainer = document.getElementById('ai-search-results');
+            const allTools = window.getAllToolsForCurrentUser();
+            
+            if (allTools.length === 0) {
+                resultsContainer.innerHTML = '<p class="text-gray-400 text-center col-span-full">Nessuno strumento disponibile</p>';
+                return;
+            }
+            
+            resultsContainer.innerHTML = allTools.slice(0, 9).map(tool => createToolCardHTML(tool)).join('');
+            lucide.createIcons();
         }
         
         function handleChatMenuClick(action, mode) {
@@ -2287,6 +3121,50 @@
             }
         }
         
+        function initializeFiltersEventListeners() {
+            // Event listener specifico per il pulsante filtri
+            const filtersBtn = document.getElementById('filters-dropdown-btn');
+            if (filtersBtn) {
+                // Rimuovi event listener esistenti per evitare duplicati
+                filtersBtn.removeEventListener('click', handleFiltersClick);
+                filtersBtn.addEventListener('click', handleFiltersClick);
+            }
+            
+            // Event listener per i pulsanti di azione
+            const applyBtn = document.getElementById('apply-filters-btn');
+            if (applyBtn) {
+                applyBtn.removeEventListener('click', handleApplyClick);
+                applyBtn.addEventListener('click', handleApplyClick);
+            }
+            
+            const resetBtn = document.getElementById('reset-filters-btn');
+            if (resetBtn) {
+                resetBtn.removeEventListener('click', handleResetClick);
+                resetBtn.addEventListener('click', handleResetClick);
+            }
+        }
+        
+        function handleFiltersClick(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Click su pulsante filtri'); // Debug
+            toggleFiltersDropdown();
+        }
+        
+        function handleApplyClick(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Click su applica filtri'); // Debug
+            applyFilters();
+        }
+        
+        function handleResetClick(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Click su reset filtri'); // Debug
+            resetFilters();
+        }
+        
         function initializeEventListeners() {
             document.querySelectorAll('.section-nav-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -2295,7 +3173,43 @@
                 });
             });
             
+            // Inizializza gli event listener dei filtri
+            initializeFiltersEventListeners();
+            
+            // Event listener per il menu a tendina dei filtri
             document.body.addEventListener('click', (e) => {
+                const filtersBtn = e.target.closest('#filters-dropdown-btn');
+                if (filtersBtn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleFiltersDropdown();
+                    return;
+                }
+                
+                const applyBtn = e.target.closest('#apply-filters-btn');
+                if (applyBtn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    applyFilters();
+                    return;
+                }
+                
+                const resetBtn = e.target.closest('#reset-filters-btn');
+                if (resetBtn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    resetFilters();
+                    return;
+                }
+                
+                // Chiudi il dropdown se si clicca fuori
+                const dropdownContent = document.getElementById('filters-dropdown-content');
+                if (dropdownContent && dropdownContent.classList.contains('show')) {
+                    if (!e.target.closest('.filters-dropdown')) {
+                        toggleFiltersDropdown();
+                    }
+                }
+                
                 const menuBtn = e.target.closest('.chat-menu-btn');
                 if (menuBtn) {
                     const action = menuBtn.dataset.action;
