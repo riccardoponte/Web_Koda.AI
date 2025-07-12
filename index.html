@@ -15,8 +15,8 @@
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
-        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, where, orderBy, serverTimestamp, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail, updateEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, where, orderBy, serverTimestamp, getDoc, setDoc, getDocs } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
         import { getAnalytics } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js';
 
         // Firebase configuration
@@ -46,6 +46,10 @@
             onAuthStateChanged,
             updateProfile,
             sendPasswordResetEmail,
+            updateEmail,
+            updatePassword,
+            reauthenticateWithCredential,
+            EmailAuthProvider,
             collection,
             addDoc,
             updateDoc,
@@ -56,8 +60,9 @@
             where,
             orderBy,
             serverTimestamp,
-            getDoc, // NUOVO
-            setDoc  // NUOVO
+            getDoc,
+            setDoc,
+            getDocs
         };
 
         console.log('🔥 Firebase initialized successfully!');
@@ -546,6 +551,53 @@
             width: 90%;
             max-width: 400px;
             text-align: center;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Stili responsive per il modale di modifica profilo */
+        #edit-profile-modal .auth-form {
+            max-width: 450px;
+            padding: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .auth-form {
+                width: 95%;
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            #edit-profile-modal .auth-form {
+                max-width: 95%;
+                padding: 16px;
+            }
+            
+            .auth-input {
+                font-size: 16px; /* Previene zoom su iOS */
+                padding: 14px 16px;
+            }
+            
+            .auth-btn {
+                padding: 14px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-form {
+                width: 98%;
+                padding: 16px;
+                margin: 5px;
+            }
+            
+            #edit-profile-modal .auth-form {
+                padding: 12px;
+            }
+            
+            .auth-container {
+                padding: 10px;
+            }
         }
         .auth-input {
             width: 100%;
@@ -745,6 +797,10 @@
                 <p class="text-sm font-semibold text-white truncate" id="menu-user-email"></p>
             </div>
             <div class="py-1 mt-1">
+                <button id="edit-profile-btn" class="w-full text-left px-4 py-2 text-sm text-blue-300 hover:bg-white/10 rounded-md flex items-center gap-3 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    <span>Modifica Profilo</span>
+                </button>
                 <button id="reset-password-btn" class="w-full text-left px-4 py-2 text-sm text-green-300 hover:bg-white/10 rounded-md flex items-center gap-3 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4Z"/><circle cx="16.5" cy="7.5" r=".5"/></svg>
                     <span>Reimposta Password</span>
@@ -784,6 +840,10 @@
                     <button class="section-nav-btn active" data-section="search-ai" data-translate-key="search-ai-nav">Ricerca AI</button>
                     <!-- NUOVO: Pulsante per la Libreria -->
                     <button class="section-nav-btn" data-section="library" data-translate-key="library-nav">Libreria</button>
+                    <!-- NUOVO: Pulsante per i Suggerimenti AI -->
+                    <button class="section-nav-btn" data-section="ai-suggestions" data-translate-key="suggestions-nav">Suggerisci AI</button>
+                    <!-- NUOVO: Pulsante per la Ricerca Utenti -->
+                    <button class="section-nav-btn" data-section="user-search" data-translate-key="user-search-nav">Cerca Utenti</button>
                 </div>
                 
                 <!-- Sezione Ricerca AI -->
@@ -919,6 +979,195 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- NUOVO: Sezione Suggerimenti AI -->
+                <div id="ai-suggestions-section" class="search-ai-section">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-green-400">Suggerisci una nuova AI</h2>
+                        <p class="text-gray-300 max-w-2xl mx-auto">Aiutaci a migliorare la nostra libreria suggerendo nuovi strumenti di intelligenza artificiale</p>
+                    </div>
+                    
+                    <!-- Form per suggerire nuove AI -->
+                    <div class="max-w-4xl mx-auto">
+                        <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-8 mb-8">
+                            <h3 class="text-xl font-bold text-white mb-6">Invia il tuo suggerimento</h3>
+                            <form id="ai-suggestion-form" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="ai-name" class="block text-sm font-medium text-gray-300 mb-2">Nome dell'AI *</label>
+                                        <input type="text" id="ai-name" name="ai-name" required 
+                                               class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none transition-colors"
+                                               placeholder="Es. ChatGPT, Midjourney, Claude...">
+                                    </div>
+                                    <div>
+                                        <label for="ai-category" class="block text-sm font-medium text-gray-300 mb-2">Categoria *</label>
+                                        <select id="ai-category" name="ai-category" required 
+                                                class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-green-500 focus:outline-none transition-colors">
+                                            <option value="">Seleziona categoria</option>
+                                            <option value="Testo">Testo</option>
+                                            <option value="Immagini">Immagini</option>
+                                            <option value="Video">Video</option>
+                                            <option value="Codice">Codice</option>
+                                            <option value="Presentazioni">Presentazioni</option>
+                                            <option value="Audio">Audio</option>
+                                            <option value="Altro">Altro</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label for="ai-description" class="block text-sm font-medium text-gray-300 mb-2">Descrizione *</label>
+                                    <textarea id="ai-description" name="ai-description" required rows="3"
+                                              class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none transition-colors resize-none"
+                                              placeholder="Descrivi brevemente cosa fa questa AI e i suoi vantaggi principali..."></textarea>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="ai-website" class="block text-sm font-medium text-gray-300 mb-2">Sito Web</label>
+                                        <input type="url" id="ai-website" name="ai-website"
+                                               class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none transition-colors"
+                                               placeholder="https://esempio.com">
+                                    </div>
+                                    <div>
+                                        <label for="ai-country" class="block text-sm font-medium text-gray-300 mb-2">Paese di origine</label>
+                                        <select id="ai-country" name="ai-country"
+                                                class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-green-500 focus:outline-none transition-colors">
+                                            <option value="">Seleziona paese</option>
+                                            <option value="USA">🇺🇸 USA</option>
+                                            <option value="Cina">🇨🇳 Cina</option>
+                                            <option value="Europe">🇪🇺 Europa</option>
+                                            <option value="Altro">Altro</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label for="ai-features" class="block text-sm font-medium text-gray-300 mb-2">Caratteristiche principali</label>
+                                    <textarea id="ai-features" name="ai-features" rows="2"
+                                              class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none transition-colors resize-none"
+                                              placeholder="Es. Generazione di testo, Analisi di documenti, Integrazione API..."></textarea>
+                                </div>
+                                
+                                <div>
+                                    <label for="ai-email" class="block text-sm font-medium text-gray-300 mb-2">La tua email (opzionale)</label>
+                                    <input type="email" id="ai-email" name="ai-email"
+                                           class="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none transition-colors"
+                                           placeholder="email@esempio.com">
+                                    <p class="text-xs text-gray-400 mt-1">Per ricevere aggiornamenti quando la tua AI verrà aggiunta</p>
+                                </div>
+                                
+                                <div class="flex justify-center pt-4">
+                                    <button type="submit" 
+                                            class="bg-green-500 hover:bg-green-600 text-black font-semibold py-3 px-8 rounded-lg transition-all duration-200 hover:scale-105 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M9 12l2 2 4-4"></path>
+                                            <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"></path>
+                                            <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"></path>
+                                            <path d="M12 3c0 1-1 2-2 2s-2 1-2 2 1 2 2 2 2-1 2-2 1-2 2-2 2-1 2-2-1-2-2-2z"></path>
+                                            <path d="M12 21c0-1-1-2-2-2s-2-1-2-2 1-2 2-2 2 1 2 2 1 2 2 2 2-1 2-2-1-2-2-2z"></path>
+                                        </svg>
+                                        Invia Suggerimento
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Lista dei suggerimenti esistenti -->
+                        <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-8">
+                            <h3 class="text-xl font-bold text-white mb-6">Suggerimenti recenti</h3>
+                            <div id="suggestions-list" class="space-y-4">
+                                <!-- I suggerimenti verranno popolati dinamicamente -->
+                            </div>
+                            <div id="no-suggestions" class="text-center py-8 text-gray-400" style="display: none;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-gray-500">
+                                    <path d="M9 12l2 2 4-4"></path>
+                                    <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"></path>
+                                    <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"></path>
+                                    <path d="M12 3c0 1-1 2-2 2s-2 1-2 2 1 2 2 2 2-1 2-2 1-2 2-2 2-1 2-2-1-2-2-2z"></path>
+                                    <path d="M12 21c0-1-1-2-2-2s-2-1-2-2 1-2 2-2 2 1 2 2 1 2 2 2 2-1 2-2-1-2-2-2z"></path>
+                                </svg>
+                                <p>Nessun suggerimento ancora. Sii il primo a suggerire una nuova AI!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NUOVO: Sezione Ricerca Utenti -->
+                <div id="user-search-section" class="search-ai-section">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-green-400">Cerca Utenti</h2>
+                        <p class="text-gray-300 max-w-2xl mx-auto">Trova altri utenti e scopri le AI che hanno suggerito</p>
+                    </div>
+                    
+                    <div class="max-w-4xl mx-auto">
+                        <!-- Form di ricerca utenti -->
+                        <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-8 mb-8">
+                            <h3 class="text-xl font-bold text-white mb-6">Cerca per nickname</h3>
+                            <form id="user-search-form" class="flex gap-4">
+                                <input type="text" id="user-search-input" 
+                                       class="flex-1 bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none transition-colors"
+                                       placeholder="Inserisci il nickname dell'utente...">
+                                <button type="submit" 
+                                        class="bg-green-500 hover:bg-green-600 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-200 hover:scale-105">
+                                    Cerca
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <!-- Risultati della ricerca -->
+                        <div id="user-search-results" class="space-y-4">
+                            <!-- I risultati verranno popolati dinamicamente -->
+                        </div>
+                        
+                        <!-- Profilo utente selezionato -->
+                        <div id="user-profile-view" class="bg-gray-800/50 border border-gray-700 rounded-lg p-8" style="display: none;">
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <h3 id="selected-user-name" class="text-2xl font-bold text-white mb-2"></h3>
+                                    <p id="selected-user-nickname" class="text-green-400 font-semibold"></p>
+                                    <p id="selected-user-email" class="text-gray-400 text-sm mt-1"></p>
+                                </div>
+                                <button onclick="closeUserProfile()" class="text-gray-400 hover:text-white transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <div id="user-suggestions-container">
+                                <div class="flex items-center justify-between mb-6">
+                                    <h4 class="text-xl font-bold text-white">🤖 AI Suggerite</h4>
+                                    <div class="flex items-center text-sm text-gray-400">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                                            <path d="M9 12l2 2 4-4"></path>
+                                            <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"></path>
+                                            <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"></path>
+                                            <path d="M12 3c0 1-1 2-2 2s-2 1-2 2 1 2 2 2 2-1 2-2 1-2 2-2 2-1 2-2-1-2-2-2z"></path>
+                                            <path d="M12 21c0-1-1-2-2-2s-2-1-2-2 1-2 2-2 2 1 2 2 1 2 2 2 2-1 2-2-1-2-2-2z"></path>
+                                        </svg>
+                                        <span id="user-suggestions-count">0 suggerimenti</span>
+                                    </div>
+                                </div>
+                                <div id="user-suggestions-list" class="space-y-4">
+                                    <!-- I suggerimenti dell'utente verranno popolati dinamicamente -->
+                                </div>
+                                <div id="no-user-suggestions" class="text-center py-12 text-gray-400" style="display: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-6 text-gray-500">
+                                        <path d="M9 12l2 2 4-4"></path>
+                                        <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"></path>
+                                        <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"></path>
+                                        <path d="M12 3c0 1-1 2-2 2s-2 1-2 2 1 2 2 2 2-1 2-2 1-2 2-2 2-1 2-2-1-2-2-2z"></path>
+                                        <path d="M12 21c0-1-1-2-2-2s-2-1-2-2 1-2 2-2 2 1 2 2 1 2 2 2 2-1 2-2-1-2-2-2z"></path>
+                                    </svg>
+                                    <p class="text-lg font-medium mb-2">Nessuna AI suggerita</p>
+                                    <p class="text-sm text-gray-500">Questo utente non ha ancora suggerito nessuna AI</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
         
@@ -978,6 +1227,7 @@
             <div id="auth-error" class="auth-error" style="display: none;"></div>
             <form id="auth-form">
                 <input type="text" id="auth-name" placeholder="Nome completo" class="auth-input" style="display: none;">
+                <input type="text" id="auth-nickname" placeholder="Nickname (obbligatorio)" class="auth-input" style="display: none;" required>
                 <input type="email" id="auth-email" placeholder="Email" class="auth-input" required>
                 <input type="password" id="auth-password" placeholder="Password" class="auth-input" required>
                 <button type="submit" class="auth-btn" id="auth-submit">Accedi</button>
@@ -990,6 +1240,47 @@
             <button id="auth-forgot-password-btn" class="mt-4 text-sm text-green-400 hover:underline">
                 Hai dimenticato la password?
             </button>
+        </div>
+    </div>
+
+    <!-- Modal per modifica profilo utente -->
+    <div id="edit-profile-modal" class="auth-container" style="display: none;">
+        <div class="auth-form">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-white">Modifica Profilo</h2>
+                <button onclick="closeEditProfileModal()" class="text-gray-400 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div id="edit-profile-error" class="auth-error" style="display: none;"></div>
+            <form id="edit-profile-form">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Nome Completo</label>
+                    <input type="text" id="edit-profile-name" placeholder="Nome completo" class="auth-input">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Nickname</label>
+                    <input type="text" id="edit-profile-nickname" placeholder="Nickname" class="auth-input" required>
+                    <p class="text-xs text-gray-400 mt-1">Il nickname deve essere unico</p>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                    <input type="email" id="edit-profile-email" placeholder="Email" class="auth-input" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Nuova Password (opzionale)</label>
+                    <input type="password" id="edit-profile-password" placeholder="Lascia vuoto per non cambiare" class="auth-input">
+                    <p class="text-xs text-gray-400 mt-1">Inserisci la password attuale per confermare le modifiche</p>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Password Attuale</label>
+                    <input type="password" id="edit-profile-current-password" placeholder="Password attuale" class="auth-input" required>
+                </div>
+                <button type="submit" class="auth-btn w-full" id="edit-profile-submit">Salva Modifiche</button>
+            </form>
         </div>
     </div>
 
@@ -1832,10 +2123,17 @@
                     console.log('User signed in:', user.email);
                     loadUserData();
                     subscribeToFavorites(user); // NUOVO: Sottoscrivi ai preferiti
+                    
+                    // Aggiorna la sezione suggerimenti se è attiva
+                    const activeSection = document.querySelector('.search-ai-section.active');
+                    if (activeSection && activeSection.id === 'ai-suggestions-section') {
+                        subscribeToSuggestions();
+                    }
                 } else {
                     console.log('User signed out');
                     if (userDataUnsubscribe) userDataUnsubscribe();
                     if (favoritesUnsubscribe) favoritesUnsubscribe(); // NUOVO: Annulla sottoscrizione
+                    if (suggestionsUnsubscribe) suggestionsUnsubscribe(); // Annulla sottoscrizione suggerimenti
                     userFavoriteToolIds.clear();
                     renderLibrarySection(); // Svuota la libreria
                     updateLikeButtonsUI(); // Resetta i pulsanti "mi piace"
@@ -1844,6 +2142,12 @@
                     window.dispatchEvent(new CustomEvent('favoritesUpdated', {
                         detail: { favoriteIds: [] }
                     }));
+                    
+                    // Aggiorna la sezione suggerimenti se è attiva
+                    const activeSection = document.querySelector('.search-ai-section.active');
+                    if (activeSection && activeSection.id === 'ai-suggestions-section') {
+                        loadPublicSuggestions();
+                    }
                 }
             });
         }
@@ -1887,7 +2191,7 @@
             }
         }
 
-        // AGGIORNATO: Gestione del form di autenticazione con aggiunta del reset password
+        // AGGIORNATO: Gestione del form di autenticazione con aggiunta del reset password e nickname
         function setupAuthModal() {
             const authModal = document.getElementById('auth-modal');
             const authBtn = document.getElementById('auth-btn');
@@ -1897,6 +2201,7 @@
             const authSubmit = document.getElementById('auth-submit');
             const authSwitchText = document.getElementById('auth-switch-text');
             const authName = document.getElementById('auth-name');
+            const authNickname = document.getElementById('auth-nickname');
             const authError = document.getElementById('auth-error');
             const forgotPasswordBtn = document.getElementById('auth-forgot-password-btn');
 
@@ -1910,6 +2215,8 @@
                     authSwitch.textContent = 'Registrati';
                     authName.style.display = 'none';
                     authName.required = false;
+                    authNickname.style.display = 'none';
+                    authNickname.required = false;
                     forgotPasswordBtn.style.display = 'block';
                 } else {
                     authTitle.textContent = 'Registrati su Koda AI';
@@ -1918,6 +2225,8 @@
                     authSwitch.textContent = 'Accedi';
                     authName.style.display = 'block';
                     authName.required = true;
+                    authNickname.style.display = 'block';
+                    authNickname.required = true;
                     forgotPasswordBtn.style.display = 'none';
                 }
                 hideAuthError();
@@ -1959,6 +2268,7 @@
                 const email = document.getElementById('auth-email').value;
                 const password = document.getElementById('auth-password').value;
                 const name = document.getElementById('auth-name').value;
+                const nickname = document.getElementById('auth-nickname').value;
                 
                 hideAuthError();
                 authSubmit.disabled = true;
@@ -1969,7 +2279,36 @@
                     if (isLoginMode) {
                         await signInWithEmailAndPassword(window.firebaseAuth, email, password);
                     } else {
+                        // Verifica che il nickname sia unico
+                        if (nickname) {
+                            try {
+                                const isNicknameUnique = await checkNicknameUnique(nickname);
+                                if (!isNicknameUnique) {
+                                    showAuthError('Nickname già in uso. Scegline un altro.');
+                                    return;
+                                }
+                            } catch (error) {
+                                console.error('Errore nella verifica nickname:', error);
+                                showAuthError('Errore nella verifica del nickname. Riprova.');
+                                return;
+                            }
+                        }
+                        
                         const userCredential = await createUserWithEmailAndPassword(window.firebaseAuth, email, password);
+                        
+                        // Salva i dati utente in Firestore
+                        try {
+                            await saveUserProfile(userCredential.user.uid, {
+                                displayName: name,
+                                nickname: nickname,
+                                email: email,
+                                createdAt: new Date().toISOString()
+                            });
+                        } catch (error) {
+                            console.error('Errore nel salvare il profilo:', error);
+                            // Non bloccare la registrazione se il salvataggio del profilo fallisce
+                        }
+                        
                         if (name) {
                             await updateProfile(userCredential.user, { displayName: name });
                         }
@@ -2005,12 +2344,172 @@
                 'auth/user-not-found': 'Utente non trovato',
                 'auth/wrong-password': 'Password errata',
                 'auth/email-already-in-use': 'Email già in uso',
-                'auth/weak-password': 'Password troppo debole',
+                'auth/weak-password': 'Password troppo debole (minimo 6 caratteri)',
                 'auth/invalid-email': 'Email non valida',
                 'auth/too-many-requests': 'Troppi tentativi. Riprova più tardi',
-                'auth/network-request-failed': 'Errore di connessione'
+                'auth/network-request-failed': 'Errore di connessione',
+                'auth/requires-recent-login': 'Per sicurezza, effettua nuovamente l\'accesso',
+                'auth/email-change-requires-verification': 'Email cambiata. Verifica la nuova email',
+                'auth/credential-already-in-use': 'Credenziali già in uso',
+                'auth/invalid-credential': 'Credenziali non valide',
+                'auth/operation-not-allowed': 'Operazione non consentita',
+                'auth/user-disabled': 'Account disabilitato',
+                'auth/user-token-expired': 'Sessione scaduta. Effettua nuovamente l\'accesso',
+                'auth/requires-recent-login': 'Per sicurezza, effettua nuovamente l\'accesso',
+                'auth/too-many-requests': 'Troppi tentativi. Riprova più tardi',
+                'auth/network-request-failed': 'Errore di connessione. Verifica la tua connessione internet',
+                'auth/internal-error': 'Errore interno del server. Riprova più tardi',
+                'auth/invalid-password': 'Password non valida',
+                'auth/password-mismatch': 'Le password non coincidono',
+                'auth/email-already-in-use': 'Email già in uso da un altro account',
+                'auth/invalid-email': 'Formato email non valido',
+                'auth/user-mismatch': 'Utente non corrispondente',
+                'auth/account-exists-with-different-credential': 'Account esistente con credenziali diverse',
+                'auth/auth-domain-config-required': 'Configurazione dominio richiesta',
+                'auth/cancelled-popup-request': 'Richiesta popup annullata',
+                'auth/popup-blocked': 'Popup bloccato dal browser',
+                'auth/popup-closed-by-user': 'Popup chiuso dall\'utente',
+                'auth/unauthorized-domain': 'Dominio non autorizzato',
+                'auth/web-storage-unsupported': 'Web storage non supportato'
             };
             return errorMessages[errorCode] || 'Si è verificato un errore. Riprova.';
+        }
+
+        // --- User Profile Management ---
+        async function saveUserProfile(userId, userData) {
+            try {
+                // Verifica che Firebase sia inizializzato
+                if (!window.firebaseServices || !window.firebaseDb) {
+                    console.error("Firebase non è ancora inizializzato");
+                    return; // Esci se Firebase non è pronto
+                }
+                
+                const { doc, setDoc } = window.firebaseServices;
+                await setDoc(doc(window.firebaseDb, "userProfiles", userId), userData);
+            } catch (error) {
+                console.error("Errore nel salvare il profilo utente:", error);
+                throw error;
+            }
+        }
+
+        async function checkNicknameUnique(nickname) {
+            try {
+                // Verifica che Firebase sia inizializzato
+                if (!window.firebaseServices || !window.firebaseDb) {
+                    console.error("Firebase non è ancora inizializzato");
+                    return true; // Permetti la registrazione se Firebase non è pronto
+                }
+                
+                const { collection, query, where, getDocs } = window.firebaseServices;
+                const q = query(collection(window.firebaseDb, "userProfiles"), where("nickname", "==", nickname));
+                const snapshot = await getDocs(q);
+                return snapshot.empty; // true se il nickname è unico
+            } catch (error) {
+                console.error("Errore nel verificare il nickname:", error);
+                return true; // In caso di errore, permetti la registrazione
+            }
+        }
+
+        async function getUserProfile(userId) {
+            try {
+                const { doc, getDoc } = window.firebaseServices;
+                const userDoc = await getDoc(doc(window.firebaseDb, "userProfiles", userId));
+                return userDoc.exists() ? userDoc.data() : null;
+            } catch (error) {
+                console.error("Errore nel recuperare il profilo utente:", error);
+                return null;
+            }
+        }
+
+        async function searchUsersByNickname(nickname) {
+            try {
+                const { collection, query, where, getDocs } = window.firebaseServices;
+                const q = query(
+                    collection(window.firebaseDb, "userProfiles"), 
+                    where("nickname", ">=", nickname),
+                    where("nickname", "<=", nickname + '\uf8ff')
+                );
+                const snapshot = await getDocs(q);
+                const users = [];
+                snapshot.forEach((doc) => {
+                    users.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                return users;
+            } catch (error) {
+                console.error("Errore nella ricerca utenti:", error);
+                return [];
+            }
+        }
+
+        async function getUserSuggestions(userId) {
+            try {
+                console.log('🔍 Ricerca suggerimenti per userId:', userId);
+                
+                if (!window.firebaseServices || !window.firebaseDb) {
+                    console.error('Firebase non è inizializzato');
+                    return [];
+                }
+                
+                const { collection, query, where, orderBy, getDocs } = window.firebaseServices;
+                
+                // Prima prova senza orderBy per vedere se il problema è lì
+                const q = query(
+                    collection(window.firebaseDb, "aiSuggestions"),
+                    where("userId", "==", userId)
+                );
+                
+                console.log('📋 Esecuzione query Firestore...');
+                const snapshot = await getDocs(q);
+                console.log('📊 Risultati trovati:', snapshot.size);
+                
+                const suggestions = [];
+                snapshot.forEach((doc) => {
+                    try {
+                        const data = doc.data();
+                        console.log('📝 Suggerimento trovato:', { id: doc.id, name: data.name, status: data.status });
+                        suggestions.push({
+                            id: doc.id,
+                            ...data
+                        });
+                    } catch (docError) {
+                        console.warn('⚠️ Errore nel processare documento:', doc.id, docError);
+                    }
+                });
+                
+                console.log('✅ Suggerimenti caricati:', suggestions.length);
+                return suggestions;
+            } catch (error) {
+                console.error("❌ Errore nel recuperare i suggerimenti utente:", error);
+                console.error("Dettagli errore:", error.code, error.message);
+                
+                // Se l'errore è dovuto a permessi, prova una query più semplice
+                if (error.code === 'permission-denied' || error.code === 'unavailable') {
+                    console.log('🔄 Tentativo con query semplificata...');
+                    try {
+                        const { collection, getDocs } = window.firebaseServices;
+                        const snapshot = await getDocs(collection(window.firebaseDb, "aiSuggestions"));
+                        const suggestions = [];
+                        snapshot.forEach((doc) => {
+                            const data = doc.data();
+                            if (data.userId === userId) {
+                                suggestions.push({
+                                    id: doc.id,
+                                    ...data
+                                });
+                            }
+                        });
+                        console.log('✅ Suggerimenti caricati con query semplificata:', suggestions.length);
+                        return suggestions;
+                    } catch (fallbackError) {
+                        console.error('❌ Anche la query di fallback è fallita:', fallbackError);
+                    }
+                }
+                
+                return [];
+            }
         }
 
         function setupLogout() {
@@ -2133,11 +2632,25 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
-                initializeFirebaseAuth();
-                setupAuthModal();
-                setupLogout();
-                setupUserDataForm();
-                setupProfileMenu();
+                // Aspetta che Firebase sia completamente inizializzato
+                if (window.firebaseServices && window.firebaseDb) {
+                    initializeFirebaseAuth();
+                    setupAuthModal();
+                    setupLogout();
+                    setupUserDataForm();
+                    setupProfileMenu();
+                    setupEditProfileForm();
+                } else {
+                    // Se Firebase non è ancora pronto, riprova dopo un po'
+                    setTimeout(() => {
+                        initializeFirebaseAuth();
+                        setupAuthModal();
+                        setupLogout();
+                        setupUserDataForm();
+                        setupProfileMenu();
+                        setupEditProfileForm();
+                    }, 2000);
+                }
             }, 1000);
         });
         // --- END: Firebase Authentication & Database Logic ---
@@ -2164,14 +2677,20 @@
 
         function setupProfileMenu() {
             const profileMenu = document.getElementById('profile-menu');
+            const editProfileBtn = document.getElementById('edit-profile-btn');
             const resetPasswordBtn = document.getElementById('reset-password-btn');
             const menuLogoutBtn = document.getElementById('menu-logout-btn');
             const originalLogoutBtn = document.getElementById('logout-btn');
 
-            if (!profileMenu || !resetPasswordBtn || !menuLogoutBtn || !originalLogoutBtn) {
+            if (!profileMenu || !editProfileBtn || !resetPasswordBtn || !menuLogoutBtn || !originalLogoutBtn) {
                 console.error("Elementi del menu del profilo non trovati nel DOM.");
                 return;
             }
+
+            editProfileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openEditProfileModal();
+            });
 
             resetPasswordBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -2192,6 +2711,232 @@
                 }
             });
         }
+
+        // --- INIZIO: LOGICA PER MODIFICA PROFILO ---
+        async function openEditProfileModal() {
+            const modal = document.getElementById('edit-profile-modal');
+            const auth = window.firebaseAuth;
+            
+            if (!auth.currentUser) {
+                showToast('Errore: Nessun utente autenticato.');
+                return;
+            }
+
+            // Nascondi il menu del profilo
+            document.getElementById('profile-menu').style.display = 'none';
+
+            // Carica i dati attuali dell'utente
+            try {
+                const userProfile = await getUserProfile(auth.currentUser.uid);
+                if (userProfile) {
+                    document.getElementById('edit-profile-name').value = userProfile.displayName || '';
+                    document.getElementById('edit-profile-nickname').value = userProfile.nickname || '';
+                    document.getElementById('edit-profile-email').value = userProfile.email || auth.currentUser.email || '';
+                } else {
+                    // Se non c'è profilo, usa i dati di Firebase Auth
+                    document.getElementById('edit-profile-name').value = auth.currentUser.displayName || '';
+                    document.getElementById('edit-profile-nickname').value = '';
+                    document.getElementById('edit-profile-email').value = auth.currentUser.email || '';
+                }
+            } catch (error) {
+                console.error('Errore nel caricare il profilo:', error);
+                showToast('Errore nel caricare i dati del profilo.');
+                return;
+            }
+
+            // Pulisci i campi password
+            document.getElementById('edit-profile-password').value = '';
+            document.getElementById('edit-profile-current-password').value = '';
+
+            // Mostra il modale
+            modal.style.display = 'flex';
+        }
+
+        function closeEditProfileModal() {
+            const modal = document.getElementById('edit-profile-modal');
+            modal.style.display = 'none';
+            hideEditProfileError();
+        }
+
+        function showEditProfileError(message) {
+            const errorDiv = document.getElementById('edit-profile-error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function hideEditProfileError() {
+            const errorDiv = document.getElementById('edit-profile-error');
+            errorDiv.style.display = 'none';
+        }
+
+        // Inizializza il form di modifica profilo
+        function setupEditProfileForm() {
+            const form = document.getElementById('edit-profile-form');
+            if (!form) return;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await handleEditProfileSubmit();
+            });
+        }
+
+        async function handleEditProfileSubmit() {
+            const auth = window.firebaseAuth;
+            if (!auth.currentUser) {
+                showEditProfileError('Errore: Nessun utente autenticato.');
+                return;
+            }
+
+            const submitBtn = document.getElementById('edit-profile-submit');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Salvando...';
+            hideEditProfileError();
+
+            try {
+                const { updateEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider } = window.firebaseServices;
+                
+                const name = document.getElementById('edit-profile-name').value.trim();
+                const nickname = document.getElementById('edit-profile-nickname').value.trim();
+                const email = document.getElementById('edit-profile-email').value.trim();
+                const newPassword = document.getElementById('edit-profile-password').value;
+                const currentPassword = document.getElementById('edit-profile-current-password').value;
+
+                // Validazioni
+                if (!nickname) {
+                    showEditProfileError('Il nickname è obbligatorio.');
+                    return;
+                }
+
+                if (!email) {
+                    showEditProfileError('L\'email è obbligatoria.');
+                    return;
+                }
+
+                if (!currentPassword) {
+                    showEditProfileError('La password attuale è obbligatoria per confermare le modifiche.');
+                    return;
+                }
+
+                // Validazione password se fornita
+                if (newPassword && newPassword.length < 6) {
+                    showEditProfileError('La nuova password deve essere di almeno 6 caratteri.');
+                    return;
+                }
+
+                // Re-autenticazione per confermare la password attuale
+                try {
+                    const credential = EmailAuthProvider.credential(auth.currentUser.email, currentPassword);
+                    await reauthenticateWithCredential(auth.currentUser, credential);
+                } catch (reauthError) {
+                    console.error('Errore re-autenticazione:', reauthError);
+                    if (reauthError.code === 'auth/wrong-password') {
+                        showEditProfileError('Password attuale non corretta.');
+                    } else {
+                        showEditProfileError(`Errore di autenticazione: ${getAuthErrorMessage(reauthError.code)}`);
+                    }
+                    return;
+                }
+
+                // Verifica se il nickname è cambiato e se è unico
+                const currentProfile = await getUserProfile(auth.currentUser.uid);
+                if (currentProfile && currentProfile.nickname !== nickname) {
+                    const isNicknameUnique = await checkNicknameUnique(nickname);
+                    if (!isNicknameUnique) {
+                        showEditProfileError('Nickname già in uso. Scegline un altro.');
+                        return;
+                    }
+                }
+
+                // Aggiorna email se cambiata
+                if (email !== auth.currentUser.email) {
+                    try {
+                        await updateEmail(auth.currentUser, email);
+                    } catch (emailError) {
+                        console.error('Errore aggiornamento email:', emailError);
+                        showEditProfileError(`Errore aggiornamento email: ${getAuthErrorMessage(emailError.code)}`);
+                        return;
+                    }
+                }
+
+                // Aggiorna password se fornita
+                if (newPassword) {
+                    try {
+                        await updatePassword(auth.currentUser, newPassword);
+                    } catch (passwordError) {
+                        console.error('Errore aggiornamento password:', passwordError);
+                        showEditProfileError(`Errore aggiornamento password: ${getAuthErrorMessage(passwordError.code)}`);
+                        return;
+                    }
+                }
+
+                // Aggiorna display name se fornito
+                if (name && name !== auth.currentUser.displayName) {
+                    try {
+                        await updateProfile(auth.currentUser, { displayName: name });
+                    } catch (profileError) {
+                        console.error('Errore aggiornamento display name:', profileError);
+                        // Non bloccare il processo per questo errore
+                    }
+                }
+
+                // Aggiorna il profilo in Firestore
+                try {
+                    const profileData = {
+                        displayName: name || currentProfile?.displayName || '',
+                        nickname: nickname,
+                        email: email,
+                        updatedAt: new Date().toISOString()
+                    };
+                    
+                    // Se è il primo profilo, aggiungi anche la data di creazione
+                    if (!currentProfile) {
+                        profileData.createdAt = new Date().toISOString();
+                    }
+                    
+                    await saveUserProfile(auth.currentUser.uid, profileData);
+                } catch (firestoreError) {
+                    console.error('Errore salvataggio Firestore:', firestoreError);
+                    showEditProfileError('Errore nel salvare i dati del profilo. Riprova.');
+                    return;
+                }
+
+                // Aggiorna l'interfaccia utente
+                updateProfileIcon();
+                
+                closeEditProfileModal();
+                showToast('Profilo aggiornato con successo!');
+
+            } catch (error) {
+                console.error('Errore nell\'aggiornamento del profilo:', error);
+                showEditProfileError(getAuthErrorMessage(error.code));
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        }
+
+        // Funzione per aggiornare l'icona del profilo
+        function updateProfileIcon() {
+            const auth = window.firebaseAuth;
+            if (!auth.currentUser) return;
+
+            const profileIconContent = document.getElementById('profile-icon-content');
+            const menuUserEmail = document.getElementById('menu-user-email');
+            
+            if (profileIconContent) {
+                const displayName = auth.currentUser.displayName;
+                const initials = displayName ? displayName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : '👤';
+                profileIconContent.textContent = initials;
+            }
+            
+            if (menuUserEmail) {
+                menuUserEmail.textContent = auth.currentUser.email;
+            }
+        }
+        // --- FINE: LOGICA PER MODIFICA PROFILO ---
+
         // --- FINE: NUOVA LOGICA PER IL MENU PROFILO E RESET PASSWORD ---
 
         // --- START: Translation Logic ---
@@ -2739,6 +3484,16 @@
         setTimeout(() => {
             initializeFiltersEventListeners();
         }, 500);
+        
+        // Inizializza la sezione suggerimenti AI
+        setTimeout(() => {
+            initializeAISuggestions();
+        }, 1000);
+        
+        // Inizializza la sezione ricerca utenti
+        setTimeout(() => {
+            initializeUserSearch();
+        }, 1200);
         // --- END: AI Logo Population Logic ---
 
 
@@ -2884,6 +3639,20 @@
                     
                     // Reinizializza gli event listener per il dropdown
                     initializeFiltersEventListeners();
+                }, 100);
+            }
+            
+            // Inizializza la sezione suggerimenti AI
+            if (sectionName === 'ai-suggestions') {
+                setTimeout(() => {
+                    initializeAISuggestions();
+                }, 100);
+            }
+            
+            // Inizializza la sezione ricerca utenti
+            if (sectionName === 'user-search') {
+                setTimeout(() => {
+                    initializeUserSearch();
                 }, 100);
             }
         }
@@ -3279,6 +4048,595 @@
             }, 2500);
         }
         // --- Toast Notification ---
+
+        // --- AI Suggestions Management (Firebase) ---
+
+        // --- User Search Management ---
+        function initializeUserSearch() {
+            const form = document.getElementById('user-search-form');
+            if (form) {
+                form.addEventListener('submit', handleUserSearch);
+            }
+        }
+
+        async function handleUserSearch(e) {
+            e.preventDefault();
+            
+            const searchInput = document.getElementById('user-search-input');
+            const nickname = searchInput.value.trim();
+            
+            if (!nickname) {
+                showToast('Inserisci un nickname da cercare');
+                return;
+            }
+            
+            try {
+                const users = await searchUsersByNickname(nickname);
+                displayUserSearchResults(users);
+            } catch (error) {
+                console.error('Errore nella ricerca utenti:', error);
+                showToast('Errore nella ricerca utenti');
+            }
+        }
+
+        function displayUserSearchResults(users) {
+            const resultsContainer = document.getElementById('user-search-results');
+            
+            if (users.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="text-center py-8 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-gray-500">
+                            <path d="M15.5 2H8.6c-.4 0-.8.2-1.1.5L2.9 6.9C2.6 7.2 2.4 7.6 2.4 8v10.6c0 .4.2.8.5 1.1l3.6 3.6c.3.3.7.5 1.1.5h6.9c.4 0 .8-.2 1.1-.5l3.6-3.6c.3-.3.5-.7.5-1.1V4.6c0-.4-.2-.8-.5-1.1L16.6.5c-.3-.3-.7-.5-1.1-.5z"/>
+                            <path d="M10 2v6h4"/>
+                        </svg>
+                        <p>Nessun utente trovato con questo nickname</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            resultsContainer.innerHTML = users.map(user => `
+                <div class="bg-gray-700/30 border border-gray-600 rounded-lg p-6 hover:border-green-500 transition-all cursor-pointer" onclick="viewUserProfile('${user.id}')">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-2">${escapeHtml(user.displayName || 'Utente')}</h4>
+                            <p class="text-green-400 font-semibold">@${escapeHtml(user.nickname)}</p>
+                            <p class="text-gray-400 text-sm mt-1">${escapeHtml(user.email)}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-400">Registrato il</p>
+                            <p class="text-xs text-gray-300">${new Date(user.createdAt).toLocaleDateString('it-IT')}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function viewUserProfile(userId) {
+            try {
+                const userProfile = await getUserProfile(userId);
+                if (!userProfile) {
+                    showToast('Profilo utente non trovato');
+                    return;
+                }
+                
+                // Mostra il profilo utente
+                document.getElementById('selected-user-name').textContent = userProfile.displayName || 'Utente';
+                document.getElementById('selected-user-nickname').textContent = `@${userProfile.nickname}`;
+                document.getElementById('selected-user-email').textContent = userProfile.email;
+                
+                // Nascondi i risultati della ricerca e mostra il profilo
+                document.getElementById('user-search-results').style.display = 'none';
+                document.getElementById('user-profile-view').style.display = 'block';
+                
+                // Carica i suggerimenti dell'utente
+                await loadUserSuggestions(userId);
+                
+            } catch (error) {
+                console.error('Errore nel caricare il profilo utente:', error);
+                showToast('Errore nel caricare il profilo utente');
+            }
+        }
+
+        async function loadUserSuggestions(userId) {
+            try {
+                console.log('🚀 Inizio caricamento suggerimenti per userId:', userId);
+                
+                const suggestions = await getUserSuggestions(userId);
+                console.log('📦 Suggerimenti ricevuti:', suggestions.length);
+                
+                const suggestionsList = document.getElementById('user-suggestions-list');
+                const noSuggestions = document.getElementById('no-user-suggestions');
+                
+                if (!suggestionsList || !noSuggestions) {
+                    console.error('❌ Elementi per i suggerimenti utente non trovati nel DOM');
+                    showToast('Errore: elementi di visualizzazione non trovati');
+                    return;
+                }
+                
+                if (suggestions.length === 0) {
+                    console.log('📭 Nessun suggerimento trovato');
+                    suggestionsList.style.display = 'none';
+                    noSuggestions.style.display = 'block';
+                    return;
+                }
+                
+                console.log('🔍 Filtraggio suggerimenti...');
+                
+                // Mostra tutti i suggerimenti (non solo quelli approvati)
+                const currentUser = window.firebaseAuth?.currentUser;
+                const isAdmin = currentUser?.email === 'admin@koda.ai' || currentUser?.email === 'riccardo@koda.ai';
+                
+                console.log('👤 Utente corrente:', currentUser?.email, 'Admin:', isAdmin);
+                
+                // Non filtrare più per status - mostra tutti i suggerimenti
+                const filteredSuggestions = suggestions;
+                console.log('✅ Suggerimenti totali:', filteredSuggestions.length);
+                
+                if (filteredSuggestions.length === 0) {
+                    console.log('🚫 Nessun suggerimento trovato');
+                    suggestionsList.style.display = 'none';
+                    noSuggestions.style.display = 'block';
+                    noSuggestions.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-gray-500">
+                            <path d="M9 12l2 2 4-4"></path>
+                            <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"></path>
+                            <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"></path>
+                            <path d="M12 3c0 1-1 2-2 2s-2 1-2 2 1 2 2 2 2-1 2-2 1-2 2-2 2-1 2-2-1-2-2-2z"></path>
+                            <path d="M12 21c0-1-1-2-2-2s-2-1-2-2 1-2 2-2 2 1 2 2 1 2 2 2 2-1 2-2-1-2-2-2z"></path>
+                        </svg>
+                        <p>Questo utente non ha ancora suggerito nessuna AI</p>
+                    `;
+                    return;
+                }
+                
+                console.log('🎨 Creazione card suggerimenti...');
+                suggestionsList.innerHTML = filteredSuggestions.map(suggestion => createUserSuggestionCard(suggestion)).join('');
+                
+                // Assicurati che gli elementi siano visibili
+                suggestionsList.style.display = 'block';
+                noSuggestions.style.display = 'none';
+                
+                // Aggiorna il contatore
+                const countElement = document.getElementById('user-suggestions-count');
+                if (countElement) {
+                    const approvedCount = filteredSuggestions.filter(s => s.status === 'approved').length;
+                    const totalCount = filteredSuggestions.length;
+                    
+                    if (totalCount === approvedCount) {
+                        countElement.textContent = `${totalCount} suggerimento${totalCount !== 1 ? 'i' : ''}`;
+                    } else {
+                        countElement.textContent = `${totalCount} suggerimento${totalCount !== 1 ? 'i' : ''} (${approvedCount} approvati)`;
+                    }
+                }
+                
+                console.log('✅ Caricamento suggerimenti completato con successo');
+                
+            } catch (error) {
+                console.error('❌ Errore nel caricare i suggerimenti utente:', error);
+                console.error('Stack trace:', error.stack);
+                showToast('Errore nel caricare i suggerimenti utente');
+            }
+        }
+
+        function closeUserProfile() {
+            document.getElementById('user-profile-view').style.display = 'none';
+            document.getElementById('user-search-results').style.display = 'block';
+            document.getElementById('user-search-input').value = '';
+            document.getElementById('user-search-results').innerHTML = '';
+        }
+
+        // --- User Search Management ---
+        let suggestionsUnsubscribe = null;
+
+        function initializeAISuggestions() {
+            const form = document.getElementById('ai-suggestion-form');
+            if (form) {
+                form.addEventListener('submit', handleAISuggestionSubmit);
+            }
+            
+            // Sottoscrivi ai suggerimenti se l'utente è autenticato
+            if (currentUser) {
+                subscribeToSuggestions();
+            } else {
+                // Se non autenticato, mostra solo i suggerimenti pubblici
+                loadPublicSuggestions();
+            }
+        }
+
+        function handleAISuggestionSubmit(e) {
+            e.preventDefault();
+            
+            if (!currentUser) {
+                showToast('Accedi per inviare suggerimenti!');
+                return;
+            }
+            
+            const formData = new FormData(e.target);
+            const suggestion = {
+                name: formData.get('ai-name'),
+                category: formData.get('ai-category'),
+                description: formData.get('ai-description'),
+                website: formData.get('ai-website') || '',
+                country: formData.get('ai-country') || '',
+                features: formData.get('ai-features') || '',
+                email: formData.get('ai-email') || '',
+                userId: currentUser.uid,
+                userEmail: currentUser.email,
+                userName: currentUser.displayName || currentUser.email.split('@')[0],
+                timestamp: new Date().toISOString(),
+                status: 'pending' // pending, approved, rejected
+            };
+
+            // Salva il suggerimento in Firebase
+            saveAISuggestionToFirebase(suggestion);
+            
+            // Resetta il form
+            e.target.reset();
+            
+            // Mostra messaggio di successo
+            showToast('Suggerimento inviato con successo! Grazie per il contributo.');
+        }
+
+        async function saveAISuggestionToFirebase(suggestion) {
+            try {
+                const { collection, addDoc, serverTimestamp } = window.firebaseServices;
+                await addDoc(collection(window.firebaseDb, "aiSuggestions"), {
+                    ...suggestion,
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp()
+                });
+            } catch (error) {
+                console.error("Errore nel salvare il suggerimento:", error);
+                showToast('Errore nell\'invio del suggerimento. Riprova.');
+            }
+        }
+
+        function subscribeToSuggestions() {
+            if (suggestionsUnsubscribe) {
+                suggestionsUnsubscribe();
+            }
+
+            // Mostra tutti i suggerimenti (non solo quelli approvati)
+            const { collection, query, orderBy, onSnapshot } = window.firebaseServices;
+            const q = query(
+                collection(window.firebaseDb, "aiSuggestions"),
+                orderBy("createdAt", "desc")
+            );
+            
+            suggestionsUnsubscribe = onSnapshot(q, (snapshot) => {
+                const suggestions = [];
+                snapshot.forEach((doc) => {
+                    suggestions.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                renderSuggestions(suggestions);
+            }, (error) => {
+                console.error("Errore nel caricare i suggerimenti:", error);
+                showToast('Errore nel caricare i suggerimenti.');
+            });
+        }
+
+        function loadPublicSuggestions() {
+            // Per utenti non autenticati, mostra tutti i suggerimenti
+            const { collection, query, orderBy, getDocs } = window.firebaseServices;
+            const q = query(
+                collection(window.firebaseDb, "aiSuggestions"),
+                orderBy("createdAt", "desc")
+            );
+            
+            getDocs(q).then((snapshot) => {
+                const suggestions = [];
+                snapshot.forEach((doc) => {
+                    suggestions.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                renderSuggestions(suggestions);
+            }).catch((error) => {
+                console.error("Errore nel caricare i suggerimenti pubblici:", error);
+                showToast('Errore nel caricare i suggerimenti.');
+            });
+        }
+
+        function renderSuggestions(suggestions) {
+            const suggestionsList = document.getElementById('suggestions-list');
+            const noSuggestions = document.getElementById('no-suggestions');
+            
+            if (!suggestionsList || !noSuggestions) return;
+            
+            if (suggestions.length === 0) {
+                suggestionsList.style.display = 'none';
+                noSuggestions.style.display = 'block';
+                return;
+            }
+            
+            suggestionsList.style.display = 'block';
+            noSuggestions.style.display = 'none';
+            
+            suggestionsList.innerHTML = suggestions.map(suggestion => createSuggestionCard(suggestion)).join('');
+        }
+
+        function createSuggestionCard(suggestion) {
+            const date = suggestion.createdAt ? 
+                new Date(suggestion.createdAt.toDate()).toLocaleDateString('it-IT', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : 
+                new Date(suggestion.timestamp).toLocaleDateString('it-IT', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            
+            const statusBadge = getStatusBadge(suggestion.status);
+            const isAdmin = currentUser && (currentUser.email === 'admin@koda.ai' || currentUser.uid === 'admin'); // Esempio di controllo admin
+            const isOwner = currentUser && suggestion.userId === currentUser.uid; // Controllo se l'utente è il proprietario del suggerimento
+            
+            return `
+                <div class="bg-gray-700/30 border border-gray-600 rounded-lg p-6 hover:border-green-500 transition-all">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-2">${escapeHtml(suggestion.name)}</h4>
+                            <div class="flex gap-2 mb-2">
+                                <span class="inline-block bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded">${escapeHtml(suggestion.category)}</span>
+                                ${suggestion.country ? `<span class="inline-block bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded">${escapeHtml(suggestion.country)}</span>` : ''}
+                                ${statusBadge}
+                            </div>
+                        </div>
+                        <span class="text-xs text-gray-400">${date}</span>
+                    </div>
+                    
+                    <p class="text-gray-300 mb-4">${escapeHtml(suggestion.description)}</p>
+                    
+                    ${suggestion.website ? `<p class="text-sm text-gray-400 mb-2"><strong>Sito:</strong> <a href="${escapeHtml(suggestion.website)}" target="_blank" class="text-green-400 hover:underline">${escapeHtml(suggestion.website)}</a></p>` : ''}
+                    ${suggestion.features ? `<p class="text-sm text-gray-400 mb-2"><strong>Caratteristiche:</strong> ${escapeHtml(suggestion.features)}</p>` : ''}
+                    ${suggestion.email ? `<p class="text-sm text-gray-400 mb-2"><strong>Email suggeritore:</strong> ${escapeHtml(suggestion.email)}</p>` : ''}
+                    ${suggestion.userName ? `<p class="text-sm text-gray-400"><strong>Suggerito da:</strong> ${escapeHtml(suggestion.userName)}</p>` : ''}
+                    
+                    <div class="flex gap-2 mt-4">
+                        ${isAdmin ? `
+                            <button onclick="approveSuggestion('${suggestion.id}')" class="bg-green-500 hover:bg-green-600 text-black text-xs px-3 py-1 rounded transition-colors">
+                                Approva
+                            </button>
+                            <button onclick="rejectSuggestion('${suggestion.id}')" class="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded transition-colors">
+                                Rifiuta
+                            </button>
+                        ` : ''}
+                        ${(isAdmin || isOwner) ? `
+                            <button onclick="deleteSuggestion('${suggestion.id}')" class="bg-gray-600 hover:bg-gray-500 text-white text-xs px-3 py-1 rounded transition-colors">
+                                ${isOwner ? 'Cancella' : 'Elimina'}
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function createUserSuggestionCard(suggestion) {
+            try {
+                console.log('🎨 Creazione card per suggerimento:', suggestion.id, suggestion.name);
+                
+                // Validazione dati
+                if (!suggestion.name || !suggestion.description) {
+                    console.warn('⚠️ Suggerimento con dati mancanti:', suggestion);
+                    return '';
+                }
+                
+                // Gestione sicura delle date
+                let date = 'Data non disponibile';
+                try {
+                    if (suggestion.createdAt && suggestion.createdAt.toDate) {
+                        date = suggestion.createdAt.toDate().toLocaleDateString('it-IT', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                    } else if (suggestion.timestamp) {
+                        date = new Date(suggestion.timestamp).toLocaleDateString('it-IT', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                    } else if (suggestion.createdAt) {
+                        // Se createdAt è un timestamp normale
+                        date = new Date(suggestion.createdAt).toLocaleDateString('it-IT', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                    }
+                } catch (dateError) {
+                    console.warn('⚠️ Errore nel parsing della data:', dateError);
+                    date = 'Data non disponibile';
+                }
+
+                const statusBadge = getStatusBadge(suggestion.status || 'pending');
+
+                return `
+                    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6 hover:bg-gray-800/70 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-white mb-2">${escapeHtml(suggestion.name || 'Nome non disponibile')}</h3>
+                                <p class="text-gray-300 mb-3 leading-relaxed">${escapeHtml(suggestion.description || 'Descrizione non disponibile')}</p>
+                            </div>
+                            ${statusBadge}
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 mr-2">
+                                    <path d="M3 3h18v18H3z"></path>
+                                    <path d="M9 9h6v6H9z"></path>
+                                </svg>
+                                <span class="text-sm text-gray-400">Categoria:</span>
+                                <span class="text-white ml-2 font-medium">${escapeHtml(suggestion.category || 'N/A')}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 mr-2">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+                                </svg>
+                                <span class="text-sm text-gray-400">Paese:</span>
+                                <span class="text-white ml-2 font-medium">${escapeHtml(suggestion.country || 'N/A')}</span>
+                            </div>
+                        </div>
+                        
+                        ${suggestion.website ? `
+                            <div class="mb-4">
+                                <div class="flex items-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 mr-2">
+                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                    </svg>
+                                    <span class="text-sm text-gray-400">Website:</span>
+                                </div>
+                                <a href="${escapeHtml(suggestion.website)}" target="_blank" rel="noopener noreferrer" 
+                                   class="inline-flex items-center text-green-400 hover:text-green-300 underline transition-colors">
+                                    ${escapeHtml(suggestion.website)}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </a>
+                            </div>
+                        ` : ''}
+                        
+                        ${suggestion.features ? `
+                            <div class="mb-4">
+                                <div class="flex items-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 mr-2">
+                                        <path d="M9 12l2 2 4-4"></path>
+                                        <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"></path>
+                                        <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"></path>
+                                        <path d="M12 3c0 1-1 2-2 2s-2 1-2 2 1 2 2 2 2-1 2-2 1-2 2-2 2-1 2-2-1-2-2-2z"></path>
+                                        <path d="M12 21c0-1-1-2-2-2s-2-1-2-2 1-2 2-2 2 1 2 2 1 2 2 2 2-1 2-2-1-2-2-2z"></path>
+                                    </svg>
+                                    <span class="text-sm text-gray-400">Caratteristiche:</span>
+                                </div>
+                                <p class="text-white text-sm leading-relaxed">${escapeHtml(suggestion.features)}</p>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="flex justify-between items-center pt-3 border-t border-gray-700">
+                            <div class="text-xs text-gray-500">
+                                Suggerito il ${date}
+                            </div>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                ${escapeHtml(suggestion.userName || suggestion.userEmail || 'Utente sconosciuto')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('❌ Errore nella creazione della card:', error);
+                return `
+                    <div class="bg-red-900/20 border border-red-700 rounded-lg p-4">
+                        <p class="text-red-400">Errore nel caricamento del suggerimento</p>
+                    </div>
+                `;
+            }
+        }
+
+        function getStatusBadge(status) {
+            const statusMap = {
+                'pending': '<span class="inline-block bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded">In attesa</span>',
+                'approved': '<span class="inline-block bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded">Approvato</span>',
+                'rejected': '<span class="inline-block bg-red-500/20 text-red-400 text-xs px-2 py-1 rounded">Rifiutato</span>'
+            };
+            return statusMap[status] || statusMap['pending'];
+        }
+
+        async function approveSuggestion(id) {
+            try {
+                const { doc, updateDoc, serverTimestamp } = window.firebaseServices;
+                const suggestionRef = doc(window.firebaseDb, "aiSuggestions", id);
+                await updateDoc(suggestionRef, {
+                    status: 'approved',
+                    updatedAt: serverTimestamp()
+                });
+                showToast('Suggerimento approvato!');
+            } catch (error) {
+                console.error("Errore nell'approvare il suggerimento:", error);
+                showToast('Errore nell\'approvazione del suggerimento.');
+            }
+        }
+
+        async function rejectSuggestion(id) {
+            try {
+                const { doc, updateDoc, serverTimestamp } = window.firebaseServices;
+                const suggestionRef = doc(window.firebaseDb, "aiSuggestions", id);
+                await updateDoc(suggestionRef, {
+                    status: 'rejected',
+                    updatedAt: serverTimestamp()
+                });
+                showToast('Suggerimento rifiutato.');
+            } catch (error) {
+                console.error("Errore nel rifiutare il suggerimento:", error);
+                showToast('Errore nel rifiuto del suggerimento.');
+            }
+        }
+
+        async function deleteSuggestion(id) {
+            if (!currentUser) {
+                showToast('Devi essere autenticato per cancellare un suggerimento.');
+                return;
+            }
+
+            // Trova il suggerimento per verificare i permessi
+            const { doc, getDoc } = window.firebaseServices;
+            const suggestionRef = doc(window.firebaseDb, "aiSuggestions", id);
+            
+            try {
+                const suggestionDoc = await getDoc(suggestionRef);
+                if (!suggestionDoc.exists()) {
+                    showToast('Suggerimento non trovato.');
+                    return;
+                }
+
+                const suggestion = suggestionDoc.data();
+                const isAdmin = currentUser.email === 'admin@koda.ai' || currentUser.uid === 'admin';
+                const isOwner = suggestion.userId === currentUser.uid;
+
+                if (!isAdmin && !isOwner) {
+                    showToast('Non hai i permessi per cancellare questo suggerimento.');
+                    return;
+                }
+
+                const confirmMessage = isOwner ? 
+                    'Sei sicuro di voler cancellare il tuo suggerimento?' : 
+                    'Sei sicuro di voler eliminare questo suggerimento?';
+
+                if (confirm(confirmMessage)) {
+                    const { deleteDoc } = window.firebaseServices;
+                    await deleteDoc(suggestionRef);
+                    showToast(isOwner ? 'Suggerimento cancellato.' : 'Suggerimento eliminato.');
+                }
+            } catch (error) {
+                console.error("Errore nell'eliminare il suggerimento:", error);
+                showToast('Errore nell\'eliminazione del suggerimento.');
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // --- AI Suggestions Management (Firebase) ---
     </script>
 </body>
 </html>
