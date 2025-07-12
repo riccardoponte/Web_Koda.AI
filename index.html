@@ -1645,8 +1645,7 @@
             const LibrarySection = () => {
                 const [favoriteTools, setFavoriteTools] = useState([]);
 
-                useEffect(() => {
-                    // Ottieni i tool preferiti dall'utente corrente
+                const updateFavoriteTools = useCallback(() => {
                     if (window.userFavoriteToolIds && window.userFavoriteToolIds.size > 0) {
                         const favorites = tools.filter(tool => window.userFavoriteToolIds.has(tool.id));
                         setFavoriteTools(favorites);
@@ -1654,6 +1653,29 @@
                         setFavoriteTools([]);
                     }
                 }, [tools]);
+
+                useEffect(() => {
+                    // Aggiorna i tool preferiti quando cambiano i tools
+                    updateFavoriteTools();
+                }, [tools, updateFavoriteTools]);
+
+                // Ascolta i cambiamenti nei preferiti
+                useEffect(() => {
+                    const handleFavoritesUpdate = () => {
+                        updateFavoriteTools();
+                    };
+
+                    // Ascolta l'evento personalizzato
+                    window.addEventListener('favoritesUpdated', handleFavoritesUpdate);
+
+                    // Controlla anche periodicamente per sicurezza
+                    const interval = setInterval(updateFavoriteTools, 2000);
+
+                    return () => {
+                        window.removeEventListener('favoritesUpdated', handleFavoritesUpdate);
+                        clearInterval(interval);
+                    };
+                }, [updateFavoriteTools]);
 
                 if (favoriteTools.length === 0) {
                     return (
@@ -1696,9 +1718,8 @@
                                                     window.toggleFavorite(tool.id, e.target);
                                                     // Aggiorna la lista dopo la rimozione
                                                     setTimeout(() => {
-                                                        const updatedFavorites = tools.filter(t => window.userFavoriteToolIds.has(t.id));
-                                                        setFavoriteTools(updatedFavorites);
-                                                    }, 100);
+                                                        updateFavoriteTools();
+                                                    }, 200);
                                                 }
                                             }}
                                         >
@@ -1826,6 +1847,11 @@
                     userFavoriteToolIds.clear();
                     renderLibrarySection(); // Svuota la libreria
                     updateLikeButtonsUI(); // Resetta i pulsanti "mi piace"
+                    
+                    // Emetti evento per aggiornare i componenti React
+                    window.dispatchEvent(new CustomEvent('favoritesUpdated', {
+                        detail: { favoriteIds: [] }
+                    }));
                 }
             });
         }
@@ -2763,6 +2789,11 @@
                 console.log('Libreria aggiornata:', userFavoriteToolIds);
                 renderLibrarySection();
                 updateLikeButtonsUI();
+                
+                // Emetti evento per aggiornare i componenti React
+                window.dispatchEvent(new CustomEvent('favoritesUpdated', {
+                    detail: { favoriteIds: Array.from(userFavoriteToolIds) }
+                }));
             });
         }
 
