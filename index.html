@@ -770,6 +770,30 @@
         .chat-menu-btn:hover { background: rgba(255,255,255,0.1); border-color: #22c55e; }
         .chat-menu-btn.active { background: #22c55e; color: black; border-color: #22c55e; }
         
+        /* Stili per il pulsante Home nell'header */
+        .back-home-btn {
+            display: flex !important;
+            align-items: center;
+            gap: 6px;
+            background: rgba(34, 197, 94, 0.1) !important;
+            border-color: rgba(34, 197, 94, 0.3) !important;
+            color: #22c55e !important;
+            transition: all 0.3s !important;
+        }
+        
+        .back-home-btn:hover {
+            background: rgba(34, 197, 94, 0.2) !important;
+            border-color: rgba(34, 197, 94, 0.5) !important;
+            transform: translateY(-1px);
+        }
+        
+        /* Stili per il pulsante Home nel menu */
+        .back-home-menu-btn:hover {
+            background: rgba(34, 197, 94, 0.3) !important;
+            border-color: rgba(34, 197, 94, 0.7) !important;
+            transform: translateY(-1px);
+        }
+        
         /* RESPONSIVE STYLES FOR CHAT MENU */
         @media (max-width: 768px) {
             .chat-menu {
@@ -2187,7 +2211,7 @@
             );
         };
         
-        const WelcomeScreen = ({ onSendMessage, lang }) => {
+        const WelcomeScreen = ({ onSendMessage, lang, onBackToLanding }) => {
             const suggestions = {
                 it: [ "Consigliami un'AI per creare immagini", "Qual è la migliore AI per programmare?", "Quali sono le migliori AI del momento?"],
                 en: [ "Suggest an AI for creating images", "What's the best AI for coding?", "What are the top AIs right now?" ]
@@ -2197,6 +2221,41 @@
                     <div className="welcome-logo"><span style={{ color: 'var(--spotify-text)' }}>Koda</span><span style={{ color: 'var(--spotify-accent)' }}>.AI</span></div>
                     <div className="prompt-starter-container">
                         {suggestions[lang].map((text, i) => (<button key={i} className="prompt-starter-btn" onClick={() => onSendMessage(text)}>{text}</button>))}
+                    </div>
+                    {/* Pulsante Torna alla Home */}
+                    <div style={{marginTop: '40px', textAlign: 'center'}}>
+                        <button 
+                            onClick={onBackToLanding}
+                            style={{
+                                background: 'rgba(255,255,255,0.1)',
+                                border: '1px solid rgba(255,255,255,0.2)',
+                                color: 'white',
+                                padding: '12px 24px',
+                                borderRadius: '25px',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                margin: '0 auto'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.target.style.background = 'rgba(255,255,255,0.15)';
+                                e.target.style.borderColor = 'rgba(255,255,255,0.3)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.target.style.background = 'rgba(255,255,255,0.1)';
+                                e.target.style.borderColor = 'rgba(255,255,255,0.2)';
+                            }}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                            </svg>
+                            {lang === 'it' ? 'Torna alla Home' : 'Back to Home'}
+                        </button>
                     </div>
                 </div>
             );
@@ -2226,14 +2285,22 @@
                 const isNewChat = (conversations[activeConversationId]?.messages || []).length === 0;
                 const newTitle = inputText.substring(0, 30) + (inputText.length > 30 ? '...' : '');
                 
-                setConversations(prev => ({ 
-                    ...prev, 
-                    [activeConversationId]: { 
-                        ...prev[activeConversationId], 
-                        title: isNewChat ? newTitle : prev[activeConversationId].title, 
-                        messages: [...(prev[activeConversationId]?.messages || []), userMessage, loadingMessage] 
-                    } 
-                }));
+                // Aggiorna le conversazioni localmente
+                setConversations(prev => {
+                    const newConversations = { 
+                        ...prev, 
+                        [activeConversationId]: { 
+                            ...prev[activeConversationId], 
+                            title: isNewChat ? newTitle : prev[activeConversationId].title, 
+                            messages: [...(prev[activeConversationId]?.messages || []), userMessage, loadingMessage] 
+                        } 
+                    };
+                    
+                    // Usa debounce per il salvataggio
+                    debouncedSave(newConversations, activeConversationId);
+                    
+                    return newConversations;
+                });
                 
                 setIsLoading(true);
                 let currentModelMessageId = `model-${Date.now()}`;
@@ -2250,7 +2317,13 @@
                             const modelMsgIndex = currentMessages.findIndex(m => m.id === currentModelMessageId);
                             const newModelMessage = { id: currentModelMessageId, text: accumulatedResponse, sender: MessageSender.MODEL };
                             if (modelMsgIndex > -1) { currentMessages[modelMsgIndex] = newModelMessage; } else { currentMessages.push(newModelMessage); }
-                            return { ...prev, [activeConversationId]: { ...currentConv, messages: currentMessages } };
+                            
+                            const updatedConversations = { ...prev, [activeConversationId]: { ...currentConv, messages: currentMessages } };
+                            
+                            // Usa debounce per il salvataggio
+                            debouncedSave(updatedConversations, activeConversationId);
+                            
+                            return updatedConversations;
                         });
                     }
                 } catch (e) {
@@ -2260,20 +2333,36 @@
                     setConversations(prev => {
                        const currentConv = prev[activeConversationId];
                        if (!currentConv) return prev;
-                       return { ...prev, [activeConversationId]: { ...currentConv, messages: currentConv.messages.filter(m => m.sender !== MessageSender.LOADING).concat(errorMessage) } }
+                                               const updatedConversations = { ...prev, [activeConversationId]: { ...currentConv, messages: currentConv.messages.filter(m => m.sender !== MessageSender.LOADING).concat(errorMessage) } };
+                        
+                        // Usa debounce per il salvataggio
+                        debouncedSave(updatedConversations, activeConversationId);
+                        
+                        return updatedConversations;
                     });
                 } finally {
                     setIsLoading(false);
                     setConversations(prev => {
                         const currentConv = prev[activeConversationId];
                         if (!currentConv) return prev;
-                        return { ...prev, [activeConversationId]: { ...currentConv, messages: currentConv.messages.filter(m => m.sender !== MessageSender.LOADING) } }
+                        const updatedConversations = { ...prev, [activeConversationId]: { ...currentConv, messages: currentConv.messages.filter(m => m.sender !== MessageSender.LOADING) } };
+                        
+                        // Usa debounce per il salvataggio
+                        debouncedSave(updatedConversations, activeConversationId);
+                        
+                        return updatedConversations;
                     });
                     document.getElementById('chat-input')?.focus();
                 }
-            }, [activeConversationId, chatSession, lang, conversations]);
+            }, [activeConversationId, chatSession, lang, onConversationsChange]);
 
-            useEffect(() => { onConversationsChange(conversations, activeConversationId); }, [conversations, activeConversationId, onConversationsChange]);
+            // Rimuovo l'useEffect che causa il problema e gestisco il salvataggio direttamente
+            // useEffect(() => { 
+            //     // Salva le conversazioni in background senza bloccare l'UI
+            //     onConversationsChange(conversations, activeConversationId).catch(error => {
+            //         console.error('Errore nel salvataggio delle conversazioni:', error);
+            //     });
+            // }, [conversations, activeConversationId, onConversationsChange]);
             
             // 1. Disabilita lo scroll automatico della chat
             // useEffect(() => {
@@ -3096,8 +3185,12 @@
                             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
                         </button>
                         <div style={{flex: 1}}></div>
-                        <button id="back-to-landing-btn" className="chat-header-btn" title="Back to Home" onClick={onBackToLanding}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        <button id="back-to-landing-btn" className="chat-header-btn back-home-btn" title="Torna alla Home" onClick={onBackToLanding}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: 6}}>
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                            </svg>
+                            <span style={{fontSize: '14px', fontWeight: '500'}}>Home</span>
                         </button>
                     </header>
                     
@@ -3110,14 +3203,28 @@
                             </button>
                         </div>
                         <div className="chat-menu-right">
-                            {/* Pulsanti rimossi per ottimizzazione */}
+                            <button 
+                                className="chat-menu-btn back-home-menu-btn" 
+                                onClick={onBackToLanding}
+                                style={{
+                                    background: 'rgba(34, 197, 94, 0.2)',
+                                    border: '1px solid rgba(34, 197, 94, 0.5)',
+                                    color: '#22c55e'
+                                }}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: 6}}>
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                                </svg>
+                                {lang === 'it' ? 'Home' : 'Home'}
+                            </button>
                         </div>
                     </div>
                     <main>
                         {currentMode === 'assistant' ? (
                             !hasStartedChat ? (
                                 <>
-                                    <WelcomeScreen onSendMessage={handleSendMessage} lang={lang} />
+                                    <WelcomeScreen onSendMessage={handleSendMessage} lang={lang} onBackToLanding={onBackToLanding} />
                                     <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} lang={lang} />
                                 </>
                             ) : (
@@ -3128,6 +3235,42 @@
                                     <div style={{position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 50, background: 'rgba(20,20,20,0.85)'}}>
                                         <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} lang={lang} />
                                     </div>
+                                    {/* Pulsante flottante Torna alla Home */}
+                                    <button 
+                                        onClick={onBackToLanding}
+                                        style={{
+                                            position: 'fixed',
+                                            bottom: '100px',
+                                            right: '20px',
+                                            background: 'rgba(34, 197, 94, 0.9)',
+                                            border: 'none',
+                                            color: 'black',
+                                            width: '56px',
+                                            height: '56px',
+                                            borderRadius: '50%',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            boxShadow: '0 4px 12px rgba(34, 197, 94, 0.3)',
+                                            transition: 'all 0.3s',
+                                            zIndex: 60
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.target.style.transform = 'scale(1.1)';
+                                            e.target.style.boxShadow = '0 6px 16px rgba(34, 197, 94, 0.4)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.target.style.transform = 'scale(1)';
+                                            e.target.style.boxShadow = '0 4px 12px rgba(34, 197, 94, 0.3)';
+                                        }}
+                                        title={lang === 'it' ? 'Torna alla Home' : 'Back to Home'}
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                            <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                                        </svg>
+                                    </button>
                                 </>
                             )
                         ) : currentMode === 'history' ? (
@@ -3227,7 +3370,7 @@
 
             const { onAuthStateChanged } = window.firebaseServices;
             
-            onAuthStateChanged(window.firebaseAuth, (user) => {
+            onAuthStateChanged(window.firebaseAuth, async (user) => {
                 currentUser = user;
                 updateAuthUI(user);
                 
@@ -3235,6 +3378,19 @@
                     console.log('User signed in:', user.email);
                     loadUserData();
                     subscribeToFavorites(user); // NUOVO: Sottoscrivi ai preferiti
+                    
+                    // Migra le conversazioni dal localStorage a Firebase se necessario
+                    await migrateConversationsToFirebase();
+                    
+                    // Sincronizza le conversazioni se l'utente è nella chat
+                    if (document.getElementById('chat-view-container')) {
+                        loadConversations().then(() => {
+                            if (window.chatRoot) {
+                                // Forza il re-render della chat con le nuove conversazioni
+                                renderChatView();
+                            }
+                        });
+                    }
                     
                     // Aggiorna la sezione suggerimenti se è attiva
                     const activeSection = document.querySelector('.search-ai-section.active');
@@ -4331,30 +4487,260 @@
         const getStorageKey = () => `koda_landing_conversations`;
         const getActiveIdKey = () => `koda_landing_active_id`;
 
-        const loadConversations = () => {
+        // Funzione per ottenere l'ID utente corrente
+        const getCurrentUserId = () => {
+            const user = window.firebaseAuth?.currentUser;
+            return user ? user.uid : null;
+        };
+
+        // Funzione per ottenere la chiave di storage basata sull'utente
+        const getUserStorageKey = () => {
+            const userId = getCurrentUserId();
+            return userId ? `koda_conversations_${userId}` : getStorageKey();
+        };
+
+        const getUserActiveIdKey = () => {
+            const userId = getCurrentUserId();
+            return userId ? `koda_active_id_${userId}` : getActiveIdKey();
+        };
+
+        const loadConversations = async () => {
+            const userId = getCurrentUserId();
+            
+            if (userId) {
+                // Utente autenticato: carica da Firebase
+                try {
+                    const { collection, query, where, orderBy, getDocs, doc, getDoc } = window.firebaseServices;
+                    
+                    // Carica le conversazioni da Firestore
+                    const conversationsRef = collection(window.firebaseDb, 'conversations');
+                    const q = query(
+                        conversationsRef, 
+                        where('userId', '==', userId),
+                        orderBy('timestamp', 'desc')
+                    );
+                    
+                    const querySnapshot = await getDocs(q);
+                    conversations = {};
+                    
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        conversations[doc.id] = {
+                            id: doc.id,
+                            title: data.title,
+                            messages: data.messages || [],
+                            timestamp: data.timestamp?.toDate?.() || data.timestamp || Date.now(),
+                            lastUpdated: data.lastUpdated?.toDate?.() || data.lastUpdated || Date.now()
+                        };
+                    });
+
+                    // Carica l'ID della conversazione attiva
+                    const userDocRef = doc(window.firebaseDb, 'userSettings', userId);
+                    const userDoc = await getDoc(userDocRef);
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        activeConversationId = userData.activeConversationId && conversations[userData.activeConversationId] 
+                            ? userData.activeConversationId 
+                            : null;
+                    } else {
+                        activeConversationId = null;
+                    }
+
+                    console.log('🔥 Conversazioni caricate da Firebase:', Object.keys(conversations).length);
+                } catch (error) {
+                    console.error('❌ Errore nel caricamento delle conversazioni da Firebase:', error);
+                    // Fallback al localStorage
+                    loadFromLocalStorage();
+                }
+            } else {
+                // Utente non autenticato: usa localStorage
+                loadFromLocalStorage();
+            }
+
+            // Crea una nuova chat solo se necessario e se non siamo già in una chat
+            if ((Object.keys(conversations).length === 0 || !activeConversationId) && !document.getElementById('chat-view-container')) {
+                startNewChat(false);
+            }
+        };
+
+        const loadFromLocalStorage = () => {
             const saved = localStorage.getItem(getStorageKey());
             conversations = saved ? JSON.parse(saved) : {};
             const savedActiveId = localStorage.getItem(getActiveIdKey());
             activeConversationId = savedActiveId && conversations[savedActiveId] ? savedActiveId : null;
+        };
 
-            if (Object.keys(conversations).length === 0 || !activeConversationId) {
-                startNewChat(false); // Don't re-render yet
+        const saveConversations = async (newConversations, newActiveId) => {
+            // Aggiorna immediatamente lo stato locale per non bloccare l'UI
+            conversations = newConversations;
+            activeConversationId = newActiveId;
+            
+            const userId = getCurrentUserId();
+            
+            // Salva sempre nel localStorage come backup immediato
+            saveToLocalStorage();
+            
+            if (userId) {
+                // Utente autenticato: salva in Firebase in background
+                try {
+                    const { doc, setDoc, serverTimestamp } = window.firebaseServices;
+                    
+                    // Salva ogni conversazione in Firestore
+                    const savePromises = Object.entries(conversations).map(async ([conversationId, conversation]) => {
+                        const conversationRef = doc(window.firebaseDb, 'conversations', conversationId);
+                        return setDoc(conversationRef, {
+                            userId: userId,
+                            title: conversation.title,
+                            messages: conversation.messages,
+                            timestamp: conversation.timestamp,
+                            lastUpdated: serverTimestamp(),
+                            createdAt: conversation.createdAt || serverTimestamp()
+                        }, { merge: true });
+                    });
+
+                    // Salva l'ID della conversazione attiva nelle impostazioni utente
+                    const userSettingsRef = doc(window.firebaseDb, 'userSettings', userId);
+                    savePromises.push(setDoc(userSettingsRef, {
+                        activeConversationId: activeConversationId,
+                        lastUpdated: serverTimestamp()
+                    }, { merge: true }));
+
+                    // Esegui tutti i salvataggi in parallelo
+                    await Promise.all(savePromises);
+
+                    console.log('🔥 Conversazioni salvate in Firebase');
+                    // Mostra un toast di conferma solo se è la prima volta che l'utente salva
+                    if (!window.chatSavedNotificationShown) {
+                        showToast('Le tue chat sono ora sincronizzate nel cloud! ☁️');
+                        window.chatSavedNotificationShown = true;
+                    }
+                } catch (error) {
+                    console.error('❌ Errore nel salvataggio delle conversazioni in Firebase:', error);
+                    // Il localStorage è già stato salvato, quindi non perdiamo dati
+                }
             }
         };
 
-        const saveConversations = (newConversations, newActiveId) => {
-            conversations = newConversations;
-            activeConversationId = newActiveId;
+        const saveToLocalStorage = () => {
             localStorage.setItem(getStorageKey(), JSON.stringify(conversations));
             localStorage.setItem(getActiveIdKey(), activeConversationId);
         };
 
-        const startNewChat = (remountApp = true) => {
+        // Funzione per eliminare una singola conversazione da Firebase
+        const deleteConversationFromFirebase = async (conversationId) => {
+            const userId = getCurrentUserId();
+            if (!userId) return;
+
+            try {
+                const { doc, deleteDoc } = window.firebaseServices;
+                const conversationRef = doc(window.firebaseDb, 'conversations', conversationId);
+                await deleteDoc(conversationRef);
+                console.log('🔥 Conversazione eliminata da Firebase:', conversationId);
+            } catch (error) {
+                console.error('❌ Errore nell\'eliminazione della conversazione da Firebase:', error);
+            }
+        };
+
+        // Funzione per eliminare tutte le conversazioni da Firebase
+        const deleteAllConversationsFromFirebase = async () => {
+            const userId = getCurrentUserId();
+            if (!userId) {
+                // Se non c'è utente autenticato, elimina solo dal localStorage
+                localStorage.removeItem(getStorageKey());
+                localStorage.removeItem(getActiveIdKey());
+                return;
+            }
+
+            try {
+                const { collection, query, where, getDocs, doc, deleteDoc } = window.firebaseServices;
+                
+                // Ottieni tutte le conversazioni dell'utente
+                const conversationsRef = collection(window.firebaseDb, 'conversations');
+                const q = query(conversationsRef, where('userId', '==', userId));
+                const querySnapshot = await getDocs(q);
+                
+                // Elimina ogni conversazione
+                const deletePromises = querySnapshot.docs.map(doc => deleteDoc(doc.ref));
+                await Promise.all(deletePromises);
+                
+                // Elimina anche le impostazioni utente
+                const userSettingsRef = doc(window.firebaseDb, 'userSettings', userId);
+                await deleteDoc(userSettingsRef);
+                
+                console.log('🔥 Tutte le conversazioni eliminate da Firebase');
+            } catch (error) {
+                console.error('❌ Errore nell\'eliminazione di tutte le conversazioni da Firebase:', error);
+                // Fallback: elimina dal localStorage
+                localStorage.removeItem(getStorageKey());
+                localStorage.removeItem(getActiveIdKey());
+            }
+        };
+
+        // Funzione per migrare le conversazioni dal localStorage a Firebase
+        const migrateConversationsToFirebase = async () => {
+            const userId = getCurrentUserId();
+            if (!userId) return;
+
+            try {
+                // Controlla se ci sono conversazioni nel localStorage
+                const savedConversations = localStorage.getItem(getStorageKey());
+                if (!savedConversations) return;
+
+                const localConversations = JSON.parse(savedConversations);
+                if (Object.keys(localConversations).length === 0) return;
+
+                console.log('🔄 Migrazione conversazioni dal localStorage a Firebase...');
+
+                const { doc, setDoc, serverTimestamp } = window.firebaseServices;
+                
+                // Migra ogni conversazione
+                for (const [conversationId, conversation] of Object.entries(localConversations)) {
+                    const conversationRef = doc(window.firebaseDb, 'conversations', conversationId);
+                    await setDoc(conversationRef, {
+                        userId: userId,
+                        title: conversation.title,
+                        messages: conversation.messages || [],
+                        timestamp: conversation.timestamp || Date.now(),
+                        lastUpdated: serverTimestamp(),
+                        createdAt: conversation.createdAt || serverTimestamp(),
+                        migrated: true
+                    }, { merge: true });
+                }
+
+                // Migra anche l'ID della conversazione attiva
+                const savedActiveId = localStorage.getItem(getActiveIdKey());
+                if (savedActiveId && localConversations[savedActiveId]) {
+                    const userSettingsRef = doc(window.firebaseDb, 'userSettings', userId);
+                    await setDoc(userSettingsRef, {
+                        activeConversationId: savedActiveId,
+                        lastUpdated: serverTimestamp()
+                    }, { merge: true });
+                }
+
+                // Pulisci il localStorage dopo la migrazione
+                localStorage.removeItem(getStorageKey());
+                localStorage.removeItem(getActiveIdKey());
+
+                console.log('✅ Migrazione completata con successo');
+                showToast('Le tue conversazioni sono state sincronizzate! 🔄');
+            } catch (error) {
+                console.error('❌ Errore nella migrazione delle conversazioni:', error);
+            }
+        };
+
+        const startNewChat = async (remountApp = true) => {
             const newId = `chat-${Date.now()}`;
             const t = translations[currentLang];
-            conversations[newId] = { id: newId, title: t.newChatTitle, messages: [], timestamp: Date.now() };
+            conversations[newId] = { 
+                id: newId, 
+                title: t.newChatTitle, 
+                messages: [], 
+                timestamp: Date.now(),
+                createdAt: Date.now()
+            };
             activeConversationId = newId;
-            saveConversations(conversations, activeConversationId);
+            // Salva in background e continua immediatamente
+            debouncedSave(conversations, activeConversationId);
             if (remountApp) {
                 renderChatView();
             }
@@ -4363,12 +4749,55 @@
 
         const renderSideMenu = () => {
             const sortedConversations = Object.values(conversations).sort((a, b) => b.timestamp - a.timestamp);
-            conversationListContainer.innerHTML = sortedConversations.map(conv => `
-                <button class="conversation-item ${conv.id === activeConversationId ? 'active' : ''}" data-action="select-conversation" data-id="${conv.id}">
-                    ${conv.title}
-                </button>
-            `).join('');
+            const userId = getCurrentUserId();
+            const syncStatus = userId ? '☁️ Sincronizzato' : '📱 Solo locale';
+            const savingIndicator = window.isSavingConversations ? '💾 Salvando...' : '';
+            
+            conversationListContainer.innerHTML = `
+                <div class="text-xs text-gray-400 mb-2 px-3 py-1 bg-gray-800/50 rounded">
+                    ${syncStatus} ${savingIndicator}
+                </div>
+                ${sortedConversations.map(conv => `
+                    <button class="conversation-item ${conv.id === activeConversationId ? 'active' : ''}" data-action="select-conversation" data-id="${conv.id}">
+                        ${conv.title}
+                    </button>
+                `).join('')}
+            `;
             translatePage(currentLang);
+        };
+        
+        // Rendi la funzione disponibile globalmente
+        window.renderSideMenu = renderSideMenu;
+
+        // Funzione di debounce per il salvataggio
+        let saveTimeout = null;
+        let isSaving = false;
+        const debouncedSave = (conversations, activeId) => {
+            if (saveTimeout) {
+                clearTimeout(saveTimeout);
+            }
+            
+            // Mostra indicatore di salvataggio
+            if (!isSaving) {
+                isSaving = true;
+                window.isSavingConversations = true;
+                if (window.renderSideMenu) {
+                    window.renderSideMenu();
+                }
+            }
+            
+            saveTimeout = setTimeout(() => {
+                saveConversations(conversations, activeId).catch(error => {
+                    console.error('Errore nel salvataggio delle conversazioni:', error);
+                }).finally(() => {
+                    // Nascondi indicatore di salvataggio
+                    isSaving = false;
+                    window.isSavingConversations = false;
+                    if (window.renderSideMenu) {
+                        window.renderSideMenu();
+                    }
+                });
+            }, 1000); // Salva dopo 1 secondo di inattività
         };
 
         const toggleSideMenu = (show) => {
@@ -4398,7 +4827,7 @@
             `;
         }
 
-        function handleSearchSubmit(event) {
+        async function handleSearchSubmit(event) {
             event.preventDefault();
             const input = document.getElementById('search-input');
             const query = input.value.trim();
@@ -4410,7 +4839,10 @@
 
         function renderChatView(initialQuery = null) {
             unmountReactApp();
-            loadConversations(); 
+            // Carica le conversazioni in background
+            loadConversations().catch(error => {
+                console.error('Errore nel caricamento delle conversazioni:', error);
+            });
 
             mainContentWrapper.innerHTML = `
                 <section id="chat-view-container" class="relative w-full h-screen flex flex-col overflow-hidden">
@@ -4549,19 +4981,20 @@
                 case 'delete-all-chats':
                     const t = translations[currentLang];
                     if (confirm(t.confirmDeleteAll)) {
-                        conversations = {};
-                        activeConversationId = null;
-                        localStorage.removeItem(getStorageKey());
-                        localStorage.removeItem(getActiveIdKey());
-                        renderView(searchTemplate);
-                        showToast(t.deleteAllSuccess + ' ✔');
+                        deleteAllConversationsFromFirebase().then(() => {
+                            conversations = {};
+                            activeConversationId = null;
+                            renderView(searchTemplate);
+                            showToast(t.deleteAllSuccess + ' ✔');
+                        });
                     }
                     break;
                 case 'select-conversation':
                     const newActiveId = actionTarget.dataset.id;
                     if (newActiveId !== activeConversationId) {
                         activeConversationId = newActiveId;
-                        saveConversations(conversations, activeConversationId);
+                        // Salva in background e renderizza immediatamente
+                        debouncedSave(conversations, activeConversationId);
                         renderChatView();
                     }
                     toggleSideMenu(false);
