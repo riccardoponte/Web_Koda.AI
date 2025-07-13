@@ -353,6 +353,248 @@
         .search-ai-btn { background: #22c55e; color: black; border: none; border-radius: 12px; padding: 16px 32px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
         .search-ai-btn:hover { background: #16a34a; transform: translateY(-2px); }
         
+        /* RESPONSIVE STYLES FOR MOBILE */
+        @media (max-width: 768px) {
+            #sections-container {
+                padding: 20px 0;
+                overflow-x: hidden;
+            }
+            
+            #sections-container .max-w-7xl {
+                padding: 0 16px;
+            }
+            
+            .section-nav {
+                flex-direction: column;
+                gap: 12px;
+                margin: 20px 0;
+                padding: 0 16px;
+            }
+            
+            .section-nav-btn {
+                padding: 10px 16px;
+                font-size: 14px;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .search-ai-container {
+                max-width: 100%;
+                margin: 20px auto;
+                padding: 0 16px;
+            }
+            
+            .search-ai-form {
+                flex-direction: column;
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+            
+            .search-ai-input {
+                padding: 14px 16px;
+                font-size: 16px;
+            }
+            
+            .search-ai-btn {
+                padding: 14px 24px;
+                font-size: 16px;
+                width: 100%;
+            }
+            
+            .search-result-card {
+                padding: 16px;
+                margin-bottom: 16px;
+            }
+            
+            .library-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                padding: 0 16px;
+            }
+            
+            .library-card {
+                padding: 16px;
+            }
+            
+            /* Responsive for AI suggestions form */
+            .ai-suggestions-section .grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .ai-suggestions-section .space-y-6 > div {
+                margin-bottom: 16px;
+            }
+            
+            /* Responsive for user search form */
+            #user-search-form {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            #user-search-form input {
+                padding: 14px 16px;
+                font-size: 16px;
+            }
+            
+            #user-search-form button {
+                padding: 14px 24px;
+                font-size: 16px;
+                width: 100%;
+            }
+            
+            /* Responsive for filters dropdown */
+            .filters-dropdown-container {
+                padding: 0 16px;
+            }
+            
+            .filters-dropdown-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+            
+            .filters-dropdown-content {
+                left: 0;
+                right: 0;
+                min-width: auto;
+                margin: 8px 16px 0 16px;
+            }
+            
+            /* Responsive for user profile view */
+            #user-profile-view {
+                padding: 16px;
+                margin: 0 16px;
+            }
+            
+            #user-profile-view .flex {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            #user-profile-view .flex > div:first-child {
+                text-align: center;
+            }
+            
+            /* Responsive for suggestions list */
+            #suggestions-list .space-y-4 > div {
+                padding: 16px;
+                margin: 0 16px 16px 16px;
+            }
+            
+            /* Responsive for user search results */
+            #user-search-results .space-y-4 > div {
+                padding: 16px;
+                margin: 0 16px 16px 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .section-nav {
+                gap: 8px;
+                margin: 16px 0;
+                padding: 0 12px;
+            }
+            
+            .section-nav-btn {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+            
+            .search-ai-container {
+                padding: 0 12px;
+                margin: 16px auto;
+            }
+            
+            .search-ai-form {
+                gap: 8px;
+                margin-bottom: 16px;
+            }
+            
+            .search-ai-input {
+                padding: 12px 14px;
+                font-size: 16px;
+            }
+            
+            .search-ai-btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            .search-result-card {
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+            
+            .library-grid {
+                padding: 0 12px;
+                gap: 12px;
+            }
+            
+            .library-card {
+                padding: 12px;
+            }
+            
+            /* Responsive for AI suggestions form */
+            .ai-suggestions-section .bg-gray-800\/50 {
+                padding: 16px;
+                margin: 0 12px 16px 12px;
+            }
+            
+            /* Responsive for user search form */
+            #user-search-form {
+                gap: 8px;
+            }
+            
+            #user-search-form input {
+                padding: 12px 14px;
+                font-size: 16px;
+            }
+            
+            #user-search-form button {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            /* Responsive for filters dropdown */
+            .filters-dropdown-container {
+                padding: 0 12px;
+            }
+            
+            .filters-dropdown-btn {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+            
+            .filters-dropdown-content {
+                margin: 8px 12px 0 12px;
+                padding: 16px;
+            }
+            
+            /* Responsive for user profile view on small screens */
+            #user-profile-view {
+                padding: 12px;
+                margin: 0 12px;
+            }
+            
+            #user-profile-view .flex {
+                gap: 12px;
+            }
+            
+            /* Responsive for suggestions list on small screens */
+            #suggestions-list .space-y-4 > div {
+                padding: 12px;
+                margin: 0 12px 12px 12px;
+            }
+            
+            /* Responsive for user search results on small screens */
+            #user-search-results .space-y-4 > div {
+                padding: 12px;
+                margin: 0 12px 12px 12px;
+            }
+        }
+        
         /* Stili per i filtri categoria */
         .category-filters {
             margin-bottom: 2rem;
@@ -527,6 +769,388 @@
         .chat-menu-btn { background: none; border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; transition: all 0.3s; font-size: 14px; }
         .chat-menu-btn:hover { background: rgba(255,255,255,0.1); border-color: #22c55e; }
         .chat-menu-btn.active { background: #22c55e; color: black; border-color: #22c55e; }
+        
+        /* RESPONSIVE STYLES FOR CHAT MENU */
+        @media (max-width: 768px) {
+            .chat-menu {
+                flex-direction: column;
+                gap: 12px;
+                padding: 12px 16px;
+            }
+            
+            .chat-menu-left {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+                width: 100%;
+            }
+            
+            .chat-menu-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+                min-width: 80px;
+                text-align: center;
+            }
+            
+            .chat-menu-btn svg {
+                margin-right: 4px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .chat-menu {
+                padding: 8px 12px;
+                gap: 8px;
+            }
+            
+            .chat-menu-left {
+                gap: 6px;
+            }
+            
+            .chat-menu-btn {
+                padding: 5px 8px;
+                font-size: 11px;
+                min-width: 70px;
+            }
+        }
+        
+        /* RESPONSIVE STYLES FOR CHAT SECTIONS */
+        @media (max-width: 768px) {
+            /* Responsive per le sezioni della chat */
+            .search-section,
+            .library-section,
+            .suggestions-section,
+            .user-search-section {
+                padding: 12px !important;
+            }
+            
+            .search-section h2,
+            .library-section h2,
+            .suggestions-section h2,
+            .user-search-section h2 {
+                font-size: 1.5rem !important;
+            }
+            
+            .search-section p,
+            .library-section p,
+            .suggestions-section p,
+            .user-search-section p {
+                font-size: 0.875rem !important;
+            }
+            
+            /* Responsive per SearchAISection */
+            .search-section .search-dropdown-container {
+                width: 100%;
+            }
+            
+            .search-section .search-dropdown-container button {
+                width: 100%;
+                justify-content: center;
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+            
+            .search-section .search-dropdown-container .absolute {
+                left: 0;
+                right: 0;
+                min-width: auto;
+                margin: 8px 0 0 0;
+            }
+            
+            .search-section .search-dropdown-container .flex {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .search-section .search-dropdown-container input {
+                padding: 12px 14px;
+                font-size: 16px;
+            }
+            
+            .search-section .search-dropdown-container button[type="submit"] {
+                padding: 12px 20px;
+                font-size: 14px;
+                width: 100%;
+            }
+            
+            /* Responsive per LibrarySection */
+            .library-section .grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .library-section .bg-gray-800\/50 {
+                padding: 12px;
+            }
+            
+            .library-section .flex {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .library-section .w-12 {
+                width: 48px;
+                height: 48px;
+            }
+            
+            /* Responsive per SuggestionsSection */
+            .suggestions-section .space-y-4 > div {
+                padding: 12px;
+            }
+            
+            .suggestions-section .flex {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .suggestions-section .flex-wrap {
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            /* Responsive per UserSearchSection */
+            .user-search-section .flex {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .user-search-section input {
+                padding: 12px 14px;
+                font-size: 16px;
+            }
+            
+            .user-search-section button[type="submit"] {
+                padding: 12px 20px;
+                font-size: 14px;
+                width: 100%;
+            }
+            
+            .user-search-section .space-y-2 > div {
+                padding: 12px;
+            }
+            
+            .user-search-section .bg-gray-800\/50 {
+                padding: 12px;
+            }
+            
+            .user-search-section .flex.items-center {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+            
+            .user-search-section .w-10 {
+                width: 40px;
+                height: 40px;
+            }
+        }
+            
+            .search-dropdown-container button {
+                width: 100%;
+                justify-content: center;
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+            
+            .search-dropdown-container .absolute {
+                left: 0;
+                right: 0;
+                min-width: auto;
+                margin: 8px 0 0 0;
+            }
+            
+            .search-dropdown-container .flex {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .search-dropdown-container input {
+                padding: 12px 14px;
+                font-size: 16px;
+            }
+            
+            .search-dropdown-container button[type="submit"] {
+                padding: 12px 20px;
+                font-size: 14px;
+                width: 100%;
+            }
+            
+            /* Responsive per LibrarySection */
+            .library-section .grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .library-section .bg-gray-800\/50 {
+                padding: 12px;
+            }
+            
+            .library-section .flex {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .library-section .w-12 {
+                width: 48px;
+                height: 48px;
+            }
+            
+            /* Responsive per SuggestionsSection */
+            .suggestions-section .space-y-4 > div {
+                padding: 12px;
+            }
+            
+            .suggestions-section .flex {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .suggestions-section .flex-wrap {
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            /* Responsive per UserSearchSection */
+            .user-search-section .flex {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .user-search-section input {
+                padding: 12px 14px;
+                font-size: 16px;
+            }
+            
+            .user-search-section button[type="submit"] {
+                padding: 12px 20px;
+                font-size: 14px;
+                width: 100%;
+            }
+            
+            .user-search-section .space-y-2 > div {
+                padding: 12px;
+            }
+            
+            .user-search-section .bg-gray-800\/50 {
+                padding: 12px;
+            }
+            
+            .user-search-section .flex.items-center {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+            
+            .user-search-section .w-10 {
+                width: 40px;
+                height: 40px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            /* Responsive per SearchAISection su schermi molto piccoli */
+            .search-section .search-dropdown-container button {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+            
+            .search-section .search-dropdown-container input {
+                padding: 10px 12px;
+                font-size: 16px;
+            }
+            
+            .search-section .search-dropdown-container button[type="submit"] {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+            
+            /* Responsive per LibrarySection su schermi molto piccoli */
+            .library-section .bg-gray-800\/50 {
+                padding: 8px;
+            }
+            
+            .library-section .w-12 {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .library-section .text-lg {
+                font-size: 16px;
+            }
+            
+            .library-section .text-sm {
+                font-size: 12px;
+            }
+            
+            /* Responsive per SuggestionsSection su schermi molto piccoli */
+            .suggestions-section .space-y-4 > div {
+                padding: 8px;
+            }
+            
+            .suggestions-section .text-lg {
+                font-size: 16px;
+            }
+            
+            .suggestions-section .text-sm {
+                font-size: 12px;
+            }
+            
+            /* Responsive per UserSearchSection su schermi molto piccoli */
+            .user-search-section input {
+                padding: 10px 12px;
+                font-size: 16px;
+            }
+            
+            .user-search-section button[type="submit"] {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+            
+            .user-search-section .space-y-2 > div {
+                padding: 8px;
+            }
+            
+            .user-search-section .bg-gray-800\/50 {
+                padding: 8px;
+            }
+            
+            .user-search-section .w-10 {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .user-search-section .text-xl {
+                font-size: 18px;
+            }
+            
+            .user-search-section .text-lg {
+                font-size: 16px;
+            }
+            
+            /* Responsive per HistorySection su schermi molto piccoli */
+            .history-section .flex.justify-between {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+            
+            .history-section .flex.gap-2 {
+                justify-content: center;
+            }
+            
+            .history-section .space-y-3 > div {
+                padding: 12px;
+            }
+            
+            .history-section .flex.justify-between.items-start {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .history-section .text-2xl {
+                font-size: 1.5rem;
+            }
+        }
 
         /* STILI PER L'AUTENTICAZIONE FIREBASE */
         .auth-container {
@@ -597,6 +1221,35 @@
             
             .auth-container {
                 padding: 10px;
+            }
+            
+            /* Additional responsive fixes for sections */
+            #sections-container {
+                padding: 16px 0;
+            }
+            
+            #sections-container .max-w-7xl {
+                padding: 0 12px;
+            }
+            
+            .text-3xl.md\:text-4xl {
+                font-size: 1.75rem;
+            }
+            
+            .text-xl {
+                font-size: 1.125rem;
+            }
+            
+            .p-8 {
+                padding: 16px;
+            }
+            
+            .mb-12 {
+                margin-bottom: 2rem;
+            }
+            
+            .mb-8 {
+                margin-bottom: 1.5rem;
             }
         }
         .auth-input {
@@ -1788,7 +2441,7 @@
                 }, [showSearchDropdown]);
 
                 return (
-                    <div className="p-6">
+                    <div className="p-6 search-section">
                         <div className="flex justify-center mb-6">
                             <div className="relative search-dropdown-container">
                                 <button 
@@ -1985,7 +2638,7 @@
                 }
 
                 return (
-                    <div className="p-6">
+                    <div className="p-6 library-section">
                         <h2 className="text-2xl font-bold text-white mb-6 text-center">{lang === 'it' ? 'La tua libreria' : 'Your Library'}</h2>
                         <p className="text-gray-400 mb-6 text-center">{lang === 'it' ? 'I tuoi strumenti di intelligenza artificiale preferiti' : 'Your favorite artificial intelligence tools'}</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -2026,7 +2679,415 @@
                 );
             };
 
+            // Componente per la sezione Suggerimenti AI
+            const SuggestionsSection = () => {
+                const [suggestions, setSuggestions] = useState([]);
+                const [loading, setLoading] = useState(true);
 
+                useEffect(() => {
+                    loadPublicSuggestions();
+                }, []);
+
+                const loadPublicSuggestions = async () => {
+                    setLoading(true);
+                    try {
+                        if (window.firebaseDb && window.firebaseServices) {
+                            const { collection, query, orderBy, limit, getDocs } = window.firebaseServices;
+                            const suggestionsRef = collection(window.firebaseDb, 'ai-suggestions');
+                            const q = query(suggestionsRef, orderBy('timestamp', 'desc'), limit(10));
+                            const querySnapshot = await getDocs(q);
+                            
+                            const suggestionsData = [];
+                            querySnapshot.forEach((doc) => {
+                                suggestionsData.push({ id: doc.id, ...doc.data() });
+                            });
+                            
+                            setSuggestions(suggestionsData);
+                        }
+                    } catch (error) {
+                        console.error('Error loading suggestions:', error);
+                    } finally {
+                        setLoading(false);
+                    }
+                };
+
+                if (loading) {
+                    return (
+                        <div className="p-6 text-center">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500 mx-auto"></div>
+                            <p className="text-gray-400 mt-2">{lang === 'it' ? 'Caricamento suggerimenti...' : 'Loading suggestions...'}</p>
+                        </div>
+                    );
+                }
+
+                return (
+                    <div className="p-6 suggestions-section">
+                        <h2 className="text-2xl font-bold text-white mb-6 text-center">{lang === 'it' ? 'Suggerimenti AI' : 'AI Suggestions'}</h2>
+                        <p className="text-gray-400 mb-6 text-center">{lang === 'it' ? 'Suggerimenti recenti dalla community' : 'Recent suggestions from the community'}</p>
+                        
+                        {suggestions.length === 0 ? (
+                            <div className="text-center py-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-4 text-gray-500">
+                                    <path d="M9 12l2 2 4-4"></path>
+                                    <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"></path>
+                                    <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"></path>
+                                    <path d="M12 3c0 1-1 2-2 2s-2 1-2 2 1 2 2 2 2-1 2-2 1-2 2-2 2-1 2-2-1-2-2-2z"></path>
+                                    <path d="M12 21c0-1-1-2-2-2s-2-1-2-2 1-2 2-2 2 1 2 2 1 2 2 2 2-1 2-2-1-2-2-2z"></path>
+                                </svg>
+                                <p className="text-gray-500">{lang === 'it' ? 'Nessun suggerimento ancora' : 'No suggestions yet'}</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-4">
+                                {suggestions.map((suggestion) => (
+                                    <div key={suggestion.id} className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+                                        <div className="flex justify-between items-start mb-3">
+                                            <h3 className="text-lg font-semibold text-white">{suggestion.aiName}</h3>
+                                            <span className="inline-block bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded">
+                                                {suggestion.category || 'N/A'}
+                                            </span>
+                                        </div>
+                                        <p className="text-gray-300 text-sm mb-3">{suggestion.description}</p>
+                                        <div className="flex flex-wrap gap-2 mb-3">
+                                            {suggestion.website && (
+                                                <a href={suggestion.website} target="_blank" rel="noopener noreferrer" 
+                                                   className="inline-block bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded hover:bg-blue-500/30 transition-colors">
+                                                    🌐 {lang === 'it' ? 'Sito Web' : 'Website'}
+                                                </a>
+                                            )}
+                                            {suggestion.country && (
+                                                <span className="inline-block bg-purple-500/20 text-purple-400 text-xs px-2 py-1 rounded">
+                                                    🌍 {suggestion.country}
+                                                </span>
+                                            )}
+                                        </div>
+                                        {suggestion.features && (
+                                            <p className="text-gray-400 text-xs mb-2">
+                                                <strong>{lang === 'it' ? 'Caratteristiche:' : 'Features:'}</strong> {suggestion.features}
+                                            </p>
+                                        )}
+                                        <div className="text-xs text-gray-500">
+                                            {lang === 'it' ? 'Suggerito da:' : 'Suggested by:'} {suggestion.userNickname || suggestion.userEmail || 'Anonimo'}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            // Componente per la sezione Ricerca Utenti
+            const UserSearchSection = () => {
+                const [searchQuery, setSearchQuery] = useState('');
+                const [searchResults, setSearchResults] = useState([]);
+                const [selectedUser, setSelectedUser] = useState(null);
+                const [userSuggestions, setUserSuggestions] = useState([]);
+                const [loading, setLoading] = useState(false);
+
+                const handleUserSearch = async (e) => {
+                    e.preventDefault();
+                    if (!searchQuery.trim()) return;
+
+                    setLoading(true);
+                    try {
+                        if (window.firebaseDb && window.firebaseServices) {
+                            const { collection, query, where, getDocs } = window.firebaseServices;
+                            const usersRef = collection(window.firebaseDb, 'users');
+                            const q = query(usersRef, where('nickname', '>=', searchQuery), where('nickname', '<=', searchQuery + '\uf8ff'));
+                            const querySnapshot = await getDocs(q);
+                            
+                            const results = [];
+                            querySnapshot.forEach((doc) => {
+                                results.push({ id: doc.id, ...doc.data() });
+                            });
+                            
+                            setSearchResults(results);
+                        }
+                    } catch (error) {
+                        console.error('Error searching users:', error);
+                    } finally {
+                        setLoading(false);
+                    }
+                };
+
+                const loadUserSuggestions = async (userId) => {
+                    try {
+                        if (window.firebaseDb && window.firebaseServices) {
+                            const { collection, query, where, orderBy, getDocs } = window.firebaseServices;
+                            const suggestionsRef = collection(window.firebaseDb, 'ai-suggestions');
+                            const q = query(suggestionsRef, where('userId', '==', userId), orderBy('timestamp', 'desc'));
+                            const querySnapshot = await getDocs(q);
+                            
+                            const suggestions = [];
+                            querySnapshot.forEach((doc) => {
+                                suggestions.push({ id: doc.id, ...doc.data() });
+                            });
+                            
+                            setUserSuggestions(suggestions);
+                        }
+                    } catch (error) {
+                        console.error('Error loading user suggestions:', error);
+                    }
+                };
+
+                const selectUser = (user) => {
+                    setSelectedUser(user);
+                    loadUserSuggestions(user.id);
+                };
+
+                const closeUserProfile = () => {
+                    setSelectedUser(null);
+                    setUserSuggestions([]);
+                };
+
+                return (
+                    <div className="p-6 user-search-section">
+                        <h2 className="text-2xl font-bold text-white mb-6 text-center">{lang === 'it' ? 'Cerca Utenti' : 'Search Users'}</h2>
+                        <p className="text-gray-400 mb-6 text-center">{lang === 'it' ? 'Trova altri utenti e scopri le AI che hanno suggerito' : 'Find other users and discover the AIs they suggested'}</p>
+                        
+                        {/* Form di ricerca */}
+                        <form onSubmit={handleUserSearch} className="mb-6">
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    placeholder={lang === 'it' ? 'Inserisci il nickname dell\'utente...' : 'Enter user nickname...'}
+                                    className="flex-1 bg-gray-700/50 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none text-sm"
+                                />
+                                <button type="submit" className="bg-green-500 hover:bg-green-600 text-black px-4 py-2 rounded font-semibold transition-colors text-sm">
+                                    {lang === 'it' ? 'Cerca' : 'Search'}
+                                </button>
+                            </div>
+                        </form>
+
+                        {/* Risultati della ricerca */}
+                        {loading && (
+                            <div className="text-center py-4">
+                                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-green-500 mx-auto"></div>
+                            </div>
+                        )}
+
+                        {!loading && searchResults.length > 0 && !selectedUser && (
+                            <div className="space-y-2">
+                                <h3 className="text-lg font-semibold text-white mb-3">{lang === 'it' ? 'Risultati:' : 'Results:'}</h3>
+                                {searchResults.map((user) => (
+                                    <div key={user.id} 
+                                         className="bg-gray-800/50 border border-gray-700 rounded-lg p-3 cursor-pointer hover:border-green-500 transition-all"
+                                         onClick={() => selectUser(user)}>
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-black font-bold">
+                                                {(user.nickname || user.email || 'U').charAt(0).toUpperCase()}
+                                            </div>
+                                            <div>
+                                                <h4 className="text-white font-semibold">{user.nickname || 'Anonimo'}</h4>
+                                                <p className="text-gray-400 text-sm">{user.email}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Profilo utente selezionato */}
+                        {selectedUser && (
+                            <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+                                <div className="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h3 className="text-xl font-bold text-white mb-1">{selectedUser.nickname || 'Anonimo'}</h3>
+                                        <p className="text-green-400 font-semibold">@{selectedUser.nickname}</p>
+                                        <p className="text-gray-400 text-sm">{selectedUser.email}</p>
+                                    </div>
+                                    <button onClick={closeUserProfile} className="text-gray-400 hover:text-white transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                                
+                                <div>
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h4 className="text-lg font-bold text-white">🤖 {lang === 'it' ? 'AI Suggerite' : 'Suggested AIs'}</h4>
+                                        <span className="text-sm text-gray-400">{userSuggestions.length} {lang === 'it' ? 'suggerimenti' : 'suggestions'}</span>
+                                    </div>
+                                    
+                                    {userSuggestions.length === 0 ? (
+                                        <div className="text-center py-8">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-4 text-gray-500">
+                                                <path d="M9 12l2 2 4-4"></path>
+                                                <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"></path>
+                                                <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"></path>
+                                                <path d="M12 3c0 1-1 2-2 2s-2 1-2 2 1 2 2 2 2-1 2-2 1-2 2-2 2-1 2-2-1-2-2-2z"></path>
+                                                <path d="M12 21c0-1-1-2-2-2s-2-1-2-2 1-2 2-2 2 1 2 2 1 2 2 2 2-1 2-2-1-2-2-2z"></path>
+                                            </svg>
+                                            <p className="text-gray-500">{lang === 'it' ? 'Nessuna AI suggerita' : 'No AIs suggested'}</p>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-3">
+                                            {userSuggestions.map((suggestion) => (
+                                                <div key={suggestion.id} className="bg-gray-700/30 border border-gray-600 rounded p-3">
+                                                    <div className="flex justify-between items-start mb-2">
+                                                        <h5 className="text-white font-semibold">{suggestion.aiName}</h5>
+                                                        <span className="inline-block bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded">
+                                                            {suggestion.category || 'N/A'}
+                                                        </span>
+                                                    </div>
+                                                    <p className="text-gray-300 text-sm">{suggestion.description}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            // Componente per la sezione Cronologia Chat
+            const HistorySection = () => {
+                const [conversations, setConversations] = useState([]);
+                const [loading, setLoading] = useState(true);
+
+                useEffect(() => {
+                    loadConversations();
+                }, []);
+
+                const loadConversations = () => {
+                    // Carica le conversazioni dal localStorage o da Firebase
+                    const savedConversations = localStorage.getItem('chatConversations');
+                    if (savedConversations) {
+                        try {
+                            const parsed = JSON.parse(savedConversations);
+                            setConversations(Object.values(parsed));
+                        } catch (error) {
+                            console.error('Error parsing conversations:', error);
+                            setConversations([]);
+                        }
+                    } else {
+                        setConversations([]);
+                    }
+                    setLoading(false);
+                };
+
+                const deleteConversation = (conversationId) => {
+                    const savedConversations = localStorage.getItem('chatConversations');
+                    if (savedConversations) {
+                        try {
+                            const parsed = JSON.parse(savedConversations);
+                            delete parsed[conversationId];
+                            localStorage.setItem('chatConversations', JSON.stringify(parsed));
+                            loadConversations(); // Ricarica la lista
+                        } catch (error) {
+                            console.error('Error deleting conversation:', error);
+                        }
+                    }
+                };
+
+                const deleteAllConversations = () => {
+                    if (window.confirm(lang === 'it' ? 'Sei sicuro di voler eliminare tutte le conversazioni?' : 'Are you sure you want to delete all conversations?')) {
+                        localStorage.removeItem('chatConversations');
+                        setConversations([]);
+                    }
+                };
+
+                const startNewChat = () => {
+                    // Emetti un evento per iniziare una nuova chat
+                    window.dispatchEvent(new CustomEvent('startNewChat'));
+                };
+
+                if (loading) {
+                    return (
+                        <div className="p-6 text-center">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500 mx-auto"></div>
+                            <p className="text-gray-400 mt-2">{lang === 'it' ? 'Caricamento cronologia...' : 'Loading history...'}</p>
+                        </div>
+                    );
+                }
+
+                return (
+                    <div className="p-6 history-section">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-2xl font-bold text-white">{lang === 'it' ? 'Cronologia Chat' : 'Chat History'}</h2>
+                            <div className="flex gap-2">
+                                <button 
+                                    onClick={startNewChat}
+                                    className="bg-green-500 hover:bg-green-600 text-black px-4 py-2 rounded-lg font-semibold transition-colors text-sm"
+                                >
+                                    {lang === 'it' ? 'Nuova Chat' : 'New Chat'}
+                                </button>
+                                {conversations.length > 0 && (
+                                    <button 
+                                        onClick={deleteAllConversations}
+                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors text-sm"
+                                    >
+                                        {lang === 'it' ? 'Elimina Tutto' : 'Delete All'}
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                        
+                        {conversations.length === 0 ? (
+                            <div className="text-center py-12">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-6 text-gray-500">
+                                    <path d="M12 8v4l3 3"></path>
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+                                <h3 className="text-xl font-semibold text-white mb-2">{lang === 'it' ? 'Nessuna conversazione' : 'No conversations'}</h3>
+                                <p className="text-gray-400 mb-6">{lang === 'it' ? 'Inizia una nuova chat per vedere qui la cronologia' : 'Start a new chat to see history here'}</p>
+                                <button 
+                                    onClick={startNewChat}
+                                    className="bg-green-500 hover:bg-green-600 text-black px-6 py-3 rounded-lg font-semibold transition-colors"
+                                >
+                                    {lang === 'it' ? 'Inizia Chat' : 'Start Chat'}
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="space-y-3">
+                                {conversations.map((conversation) => (
+                                    <div key={conversation.id} className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 hover:border-green-500 transition-all">
+                                        <div className="flex justify-between items-start">
+                                            <div className="flex-1">
+                                                <h4 className="text-white font-semibold mb-1">
+                                                    {conversation.title || lang === 'it' ? 'Conversazione senza titolo' : 'Untitled conversation'}
+                                                </h4>
+                                                <p className="text-gray-400 text-sm mb-2">
+                                                    {conversation.messages && conversation.messages.length > 0 
+                                                        ? `${conversation.messages.length} ${lang === 'it' ? 'messaggi' : 'messages'}`
+                                                        : lang === 'it' ? 'Nessun messaggio' : 'No messages'
+                                                    }
+                                                </p>
+                                                {conversation.lastUpdated && (
+                                                    <p className="text-gray-500 text-xs">
+                                                        {new Date(conversation.lastUpdated).toLocaleDateString(lang === 'it' ? 'it-IT' : 'en-US', {
+                                                            year: 'numeric',
+                                                            month: 'short',
+                                                            day: 'numeric',
+                                                            hour: '2-digit',
+                                                            minute: '2-digit'
+                                                        })}
+                                                    </p>
+                                                )}
+                                            </div>
+                                            <button 
+                                                onClick={() => deleteConversation(conversation.id)}
+                                                className="text-red-400 hover:text-red-300 transition-colors ml-4"
+                                                title={lang === 'it' ? 'Elimina conversazione' : 'Delete conversation'}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <polyline points="3,6 5,6 21,6"></polyline>
+                                                    <path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2V6"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                );
+            };
 
             return (
                 <div id="chatbot-app-container" ref={chatContainerRef}>
@@ -2069,10 +3130,8 @@
                                     </div>
                                 </>
                             )
-                        ) : currentMode === 'search' ? (
-                            <SearchAISection />
-                        ) : currentMode === 'library' ? (
-                            <LibrarySection />
+                        ) : currentMode === 'history' ? (
+                            <HistorySection />
                         ) : null}
                         <div ref={messagesEndRef} />
                     </main>
@@ -2094,6 +3153,59 @@
                 const newAppElement = <React.StrictMode><App {...newProps} /></React.StrictMode>;
                 root.render(newAppElement);
             };
+            
+            // Funzione per sincronizzare i dati con le sezioni esterne
+            window.syncChatSections = () => {
+                // Forza il re-render dell'app per aggiornare i dati
+                const currentProps = { ...props };
+                const currentAppElement = <React.StrictMode><App {...currentProps} /></React.StrictMode>;
+                root.render(currentAppElement);
+            };
+            
+            // Gestione eventi per i pulsanti della chat
+            const handleChatMenuClick = (e) => {
+                const button = e.target.closest('.chat-menu-btn');
+                if (!button) return;
+                
+                const action = button.dataset.action;
+                const mode = button.dataset.mode;
+                
+                if (action === 'chat-mode' && mode) {
+                    // Aggiorna la modalità attiva
+                    const newProps = { ...props, initialMode: mode };
+                    const newAppElement = <React.StrictMode><App {...newProps} /></React.StrictMode>;
+                    root.render(newAppElement);
+                    
+                    // Aggiorna lo stato attivo dei pulsanti
+                    document.querySelectorAll('.chat-menu-btn').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                } else if (action === 'back-to-home') {
+                    // Torna alla pagina principale
+                    if (window.showLandingPage) {
+                        window.showLandingPage();
+                    }
+                }
+            };
+            
+            // Aggiungi event listener per i pulsanti del menu
+            setTimeout(() => {
+                const chatMenu = document.querySelector('.chat-menu');
+                if (chatMenu) {
+                    chatMenu.addEventListener('click', handleChatMenuClick);
+                }
+            }, 100);
+            
+            // Gestione evento per nuova chat
+            window.addEventListener('startNewChat', () => {
+                const newProps = { ...props, initialMode: 'assistant' };
+                const newAppElement = <React.StrictMode><App {...newProps} /></React.StrictMode>;
+                root.render(newAppElement);
+                
+                // Aggiorna lo stato attivo dei pulsanti
+                document.querySelectorAll('.chat-menu-btn').forEach(btn => btn.classList.remove('active'));
+                const assistantBtn = document.querySelector('[data-mode="assistant"]');
+                if (assistantBtn) assistantBtn.classList.add('active');
+            });
             
             return root;
         };
@@ -3557,6 +4669,11 @@
             const favoriteTools = aiToolsData.filter(tool => userFavoriteToolIds.has(tool.id));
             libraryGrid.innerHTML = favoriteTools.map(tool => createToolCardHTML(tool)).join('');
             lucide.createIcons(); // Ricrea le icone Lucide dopo aver aggiunto nuovo HTML
+            
+            // Sincronizza con la chat se è attiva
+            if (window.syncChatSections) {
+                window.syncChatSections();
+            }
         }
 
         async function toggleFavorite(toolId, buttonElement) {
@@ -3582,6 +4699,11 @@
                         createdAt: serverTimestamp()
                     });
                     showToast('Aggiunto alla libreria!');
+                }
+                
+                // Sincronizza con la chat se è attiva
+                if (window.syncChatSections) {
+                    window.syncChatSections();
                 }
             } catch (error) {
                 console.error("Errore nell'aggiornare i preferiti:", error);
@@ -4286,6 +5408,11 @@
                     createdAt: serverTimestamp(),
                     updatedAt: serverTimestamp()
                 });
+                
+                // Sincronizza con la chat se è attiva
+                if (window.syncChatSections) {
+                    window.syncChatSections();
+                }
             } catch (error) {
                 console.error("Errore nel salvare il suggerimento:", error);
                 showToast('Errore nell\'invio del suggerimento. Riprova.');
@@ -4358,6 +5485,11 @@
             noSuggestions.style.display = 'none';
             
             suggestionsList.innerHTML = suggestions.map(suggestion => createSuggestionCard(suggestion)).join('');
+            
+            // Sincronizza con la chat se è attiva
+            if (window.syncChatSections) {
+                window.syncChatSections();
+            }
         }
 
         function createSuggestionCard(suggestion) {
