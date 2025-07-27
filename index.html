@@ -136,6 +136,22 @@
         #chatbot-app-container { display: flex; flex-direction: column; height: 100%; flex-grow: 1; }
         .chat-header { padding: 16px; display: flex; align-items: center; width: 100%; z-index: 2; position: sticky; top: 0; }
         .chat-header-btn { background: none; border: none; color: var(--spotify-text-secondary); font-size: 24px; cursor: pointer; padding: 8px; }
+        /* NUOVO: Stile per il pulsante Torna Indietro */
+        .back-home-btn {
+            background-color: var(--spotify-card) !important;
+            color: var(--spotify-text) !important;
+            font-size: 14px !important;
+            font-weight: 500;
+            padding: 6px 12px !important;
+            border-radius: 20px;
+            display: flex !important;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s;
+        }
+        .back-home-btn:hover {
+            background-color: var(--spotify-bg-light) !important;
+        }
         #chatbot-app-container main { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; }
         #welcome-screen {
             position: relative; overflow: hidden; flex-grow: 1; display: flex; flex-direction: column;
@@ -426,68 +442,7 @@
                 margin-bottom: 16px;
             }
             
-            /* Responsive for user search form */
-            #user-search-form {
-                flex-direction: column;
-                gap: 12px;
-            }
-            
-            #user-search-form input {
-                padding: 14px 16px;
-                font-size: 16px;
-            }
-            
-            #user-search-form button {
-                padding: 14px 24px;
-                font-size: 16px;
-                width: 100%;
-            }
-            
-            /* Responsive for filters dropdown */
-            .filters-dropdown-container {
-                padding: 0 16px;
-            }
-            
-            .filters-dropdown-btn {
-                width: 100%;
-                justify-content: center;
-                padding: 12px 16px;
-                font-size: 14px;
-            }
-            
-            .filters-dropdown-content {
-                left: 0;
-                right: 0;
-                min-width: auto;
-                margin: 8px 16px 0 16px;
-            }
-            
-            /* Responsive for user profile view */
-            #user-profile-view {
-                padding: 16px;
-                margin: 0 16px;
-            }
-            
-            #user-profile-view .flex {
-                flex-direction: column;
-                gap: 16px;
-            }
-            
-            #user-profile-view .flex > div:first-child {
-                text-align: center;
-            }
-            
-            /* Responsive for suggestions list */
-            #suggestions-list .space-y-4 > div {
-                padding: 16px;
-                margin: 0 16px 16px 16px;
-            }
-            
-            /* Responsive for user search results */
-            #user-search-results .space-y-4 > div {
-                padding: 16px;
-                margin: 0 16px 16px 16px;
-            }
+            /* Stili CSS per la ricerca utenti rimossi */
         }
         
         @media (max-width: 480px) {
@@ -542,57 +497,7 @@
                 margin: 0 12px 16px 12px;
             }
             
-            /* Responsive for user search form */
-            #user-search-form {
-                gap: 8px;
-            }
-            
-            #user-search-form input {
-                padding: 12px 14px;
-                font-size: 16px;
-            }
-            
-            #user-search-form button {
-                padding: 12px 20px;
-                font-size: 14px;
-            }
-            
-            /* Responsive for filters dropdown */
-            .filters-dropdown-container {
-                padding: 0 12px;
-            }
-            
-            .filters-dropdown-btn {
-                padding: 10px 12px;
-                font-size: 13px;
-            }
-            
-            .filters-dropdown-content {
-                margin: 8px 12px 0 12px;
-                padding: 16px;
-            }
-            
-            /* Responsive for user profile view on small screens */
-            #user-profile-view {
-                padding: 12px;
-                margin: 0 12px;
-            }
-            
-            #user-profile-view .flex {
-                gap: 12px;
-            }
-            
-            /* Responsive for suggestions list on small screens */
-            #suggestions-list .space-y-4 > div {
-                padding: 12px;
-                margin: 0 12px 12px 12px;
-            }
-            
-            /* Responsive for user search results on small screens */
-            #user-search-results .space-y-4 > div {
-                padding: 12px;
-                margin: 0 12px 12px 12px;
-            }
+            /* Stili CSS responsive per la ricerca utenti rimossi */
         }
         
         /* Stili per i filtri categoria */
@@ -932,41 +837,7 @@
                 gap: 4px;
             }
             
-            /* Responsive per UserSearchSection */
-            .user-search-section .flex {
-                flex-direction: column;
-                gap: 8px;
-            }
-            
-            .user-search-section input {
-                padding: 12px 14px;
-                font-size: 16px;
-            }
-            
-            .user-search-section button[type="submit"] {
-                padding: 12px 20px;
-                font-size: 14px;
-                width: 100%;
-            }
-            
-            .user-search-section .space-y-2 > div {
-                padding: 12px;
-            }
-            
-            .user-search-section .bg-gray-800\/50 {
-                padding: 12px;
-            }
-            
-            .user-search-section .flex.items-center {
-                flex-direction: column;
-                gap: 8px;
-                text-align: center;
-            }
-            
-            .user-search-section .w-10 {
-                width: 40px;
-                height: 40px;
-            }
+            /* Stili CSS responsive per UserSearchSection rimossi */
         }
             
             .search-dropdown-container button {
@@ -1119,37 +990,7 @@
                 font-size: 12px;
             }
             
-            /* Responsive per UserSearchSection su schermi molto piccoli */
-            .user-search-section input {
-                padding: 10px 12px;
-                font-size: 16px;
-            }
-            
-            .user-search-section button[type="submit"] {
-                padding: 10px 16px;
-                font-size: 13px;
-            }
-            
-            .user-search-section .space-y-2 > div {
-                padding: 8px;
-            }
-            
-            .user-search-section .bg-gray-800\/50 {
-                padding: 8px;
-            }
-            
-            .user-search-section .w-10 {
-                width: 36px;
-                height: 36px;
-            }
-            
-            .user-search-section .text-xl {
-                font-size: 18px;
-            }
-            
-            .user-search-section .text-lg {
-                font-size: 16px;
-            }
+            /* Stili CSS responsive per UserSearchSection (small screens) rimossi */
             
             /* Responsive per HistorySection su schermi molto piccoli */
             .history-section .flex.justify-between {
@@ -1505,7 +1346,7 @@
                 <div class="flex justify-between items-center mb-8">
                     <button id="back-to-landing-sections-btn" class="bg-transparent border border-white/30 text-white hover:border-white/60 hover:bg-white/10 px-4 py-2 rounded-full transition-all duration-200">
                         <i data-lucide="arrow-left" class="inline-block w-4 h-4 mr-2"></i>
-                        Torna alla Home
+                        Torna alla home
                     </button>
                     <button id="close-sections-btn" class="bg-transparent border border-white/30 text-white hover:border-white/60 hover:bg-white/10 px-4 py-2 rounded-full transition-all duration-200">
                         <i data-lucide="x" class="inline-block w-4 h-4 mr-2"></i>
@@ -1519,8 +1360,7 @@
                     <button class="section-nav-btn" data-section="library" data-translate-key="library-nav">Libreria</button>
                     <!-- NUOVO: Pulsante per i Suggerimenti AI -->
                     <button class="section-nav-btn" data-section="ai-suggestions" data-translate-key="suggestions-nav">Suggerisci AI</button>
-                    <!-- NUOVO: Pulsante per la Ricerca Utenti -->
-                    <button class="section-nav-btn" data-section="user-search" data-translate-key="user-search-nav">Cerca Utenti</button>
+                    <!-- Pulsante Cerca Utenti rimosso -->
                 </div>
                 
                 <!-- Sezione Ricerca AI -->
@@ -1770,81 +1610,7 @@
                     </div>
                 </div>
 
-                <!-- NUOVO: Sezione Ricerca Utenti -->
-                <div id="user-search-section" class="search-ai-section">
-                    <div class="text-center mb-12">
-                        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-green-400">Cerca Utenti</h2>
-                        <p class="text-gray-300 max-w-2xl mx-auto">Trova altri utenti e scopri le AI che hanno suggerito</p>
-                    </div>
-                    
-                    <div class="max-w-4xl mx-auto">
-                        <!-- Form di ricerca utenti -->
-                        <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-8 mb-8">
-                            <h3 class="text-xl font-bold text-white mb-6">Cerca per nickname</h3>
-                            <form id="user-search-form" class="flex gap-4">
-                                <input type="text" id="user-search-input" 
-                                       class="flex-1 bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none transition-colors"
-                                       placeholder="Inserisci il nickname dell'utente...">
-                                <button type="submit" 
-                                        class="bg-green-500 hover:bg-green-600 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-200 hover:scale-105">
-                                    Cerca
-                                </button>
-                            </form>
-                        </div>
-                        
-                        <!-- Risultati della ricerca -->
-                        <div id="user-search-results" class="space-y-4">
-                            <!-- I risultati verranno popolati dinamicamente -->
-                        </div>
-                        
-                        <!-- Profilo utente selezionato -->
-                        <div id="user-profile-view" class="bg-gray-800/50 border border-gray-700 rounded-lg p-8" style="display: none;">
-                            <div class="flex justify-between items-start mb-6">
-                                <div>
-                                    <h3 id="selected-user-name" class="text-2xl font-bold text-white mb-2"></h3>
-                                    <p id="selected-user-nickname" class="text-green-400 font-semibold"></p>
-                                    <p id="selected-user-email" class="text-gray-400 text-sm mt-1"></p>
-                                </div>
-                                <button onclick="closeUserProfile()" class="text-gray-400 hover:text-white transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                                    </svg>
-                                </button>
-                            </div>
-                            
-                            <div id="user-suggestions-container">
-                                <div class="flex items-center justify-between mb-6">
-                                    <h4 class="text-xl font-bold text-white">🤖 AI Suggerite</h4>
-                                    <div class="flex items-center text-sm text-gray-400">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-                                            <path d="M9 12l2 2 4-4"></path>
-                                            <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"></path>
-                                            <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"></path>
-                                            <path d="M12 3c0 1-1 2-2 2s-2 1-2 2 1 2 2 2 2-1 2-2 1-2 2-2 2-1 2-2-1-2-2-2z"></path>
-                                            <path d="M12 21c0-1-1-2-2-2s-2-1-2-2 1-2 2-2 2 1 2 2 1 2 2 2 2-1 2-2-1-2-2-2z"></path>
-                                        </svg>
-                                        <span id="user-suggestions-count">0 suggerimenti</span>
-                                    </div>
-                                </div>
-                                <div id="user-suggestions-list" class="space-y-4">
-                                    <!-- I suggerimenti dell'utente verranno popolati dinamicamente -->
-                                </div>
-                                <div id="no-user-suggestions" class="text-center py-12 text-gray-400" style="display: none;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-6 text-gray-500">
-                                        <path d="M9 12l2 2 4-4"></path>
-                                        <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"></path>
-                                        <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"></path>
-                                        <path d="M12 3c0 1-1 2-2 2s-2 1-2 2 1 2 2 2 2-1 2-2 1-2 2-2 2-1 2-2-1-2-2-2z"></path>
-                                        <path d="M12 21c0-1-1-2-2-2s-2-1-2-2 1-2 2-2 2 1 2 2 1 2 2 2 2-1 2-2-1-2-2-2z"></path>
-                                    </svg>
-                                    <p class="text-lg font-medium mb-2">Nessuna AI suggerita</p>
-                                    <p class="text-sm text-gray-500">Questo utente non ha ancora suggerito nessuna AI</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Sezione Ricerca Utenti rimossa -->
             </div>
         </section>
         
@@ -1906,7 +1672,12 @@
                 <input type="text" id="auth-name" placeholder="Nome completo" class="auth-input" style="display: none;">
                 <input type="text" id="auth-nickname" placeholder="Nickname (obbligatorio)" class="auth-input" style="display: none;" required>
                 <input type="email" id="auth-email" placeholder="Email" class="auth-input" required>
-                <input type="password" id="auth-password" placeholder="Password" class="auth-input" required>
+                <div class="relative w-full" style="margin-bottom: 16px;">
+    <input type="password" id="auth-password" placeholder="Password" class="auth-input !mb-0 pr-10" required>
+    <button type="button" onclick="togglePasswordVisibility('auth-password')" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-white" aria-label="Mostra/nascondi password">
+         <i data-lucide="eye" class="w-5 h-5"></i>
+    </button>
+</div>
                 <button type="submit" class="auth-btn" id="auth-submit">Accedi</button>
             </form>
             <p class="text-white">
@@ -1949,12 +1720,22 @@
                 </div>
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-300 mb-2">Nuova Password (opzionale)</label>
-                    <input type="password" id="edit-profile-password" placeholder="Lascia vuoto per non cambiare" class="auth-input">
+                    <div class="relative">
+    <input type="password" id="edit-profile-password" placeholder="Lascia vuoto per non cambiare" class="auth-input pr-10">
+    <button type="button" onclick="togglePasswordVisibility('edit-profile-password')" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-white" aria-label="Mostra/nascondi password">
+         <i data-lucide="eye" class="w-5 h-5"></i>
+    </button>
+</div>
                     <p class="text-xs text-gray-400 mt-1">Inserisci la password attuale per confermare le modifiche</p>
                 </div>
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-300 mb-2">Password Attuale</label>
-                    <input type="password" id="edit-profile-current-password" placeholder="Password attuale" class="auth-input" required>
+                    <div class="relative">
+    <input type="password" id="edit-profile-current-password" placeholder="Password attuale" class="auth-input pr-10" required>
+    <button type="button" onclick="togglePasswordVisibility('edit-profile-current-password')" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-white" aria-label="Mostra/nascondi password">
+         <i data-lucide="eye" class="w-5 h-5"></i>
+    </button>
+</div>
                 </div>
                 <button type="submit" class="auth-btn w-full" id="edit-profile-submit">Salva Modifiche</button>
             </form>
@@ -2222,7 +2003,7 @@
                     <div className="prompt-starter-container">
                         {suggestions[lang].map((text, i) => (<button key={i} className="prompt-starter-btn" onClick={() => onSendMessage(text)}>{text}</button>))}
                     </div>
-                    {/* Pulsante Torna alla Home */}
+                    {/* Pulsante Torna alla home */}
                     <div style={{marginTop: '40px', textAlign: 'center'}}>
                         <button 
                             onClick={onBackToLanding}
@@ -2254,7 +2035,7 @@
                                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                                 <polyline points="9,22 9,12 15,12 15,22"></polyline>
                             </svg>
-                            {lang === 'it' ? 'Torna alla Home' : 'Back to Home'}
+                            {lang === 'it' ? 'Torna alla home' : 'Back to Home'}
                         </button>
                     </div>
                 </div>
@@ -2865,174 +2646,7 @@
                 );
             };
 
-            // Componente per la sezione Ricerca Utenti
-            const UserSearchSection = () => {
-                const [searchQuery, setSearchQuery] = useState('');
-                const [searchResults, setSearchResults] = useState([]);
-                const [selectedUser, setSelectedUser] = useState(null);
-                const [userSuggestions, setUserSuggestions] = useState([]);
-                const [loading, setLoading] = useState(false);
-
-                const handleUserSearch = async (e) => {
-                    e.preventDefault();
-                    if (!searchQuery.trim()) return;
-
-                    setLoading(true);
-                    try {
-                        if (window.firebaseDb && window.firebaseServices) {
-                            const { collection, query, where, getDocs } = window.firebaseServices;
-                            const usersRef = collection(window.firebaseDb, 'users');
-                            const q = query(usersRef, where('nickname', '>=', searchQuery), where('nickname', '<=', searchQuery + '\uf8ff'));
-                            const querySnapshot = await getDocs(q);
-                            
-                            const results = [];
-                            querySnapshot.forEach((doc) => {
-                                results.push({ id: doc.id, ...doc.data() });
-                            });
-                            
-                            setSearchResults(results);
-                        }
-                    } catch (error) {
-                        console.error('Error searching users:', error);
-                    } finally {
-                        setLoading(false);
-                    }
-                };
-
-                const loadUserSuggestions = async (userId) => {
-                    try {
-                        if (window.firebaseDb && window.firebaseServices) {
-                            const { collection, query, where, orderBy, getDocs } = window.firebaseServices;
-                            const suggestionsRef = collection(window.firebaseDb, 'ai-suggestions');
-                            const q = query(suggestionsRef, where('userId', '==', userId), orderBy('timestamp', 'desc'));
-                            const querySnapshot = await getDocs(q);
-                            
-                            const suggestions = [];
-                            querySnapshot.forEach((doc) => {
-                                suggestions.push({ id: doc.id, ...doc.data() });
-                            });
-                            
-                            setUserSuggestions(suggestions);
-                        }
-                    } catch (error) {
-                        console.error('Error loading user suggestions:', error);
-                    }
-                };
-
-                const selectUser = (user) => {
-                    setSelectedUser(user);
-                    loadUserSuggestions(user.id);
-                };
-
-                const closeUserProfile = () => {
-                    setSelectedUser(null);
-                    setUserSuggestions([]);
-                };
-
-                return (
-                    <div className="p-6 user-search-section">
-                        <h2 className="text-2xl font-bold text-white mb-6 text-center">{lang === 'it' ? 'Cerca Utenti' : 'Search Users'}</h2>
-                        <p className="text-gray-400 mb-6 text-center">{lang === 'it' ? 'Trova altri utenti e scopri le AI che hanno suggerito' : 'Find other users and discover the AIs they suggested'}</p>
-                        
-                        {/* Form di ricerca */}
-                        <form onSubmit={handleUserSearch} className="mb-6">
-                            <div className="flex gap-2">
-                                <input
-                                    type="text"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    placeholder={lang === 'it' ? 'Inserisci il nickname dell\'utente...' : 'Enter user nickname...'}
-                                    className="flex-1 bg-gray-700/50 border border-gray-600 rounded px-3 py-2 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none text-sm"
-                                />
-                                <button type="submit" className="bg-green-500 hover:bg-green-600 text-black px-4 py-2 rounded font-semibold transition-colors text-sm">
-                                    {lang === 'it' ? 'Cerca' : 'Search'}
-                                </button>
-                            </div>
-                        </form>
-
-                        {/* Risultati della ricerca */}
-                        {loading && (
-                            <div className="text-center py-4">
-                                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-green-500 mx-auto"></div>
-                            </div>
-                        )}
-
-                        {!loading && searchResults.length > 0 && !selectedUser && (
-                            <div className="space-y-2">
-                                <h3 className="text-lg font-semibold text-white mb-3">{lang === 'it' ? 'Risultati:' : 'Results:'}</h3>
-                                {searchResults.map((user) => (
-                                    <div key={user.id} 
-                                         className="bg-gray-800/50 border border-gray-700 rounded-lg p-3 cursor-pointer hover:border-green-500 transition-all"
-                                         onClick={() => selectUser(user)}>
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-black font-bold">
-                                                {(user.nickname || user.email || 'U').charAt(0).toUpperCase()}
-                                            </div>
-                                            <div>
-                                                <h4 className="text-white font-semibold">{user.nickname || 'Anonimo'}</h4>
-                                                <p className="text-gray-400 text-sm">{user.email}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-
-                        {/* Profilo utente selezionato */}
-                        {selectedUser && (
-                            <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
-                                <div className="flex justify-between items-start mb-4">
-                                    <div>
-                                        <h3 className="text-xl font-bold text-white mb-1">{selectedUser.nickname || 'Anonimo'}</h3>
-                                        <p className="text-green-400 font-semibold">@{selectedUser.nickname}</p>
-                                        <p className="text-gray-400 text-sm">{selectedUser.email}</p>
-                                    </div>
-                                    <button onClick={closeUserProfile} className="text-gray-400 hover:text-white transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                                        </svg>
-                                    </button>
-                                </div>
-                                
-                                <div>
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h4 className="text-lg font-bold text-white">🤖 {lang === 'it' ? 'AI Suggerite' : 'Suggested AIs'}</h4>
-                                        <span className="text-sm text-gray-400">{userSuggestions.length} {lang === 'it' ? 'suggerimenti' : 'suggestions'}</span>
-                                    </div>
-                                    
-                                    {userSuggestions.length === 0 ? (
-                                        <div className="text-center py-8">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-4 text-gray-500">
-                                                <path d="M9 12l2 2 4-4"></path>
-                                                <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"></path>
-                                                <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"></path>
-                                                <path d="M12 3c0 1-1 2-2 2s-2 1-2 2 1 2 2 2 2-1 2-2 1-2 2-2 2-1 2-2-1-2-2-2z"></path>
-                                                <path d="M12 21c0-1-1-2-2-2s-2-1-2-2 1-2 2-2 2 1 2 2 1 2 2 2 2-1 2-2-1-2-2-2z"></path>
-                                            </svg>
-                                            <p className="text-gray-500">{lang === 'it' ? 'Nessuna AI suggerita' : 'No AIs suggested'}</p>
-                                        </div>
-                                    ) : (
-                                        <div className="space-y-3">
-                                            {userSuggestions.map((suggestion) => (
-                                                <div key={suggestion.id} className="bg-gray-700/30 border border-gray-600 rounded p-3">
-                                                    <div className="flex justify-between items-start mb-2">
-                                                        <h5 className="text-white font-semibold">{suggestion.aiName}</h5>
-                                                        <span className="inline-block bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded">
-                                                            {suggestion.category || 'N/A'}
-                                                        </span>
-                                                    </div>
-                                                    <p className="text-gray-300 text-sm">{suggestion.description}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                );
-            };
+            // Componente Ricerca Utenti rimosso
 
             // Componente per la sezione Cronologia Chat
             const HistorySection = () => {
@@ -3185,7 +2799,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
                         </button>
                         <div style={{flex: 1}}></div>
-                        <button id="back-to-landing-btn" className="chat-header-btn back-home-btn" title={lang === 'it' ? 'Torna alla Home' : 'Back to Home'} onClick={onBackToLanding}>
+                        <button id="back-to-landing-btn" className="chat-header-btn back-home-btn" title={lang === 'it' ? 'Torna alla home' : 'Back to Home'} onClick={onBackToLanding}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: 6}}>
                                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                                 <polyline points="9,22 9,12 15,12 15,22"></polyline>
@@ -3638,96 +3252,7 @@
             }
         }
 
-        async function searchUsersByNickname(nickname) {
-            try {
-                const { collection, query, where, getDocs } = window.firebaseServices;
-                const q = query(
-                    collection(window.firebaseDb, "userProfiles"), 
-                    where("nickname", ">=", nickname),
-                    where("nickname", "<=", nickname + '\uf8ff')
-                );
-                const snapshot = await getDocs(q);
-                const users = [];
-                snapshot.forEach((doc) => {
-                    users.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-                return users;
-            } catch (error) {
-                console.error("Errore nella ricerca utenti:", error);
-                return [];
-            }
-        }
-
-        async function getUserSuggestions(userId) {
-            try {
-                console.log('🔍 Ricerca suggerimenti per userId:', userId);
-                
-                if (!window.firebaseServices || !window.firebaseDb) {
-                    console.error('Firebase non è inizializzato');
-                    return [];
-                }
-                
-                const { collection, query, where, orderBy, getDocs } = window.firebaseServices;
-                
-                // Prima prova senza orderBy per vedere se il problema è lì
-                const q = query(
-                    collection(window.firebaseDb, "aiSuggestions"),
-                    where("userId", "==", userId)
-                );
-                
-                console.log('📋 Esecuzione query Firestore...');
-                const snapshot = await getDocs(q);
-                console.log('📊 Risultati trovati:', snapshot.size);
-                
-                const suggestions = [];
-                snapshot.forEach((doc) => {
-                    try {
-                        const data = doc.data();
-                        console.log('📝 Suggerimento trovato:', { id: doc.id, name: data.name, status: data.status });
-                        suggestions.push({
-                            id: doc.id,
-                            ...data
-                        });
-                    } catch (docError) {
-                        console.warn('⚠️ Errore nel processare documento:', doc.id, docError);
-                    }
-                });
-                
-                console.log('✅ Suggerimenti caricati:', suggestions.length);
-                return suggestions;
-            } catch (error) {
-                console.error("❌ Errore nel recuperare i suggerimenti utente:", error);
-                console.error("Dettagli errore:", error.code, error.message);
-                
-                // Se l'errore è dovuto a permessi, prova una query più semplice
-                if (error.code === 'permission-denied' || error.code === 'unavailable') {
-                    console.log('🔄 Tentativo con query semplificata...');
-                    try {
-                        const { collection, getDocs } = window.firebaseServices;
-                        const snapshot = await getDocs(collection(window.firebaseDb, "aiSuggestions"));
-                        const suggestions = [];
-                        snapshot.forEach((doc) => {
-                            const data = doc.data();
-                            if (data.userId === userId) {
-                                suggestions.push({
-                                    id: doc.id,
-                                    ...data
-                                });
-                            }
-                        });
-                        console.log('✅ Suggerimenti caricati con query semplificata:', suggestions.length);
-                        return suggestions;
-                    } catch (fallbackError) {
-                        console.error('❌ Anche la query di fallback è fallita:', fallbackError);
-                    }
-                }
-                
-                return [];
-            }
-        }
+        // --- Funzioni ausiliarie per la ricerca utenti rimosse ---
 
         function setupLogout() {
             const logoutBtn = document.getElementById('logout-btn');
@@ -4177,8 +3702,9 @@
                 'newChat': "New Chat", 
                 'deleteAll': "Delete All",
                 'deleteAllSuccess': "All conversations deleted",
-                'confirmDeleteAll': "Are you sure you want to delete all conversations? This action is irreversible.",
-                'newChatTitle': "New Chat",
+'confirmDeleteAll': "Are you sure you want to delete all conversations? This action is irreversible.",
+'cancel': "Cancel",
+'newChatTitle': "New Chat",
                 'search-title': "How can I help you?",
                 'search-placeholder': 'Ask me something...',
                 'search-ai-nav': 'AI Search',
@@ -4239,8 +3765,9 @@
                 'newChat': "New Chat", 
                 'deleteAll': "Elimina Tutto",
                 'deleteAllSuccess': "Conversazioni eliminate",
-                'confirmDeleteAll': "Sei sicuro di voler eliminare tutte le conversazioni? Questa azione è irreversibile.",
-                'newChatTitle': "Nuova Chat",
+'confirmDeleteAll': "Sei sicuro di voler eliminare tutte le conversazioni? Questa azione è irreversibile.",
+'cancel': "Annulla",
+'newChatTitle': "Nuova Chat",
                 'search-title': "Come posso aiutarti?",
                 'search-placeholder': 'Chiedimi qualcosa...',
                 'search-ai-nav': 'Ricerca AI',
@@ -4311,9 +3838,20 @@
             translateBtn.addEventListener('click', () => {
                 currentLang = currentLang === 'it' ? 'en' : 'it';
                 translatePage(currentLang);
+
+                // GESTIONE TRADUZIONE VISTA CHAT
                 if (document.getElementById('chat-view-container')) {
                     const currentQuery = document.querySelector('#chat-messages .chat-bubble.user:first-child')?.textContent || null;
                     renderChatView(currentQuery);
+                }
+
+                // NUOVO: Forziamo il re-render delle card AI se la sezione di ricerca è visibile
+                const sectionsContainer = document.getElementById('sections-container');
+                const searchSection = document.getElementById('search-ai-section');
+                if (sectionsContainer && sectionsContainer.style.display !== 'none' && searchSection && searchSection.classList.contains('active')) {
+                    // Simula un evento di submit per forzare l'aggiornamento dei risultati con la nuova lingua.
+                    // Questo preserva anche eventuali filtri o termini di ricerca già inseriti.
+                    handleAISearch(new Event('submit'));
                 }
             });
         }
@@ -4335,18 +3873,44 @@
         let activeConversationId = null;
 
         const aiToolsData = [
-            { id: 'tool-001', name: 'ChatGPT', description: {it: 'Genera testo, immagini e risponde a domande con ricerca web avanzata.', en: 'Generates text, images and answers questions with advanced web search.'}, category: 'Testo', country: 'USA', website: 'https://chatgpt.com/', isFeatured: true, logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1024px-ChatGPT_logo.svg.png', recommendationId: 'tool-025' }, 
-            { id: 'tool-012', name: 'Notebook LM', description: {it: "Crea riassunti audio dalle tue fonti e risponde a domande specifiche.", en: "Creates audio summaries from your sources and answers specific questions."}, category: 'Testo', country: 'USA', website: 'https://notebooklm.google.com/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJbWdW2SCEWfJuDTh5PVxgmqDvXoX5vElJ6s94SZ8Fe1YPzfxzGPuIyE9cBMDswv3qUd4&usqp=CAU', recommendationId: 'tool-021' }, 
-                        { id: 'tool-013', name: 'Grok', description: {it: 'Assistente di ricerca conversazionale con accesso dati real-time.', en: 'Conversational research assistant with real-time data access.'}, category: 'Testo', country: 'USA', website: 'https://grok.com/', isFeatured: false, logoUrl: 'https://i.namu.wiki/i/Wk8b-Vo4qqynLc4pN1T0otG83F383UPI_IR4VthZuZioAxVD_NS6uErIsecLMDK0F0L-KiUjL7xonRz4EwPL2g.webp', recommendationId: 'tool-001' },
-            { id: 'tool-044', name: 'Perplexity', description: {it: 'Specializzata nella ricerca web per trovare informazioni online.', en: 'Specialized in web search to find information online quickly.'}, category: 'Testo', country: 'USA', website: 'https://www.perplexity.ai/', isFeatured: false, logoUrl: 'https://images.seeklogo.com/logo-png/51/2/perplexity-ai-logo-png_seeklogo-517845.png', recommendationId: 'tool-001' }, // Perplexity
-            { id: 'tool-045', name: 'Deepseek', description: {it: 'Specializzata nella ricerca web, testi e programmazione avanzata.', en: 'Specialized in web search, text generation and advanced coding.'}, category: 'Testo', country: 'Cina', website: 'https://chat.deepseek.com/', isFeatured: false, logoUrl: 'data:image/png;base64,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' }, // Added Deepseek
-            { id: 'tool-046', name: 'Qwen', description: {it: 'Specializzata nella ricerca web, testi e programmazione avanzata.', en: 'Specialized in web search, text generation and advanced coding.'}, category: 'Testo', country: 'Cina', website: 'https://chat.qwen.ai/', isFeatured: false, logoUrl: 'https://crystalpng.com/wp-content/uploads/2025/02/Qwen-03.png', recommendationId: 'tool-045' }, // Qwen
-            { id: 'tool-kimi', name: 'Kimi', description: {it: 'AI cinese per programmazione, ricerca web e testi con ragionamento.', en: 'Chinese AI for coding, web search and text with advanced reasoning.'}, category: 'Codice', country: 'Cina', website: 'https://www.kimi.com/', isFeatured: false, logoUrl: 'https://www.kimi.com/favicon.ico', recommendationId: 'tool-045' }, // Kimi
-                        { id: 'tool-049', name: 'Copilot', description: {it: 'Specializzata in generazione testi e ricerca web avanzata.', en: 'Specialized in text generation and advanced web search.'}, category: 'Testo', country: 'USA', website: 'https://copilot.microsoft.com/chats/vAMUc1DGwXp5uX9uitvjF', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwqfCxHw2QW6DxEKqDayMoJTz4lrvE_nnurxpmg2mEmGAkOzjGmsVpKfwT6epVYInsAuc&usqp=CAU', recommendationId: 'tool-024' }, // Copilot
-            { id: 'tool-050', name: 'ElevenLabs', description: {it: 'Genera voci realistiche e sintesi vocale in diverse lingue.', en: 'Generates realistic voices and speech synthesis in various languages.'}, category: 'Audio', country: 'USA', website: 'https://elevenlabs.io/', isFeatured: false, logoUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAAFVBMVEX///+ZmZkZGRlZWVmRkZEAAABGRkb6Me63AAAAHElEQVR4AWMYUCBkwKyIxHVNYAsZVFyEIwcSAADWIQrDIppSoAAAAABJRU5ErkJggg==' }, // Added ElevenLabs
-            { id: 'tool-014', name: 'FLUX', description: {it: 'Genera immagini, video e animazioni da prompt testuali avanzati.', en: 'Generates images, videos and animations from advanced text prompts.'}, category: 'Immagini', country: 'Cina', website: 'https://playground.bfl.ai/image/generate', isFeatured: false, logoUrl: 'https://kodexolabs.com/wp-content/uploads/2025/01/Flux.1.webp', recommendationId: 'tool-005' },
-            { id: 'tool-015', name: 'Swap AI', description: {it: 'Esegue scambio realistico di volti in immagini e video.', en: 'Performs realistic face swapping in images and videos.'}, category: 'Immagini', country: 'USA', website: 'https://aifaceswap.io/', isFeatured: false, logoUrl: 'https://www.toolpilot.ai/cdn/shop/files/aifaceswap-l.jpg?v=1733037433', recommendationId: 'tool-016' },
-            { id: 'tool-016', name: 'Inpaint AI', description: {it: 'Rimuove oggetti e imperfezioni dalle foto con un solo click.', en: 'Removes objects and imperfections from photos with a single click.'}, category: 'Immagini', country: 'USA', website: 'https://theinpaint.com/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2CWmq3U9nnd7RqhhfyqjL-w6Lj-JUf1D9ow&s', recommendationId: 'tool-017' }, 
+            { 
+                id: 'tool-meta', 
+                name: 'Meta AI', 
+                description: {
+                    it: 'Specializzata in generazione di testi e immagini.', 
+                    en: 'Specialized in generating text and images.'
+                }, 
+                category: 'Immagini', // Assegnata a 'Immagini' per coerenza, dato che è una delle sue specialità
+                country: 'USA', 
+                website: 'https://www.meta.ai/', 
+                isFeatured: false,
+                logoUrl: 'https://i.ytimg.com/vi/HK6MZLS6lnY/maxresdefault.jpg'
+            },
+            { 
+                id: 'tool-pollo', 
+                name: 'Pollo AI', 
+                description: {
+                    it: 'Specializzata in creazione e animazione di video e immagini.', 
+                    en: 'Specialized in creating and animating videos and images.'
+                }, 
+                category: 'Video', 
+                country: 'Singapore', 
+                website: 'https://pollo.ai/', 
+                isFeatured: false,
+                logoUrl: 'https://play-lh.googleusercontent.com/Ftpre95ViU-5eUBb3AermfIAdAThNCNGkIhedL9jD3XbHvHZU1_mSulq1NkfrKK-WN7J'
+            },
+            { id: 'tool-001', name: 'ChatGPT', description: {it: 'Genera testo, immagini e risponde a domande con ricerca web.', en: 'Generates text, images, and answers questions with web search.'}, category: 'Testo', country: 'USA', website: 'https://chatgpt.com/', isFeatured: true, logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1024px-ChatGPT_logo.svg.png', recommendationId: 'tool-025' }, 
+            { id: 'tool-012', name: 'Google Notebook', description: {it: "Permette di creare riassunti audio sulle fonti dell'utente, rispondere a domande e creare mappe mentali.", en: "Allows creating audio summaries from user sources, answering questions, and creating mind maps."}, category: 'Testo', country: 'USA', website: 'https://notebooklm.google.com/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJbWdW2SCEWfJuDTh5PVxgmqDvXoX5vElJ6s94SZ8Fe1YPzfxzGPuIyE9cBMDswv3qUd4&usqp=CAU', recommendationId: 'tool-021' },  
+            { id: 'tool-013', name: 'Grok', description: {it: 'Assistente di ricerca conversazionale con accesso a dati in tempo reale. (Richiede VPN)', en: 'Conversational research assistant with real-time data access. (Requires VPN)'}, category: 'Testo', country: 'USA', website: 'https://grok.com/', isFeatured: true, logoUrl: 'https://i.namu.wiki/i/Wk8b-Vo4qqynLc4pN1T0otG83F383UPI_IR4VthZuZioAxVD_NS6uErIsecLMDK0F0L-KiUjL7xonRz4EwPL2g.webp', recommendationId: 'tool-001' }, 
+            { id: 'tool-044', name: 'Perplexity', description: {it: 'Specializzata nella ricerca web, è la migliore AI per trovare informazioni online.', en: 'Specialized in web search, it is the best AI for finding information online.'}, category: 'Testo', country: 'USA', website: 'https://www.perplexity.ai/', isFeatured: false, logoUrl: 'https://images.seeklogo.com/logo-png/51/2/perplexity-ai-logo-png_seeklogo-517845.png', recommendationId: 'tool-001' }, // Perplexity
+            { id: 'tool-045', name: 'Deepseek', description: {it: 'Specializzata nella ricerca web, testi e programmazione.', en: 'Specialized in web search, text, and coding.'}, category: 'Testo', country: 'Cina', website: 'https://chat.deepseek.com/', isFeatured: false, logoUrl: 'data:image/png;base64,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' }, // Added Deepseek
+            { id: 'tool-046', name: 'Qwen', description: {it: 'Specializzata nella ricerca web, testi e programmazione avanzata.', en: 'Specialized in web search, text generation and advanced coding.'}, category: 'Testo', country: 'Cina', website: 'https://chat.qwen.ai/', isFeatured: false, logoUrl: 'https://crystalpng.com/wp-content/uploads/2025/02/Qwen-03.png', recommendationId: 'tool-045' }, // Added Qwen
+            { id: 'tool-062', name: 'Seeart', description: {it: 'Specializzata in immagini, video, animazioni e audio.', en: 'Specialized in images, videos, animations and audio.'}, category: 'Immagini', country: 'Cina', website: 'https://www.seaart.ai/it', isFeatured: false, logoUrl: 'https://play-lh.googleusercontent.com/BvytlaOWWEOrY0-VNThXm8xATNKZ_Vk_HgwSFXptkt3RRWgd9TF0J6JDED1bFlKyWkg', recommendationId: 'tool-014' }, // Added Seeart
+            { id: 'tool-049', name: 'Copilot', description: {it: 'Specializzata in testi e ricerca web.', en: 'Specialized in text and web search.'}, category: 'Testo', country: 'USA', website: 'https://copilot.microsoft.com/chats/vAMUc1DGwXp5uX9uitvjF', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwqfCxHw2QW6DxEKqDayMoJTz4lrvE_nnurxpmg2mEmGAkOzjGmsVpKfwT6epVYInsAuc&usqp=CAU', recommendationId: 'tool-024' }, // Added Copilot
+            { id: 'tool-050', name: 'ElevenLabs', description: {it: 'Genera voci realistiche e discorsi in diverse lingue.', en: 'Generates realistic voices and speech in various languages.'}, category: 'Audio', country: 'USA', website: 'https://elevenlabs.io/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKCGpOyiMcA838kNKXU4F26nVO1cu0ZfiKhCLrlpHebMQ8fRsAb2hD8iMZNPqjM3leyj4&usqp=CAU' }, // Added ElevenLabs
+            { id: 'tool-014', name: 'FLUX', description: {it: 'Genera immagini, video e animazioni da prompt testuali e immagini.', en: 'Generates images, videos, and animations from text prompts and images.'}, category: 'Immagini', country: 'Cina', website: 'https://playground.bfl.ai/image/generate', isFeatured: false, logoUrl: 'https://kodexolabs.com/wp-content/uploads/2025/01/Flux.1.webp', recommendationId: 'tool-005' }, 
+            { id: 'tool-015', name: 'Swap AI', description: {it: 'Esegue il "face swap" (scambio di volti) in immagini e video in modo realistico.', en: 'Performs realistic "face swap" in images and videos.'}, category: 'Immagini', country: 'USA', website: 'https://aifaceswap.io/', isFeatured: false, logoUrl: 'https://www.toolpilot.ai/cdn/shop/files/aifaceswap-l.jpg?v=1733037433', recommendationId: 'tool-016' }, 
+            { id: 'tool-016', name: 'Inpaint AI', description: {it: 'Rimuove oggetti, persone o imperfezioni indesiderate dalle foto con un solo click.', en: 'Removes unwanted objects, people, or imperfections from photos with a single click.'}, category: 'Immagini', country: 'USA', website: 'https://theinpaint.com/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2CWmq3U9nnd7RqhhfyqjL-w6Lj-JUf1D9ow&s', recommendationId: 'tool-017' }, 
             { id: 'tool-017', name: 'Pixel Cut AI', description: {it: "Espande i bordi delle immagini (outpainting) per cambiare formato o stile.", en: 'Expands image borders (outpainting) to change format or style.'}, category: 'Immagini', country: 'USA', website: 'https://www.pixelcut.ai/t/uncrop', isFeatured: false, logoUrl: 'https://templateshake.com/wp-content/uploads/2021/09/Pixelcut_-AI-Graphic-Designer.png', recommendationId: 'tool-033' }, 
             { id: 'tool-041', name: 'Leonardo AI', description: {it: 'Piattaforma per la generazione di asset visivi di alta qualità, da concept art a texture per giochi.', en: 'Platform for generating high-quality visual assets, from concept art to game textures.'}, category: 'Immagini', country: 'USA', website: 'https://leonardo.ai/', isFeatured: false, logoUrl: 'https://yt3.googleusercontent.com/a04AUXisIIWkI-Pj5zORQTiDNS9tALLmPc8pxuRT_aEHrCOUDsPQoLuh4QRbfgICortk7tBhyg=s900-c-k-c0x00ffffff-no-rj', recommendationId: 'tool-014' }, 
             { id: 'tool-042', name: 'Midjourney', description: {it: 'Genera immagini artistiche e fotorealistiche di alta qualità da prompt testuali tramite Discord.', en: 'Generates high-quality artistic and fotorealistic images from text prompts via Discord.'}, category: 'Immagini', country: 'USA', website: 'https://www.midjourney.com/home', isFeatured: false, logoUrl: 'https://sadesign.ai/pictures/picfullsizes/2024/12/10/dsn1733795303.jpg', recommendationId: 'tool-041' }, 
@@ -4356,11 +3920,11 @@
             { id: 'tool-021', name: 'Claude', description: {it: 'Specializzato in codice e creazione di applicazioni web. Può anche scrivere testi e ricercare informazioni sul web.', en: 'Specialized in code and web app creation. Can also write text and search for information on the web.'}, category: 'Codice', country: 'USA', website: 'https://claude.ai/new', isFeatured: true, logoUrl: 'https://logo.svgcdn.com/l/claude-icon-8x.png', recommendationId: 'tool-022' }, 
             { id: 'tool-022', name: 'Gamma AI', description: {it: "Genera presentazioni, documenti e pagine web statiche partendo da un'idea.", en: 'Generates presentations, documents, and static web pages from an idea.'}, category: 'Presentazioni', country: 'USA', website: 'https://gamma.app/', isFeatured: false, logoUrl: 'https://www.fahimai.com/wp-content/uploads/2025/03/GAMMA-cta.png', recommendationId: 'tool-021' }, 
             { id: 'tool-023', name: 'Napkin AI', description: {it: 'Converte dati testuali e concetti in grafici statici e diagrammi chiari.', en: 'Converts text data and concepts into clear static charts and diagrams.'}, category: 'Presentazioni', country: 'USA', website: 'https://www.napkin.ai/', isFeatured: false, logoUrl: 'https://media.licdn.com/dms/image/v2/D560BAQEYfmQKrdByPg/company-logo_200_200/company-logo_200_200/0/1723039432148/napkin_ai_logo?e=2147483647&v=beta&t=Nsr22RG3uiy9usBNh55leGVf8ES5YJQwUANW-2N7yEA', recommendationId: 'tool-022' }, 
-            { id: 'tool-024', name: 'Google AI Studio', description: {it: "Crea app, siti e prototipi basati sui modelli Gemini di Google.", en: "Creates apps, sites, and prototypes based on Google's Gemini models."}, category: 'Codice', country: 'USA', website: 'https://aistudio.google.com/prompts/new_chat', isFeatured: true, logoUrl: 'data:image/png;base64,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' }, 
+            { id: 'tool-024', name: 'Google AI Studio', description: {it: "Crea app, siti e prototipi basati sui modelli Gemini di Google.", en: "Creates apps, sites, and prototypes based on Google's Gemini models."}, category: 'Codice', country: 'USA', website: 'https://aistudio.google.com/prompts/new_chat', isFeatured: true, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRanTHTxbnByd8heqLVawRfT24UAfvkyxTO5WskXGtfX7q5dMix9XKe8hzeXv8oq1U9gAE&usqp=CAU', recommendationId: 'tool-001' }, 
             { 
                 id: 'tool-025', 
                 name: 'Manus', 
-                description: {it: 'Piattaforma di AI estremamente potente. Può eseguire compiti come ChatGPT e gestirli in background, creando testi, ricerche, presentazioni, video, immagini e molto altro.', en: 'Extremely powerful AI platform. It can perform tasks like ChatGPT and manage them in the background, creating text, research, presentations, videos, images and much more.'}, category: 'Codice', country: 'Cina', website: 'https://manus.im/app', isFeatured: true, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3C56v7mEJmg-3LndcWs5L3rLWIwiZm6HrUg&s' },
+                description: {it: 'Piattaforma di AI estremamente potente. Può eseguire compiti come ChatGPT e gestirli in background, creando testi, ricerche, presentazioni, video, immagini e molto altro.', en: 'Extremely powerful AI platform. It can perform tasks like ChatGPT and manage them in the background, creating text, research, presentations, videos, images and much more.'}, category: 'Codice', country: 'Cina', website: 'https://manus.im/app', isFeatured: true, logoUrl: 'https://manus.im/icon.png?cf131ec9640e9d99' },
             { 
                 id: 'tool-043', 
                 name: 'Rows', 
@@ -4372,11 +3936,49 @@
                 country: 'Europe', 
                 website: 'https://rows.com/ai', 
                 isFeatured: false, 
-                logoUrl: 'https://images.genai.works/Screenshot_16_5b63d7dfa1.jpg' 
+                logoUrl: 'https://images.genai.works/Screenshot_16_5b63d7dfa1.jpg', 
+                recommendationId: 'tool-049' 
             },
-            { id: 'tool-047', name: 'Mistral', description: {it: 'Specializzata nella programmazione e nei testi.', en: 'Specialized in coding and text.'}, category: 'Codice', country: 'Europe', website: 'https://mistral.ai/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ-GF4yjk576hl_W3Z_JY3tVSKBkGHhXFfMA&s', recommendationId: 'tool-001' }, // Mistral
-            { id: 'tool-048', name: 'bolt', description: {it: 'Specializzata nella programmazione e nei testi.', en: 'Specialized in coding and text.'}, category: 'Codice', country: 'USA', website: 'https://bolt.new/', isFeatured: false, logoUrl: 'https://cdn-1.webcatalog.io/catalog/bolt-new/bolt-new-icon-filled-256.png?v=1730692903154', recommendationId: 'tool-052' }, // bolt
-            { id: 'tool-052', name: 'Cursor', description: {it: 'Un editor di codice potenziato dall\'AI per una programmazione più veloce.', en: 'An AI-powered code editor for faster programming.'}, category: 'Codice', country: 'USA', website: 'https://cursor.com/', isFeatured: false, logoUrl: 'https://paulstamatiou.com/_next/image?url=%2Fgear%2Fcursor-app-icon.png&w=3840&q=75', recommendationId: 'tool-053' }, // Cursor
+            { id: 'tool-047', name: 'Mistral', description: {it: 'Specializzata nella programmazione e nei testi.', en: 'Specialized in coding and text.'}, category: 'Codice', country: 'Europe', website: 'https://mistral.ai/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ-GF4yjk576hl_W3Z_JY3tVSKBkGHhXFfMA&s', recommendationId: 'tool-001' }, // Added Mistral
+            { id: 'tool-048', name: 'bolt', description: {it: 'Specializzata nella programmazione e nei testi.', en: 'Specialized in coding and text.'}, category: 'Codice', country: 'USA', website: 'https://bolt.new/', isFeatured: false, logoUrl: 'https://cdn-1.webcatalog.io/catalog/bolt-new/bolt-new-icon-filled-256.png?v=1730692903154', recommendationId: 'tool-052' }, // Added bolt
+            { id: 'tool-049', name: 'Copilot', description: {it: 'Specializzata in testi e ricerca web.', en: 'Specialized in text and web search.'}, category: 'Testo', country: 'USA', website: 'https://copilot.microsoft.com/chats/vAMUc1DGwXp5uX9uitvjF', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwqfCxHw2QW6DxEKqDayMoJTz4lrvE_nnurxpmg2mEmGAkOzjGmsVpKfwT6epVYInsAuc&usqp=CAU', recommendationId: 'tool-024' }, // Added Copilot
+            { id: 'tool-050', name: 'ElevenLabs', description: {it: 'Genera voci realistiche e discorsi in diverse lingue.', en: 'Generates realistic voices and speech in various languages.'}, category: 'Audio', country: 'USA', website: 'https://elevenlabs.io/', isFeatured: false, logoUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAAFVBMVEX///+ZmZkZGRlZWVmRkZEAAABGRkb6Me63AAAAHElEQVR4AWMYUCBkwKyIxHVNYAsZVFyEIwcSAADWIQrDIppSoAAAAABJRU5ErkJggg==' }, // Added ElevenLabs
+            { id: 'tool-014', name: 'FLUX', description: {it: 'Genera immagini, video e animazioni da prompt testuali e immagini.', en: 'Generates images, videos, and animations from text prompts and images.'}, category: 'Immagini', country: 'Cina', website: 'https://playground.bfl.ai/image/generate', isFeatured: false, logoUrl: 'https://kodexolabs.com/wp-content/uploads/2025/01/Flux.1.webp', recommendationId: 'tool-005' }, 
+            { id: 'tool-015', name: 'Swap AI', description: {it: 'Esegue il "face swap" (scambio di volti) in immagini e video in modo realistico.', en: 'Performs realistic "face swap" in images and videos.'}, category: 'Immagini', country: 'USA', website: 'https://aifaceswap.io/', isFeatured: false, logoUrl: 'https://www.toolpilot.ai/cdn/shop/files/aifaceswap-l.jpg?v=1733037433', recommendationId: 'tool-016' }, 
+            { id: 'tool-016', name: 'Inpaint AI', description: {it: 'Rimuove oggetti, persone o imperfezioni indesiderate dalle foto con un solo click.', en: 'Removes unwanted objects, people, or imperfections from photos with a single click.'}, category: 'Immagini', country: 'USA', website: 'https://theinpaint.com/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2CWmq3U9nnd7RqhhfyqjL-w6Lj-JUf1D9ow&s', recommendationId: 'tool-017' }, 
+            { id: 'tool-017', name: 'Pixel Cut AI', description: {it: "Espande i bordi delle immagini (outpainting) per cambiare formato o stile.", en: 'Expands image borders (outpainting) to change format or style.'}, category: 'Immagini', country: 'USA', website: 'https://www.pixelcut.ai/t/uncrop', isFeatured: false, logoUrl: 'https://templateshake.com/wp-content/uploads/2021/09/Pixelcut_-AI-Graphic-Designer.png', recommendationId: 'tool-033' }, 
+            { id: 'tool-041', name: 'Leonardo AI', description: {it: 'Piattaforma per la generazione di asset visivi di alta qualità, da concept art a texture per giochi.', en: 'Platform for generating high-quality visual assets, from concept art to game textures.'}, category: 'Immagini', country: 'USA', website: 'https://leonardo.ai/', isFeatured: false, logoUrl: 'https://yt3.googleusercontent.com/a04AUXisIIWkI-Pj5zORQTiDNS9tALLmPc8pxuRT_aEHrCOUDsPQoLuh4QRbfgICortk7tBhyg=s900-c-k-c0x00ffffff-no-rj', recommendationId: 'tool-014' }, 
+            { id: 'tool-042', name: 'Midjourney', description: {it: 'Genera immagini artistiche e fotorealistiche di alta qualità da prompt testuali tramite Discord.', en: 'Generates high-quality artistic and fotorealistic images from text prompts via Discord.'}, category: 'Immagini', country: 'USA', website: 'https://www.midjourney.com/home', isFeatured: false, logoUrl: 'https://sadesign.ai/pictures/picfullsizes/2024/12/10/dsn1733795303.jpg', recommendationId: 'tool-041' }, 
+            { id: 'tool-005', name: 'Whisk', description: {it: 'Genera immagini, video e animazioni da prompt testuali e immagini.', en: 'Generates images, videos, and animations from text prompts and images.'}, category: 'Immagini', country: 'USA', website: 'https://labs.google/fx/tools/whisk', isFeatured: false, logoUrl: 'https://artsology.com/blog/wp-content/uploads/2025/01/Iconic-Banksy-in-Manila-2025-01-17T161547.202.png' }, 
+            { id: 'tool-034', name: 'Kling', description: {it: 'Genera video di alta qualità da prompt testuali, concentrandosi sul realismo e sul movimento complesso.', en: 'Generates high-quality videos from text prompts, focusing on realism and complex motion.'}, category: 'Video', country: 'Cina', website: 'https://klingai.com/global/', isFeatured: false, logoUrl: 'https://play-lh.googleusercontent.com/JOfjXqsShK8j1aGBc1xlHBnatoRKRwLsGuoFZUAvKksaEPvK71eLwSg4FbKlky9Es-s', recommendationId: 'tool-035' }, 
+            { id: 'tool-035', name: 'Veo', description: {it: "Il modello di generazione video più capace di Google, che crea video realistici e di alta qualità da prompt di testo e immagini.", en: "Google's most capable video generation model, creating realistic, high-quality videos from text and image prompts."}, category: 'Video', country: 'USA', website: 'https://deepmind.google/models/veo/', isFeatured: false, logoUrl: 'https://storage.googleapis.com/gweb-uniblog-publish-prod/images/IO25_Gemini_MOD_v33_PART_1_DG_FINAL_54.max-1440x810.png', isFeatured: false, recommendationId: 'tool-seedance' }, 
+            { id: 'tool-021', name: 'Claude', description: {it: 'Specializzato in codice e creazione di applicazioni web. Può anche scrivere testi e ricercare informazioni sul web.', en: 'Specialized in code and web app creation. Can also write text and search for information on the web.'}, category: 'Codice', country: 'USA', website: 'https://claude.ai/new', isFeatured: true, logoUrl: 'https://logo.svgcdn.com/l/claude-icon-8x.png', recommendationId: 'tool-022' }, 
+            { id: 'tool-022', name: 'Gamma AI', description: {it: "Genera presentazioni, documenti e pagine web statiche partendo da un'idea.", en: 'Generates presentations, documents, and static web pages from an idea.'}, category: 'Presentazioni', country: 'USA', website: 'https://gamma.app/', isFeatured: false, logoUrl: 'https://www.fahimai.com/wp-content/uploads/2025/03/GAMMA-cta.png', recommendationId: 'tool-021' }, 
+            { id: 'tool-023', name: 'Napkin AI', description: {it: 'Converte dati testuali e concetti in grafici statici e diagrammi chiari.', en: 'Converts text data and concepts into clear static charts and diagrams.'}, category: 'Presentazioni', country: 'USA', website: 'https://www.napkin.ai/', isFeatured: false, logoUrl: 'https://media.licdn.com/dms/image/v2/D560BAQEYfmQKrdByPg/company-logo_200_200/company-logo_200_200/0/1723039432148/napkin_ai_logo?e=2147483647&v=beta&t=Nsr22RG3uiy9usBNh55leGVf8ES5YJQwUANW-2N7yEA', recommendationId: 'tool-022' }, 
+            { id: 'tool-024', name: 'Google AI Studio', description: {it: "Crea app, siti e prototipi basati sui modelli Gemini di Google.", en: "Creates apps, sites, and prototypes based on Google's Gemini models."}, category: 'Codice', country: 'USA', website: 'https://aistudio.google.com/prompts/new_chat', isFeatured: true, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRanTHTxbnByd8heqLVawRfT24UAfvkyxTO5WskXGtfX7q5dMix9XKe8hzeXv8oq1U9gAE&usqp=CAU', recommendationId: 'tool-001' }, 
+            { 
+                id: 'tool-025', 
+                name: 'Manus', 
+                description: {it: 'Piattaforma di AI estremamente potente. Può eseguire compiti come ChatGPT e gestirli in background, creando testi, ricerche, presentazioni, video, immagini e molto altro.', en: 'Extremely powerful AI platform. It can perform tasks like ChatGPT and manage them in the background, creating text, research, presentations, videos, images and much more.'}, category: 'Codice', country: 'Cina', website: 'https://manus.im/app', isFeatured: true, logoUrl: 'https://manus.im/icon.png?cf131ec9640e9d99' },
+            { 
+                id: 'tool-043', 
+                name: 'Rows', 
+                description: { 
+                    it: 'Specializzata in Excel, svolge il ruolo di analista dati utilizzando l\'AI direttamente dentro al foglio di Excel.', 
+                    en: 'Specialized in Excel, acts as a data analyst using AI directly within the Excel sheet.' 
+                }, 
+                category: 'Testo', 
+                country: 'Europe', 
+                website: 'https://rows.com/ai', 
+                isFeatured: false, 
+                logoUrl: 'https://images.genai.works/Screenshot_16_5b63d7dfa1.jpg', 
+                recommendationId: 'tool-049' 
+            },
+            { id: 'tool-047', name: 'Mistral', description: {it: 'Specializzata nella programmazione e nei testi.', en: 'Specialized in coding and text.'}, category: 'Codice', country: 'Europe', website: 'https://mistral.ai/', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ-GF4yjk576hl_W3Z_JY3tVSKBkGHhXFfMA&s', recommendationId: 'tool-001' }, // Added Mistral
+            { id: 'tool-048', name: 'bolt', description: {it: 'Specializzata nella programmazione e nei testi.', en: 'Specialized in coding and text.'}, category: 'Codice', country: 'USA', website: 'https://bolt.new/', isFeatured: false, logoUrl: 'https://cdn-1.webcatalog.io/catalog/bolt-new/bolt-new-icon-filled-256.png?v=1730692903154', recommendationId: 'tool-052' }, // Added bolt
+            { id: 'tool-049', name: 'Copilot', description: {it: 'Specializzata in testi e ricerca web.', en: 'Specialized in text and web search.'}, category: 'Testo', country: 'USA', website: 'https://copilot.microsoft.com/chats/vAMUc1DGwXp5uX9uitvjF', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwqfCxHw2QW6DxEKqDayMoJTz4lrvE_nnurxpmg2mEmGAkOzjGmsVpKfwT6epVYInsAuc&usqp=CAU', recommendationId: 'tool-024' }, // Added Copilot
+            { id: 'tool-050', name: 'ElevenLabs', description: {it: 'Genera voci realistiche e discorsi in diverse lingue.', en: 'Generates realistic voices and speech in various languages.'}, category: 'Audio', country: 'USA', website: 'https://elevenlabs.io/', isFeatured: false, logoUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAAFVBMVEX///+ZmZkZGRlZWVmRkZEAAABGRkb6Me63AAAAHElEQVR4AWMYUCBkwKyIxHVNYAsZVFyEIwcSAADWIQrDIppSoAAAAABJRU5ErkJggg==' }, // Added ElevenLabs
+            { id: 'tool-052', name: 'Cursor', description: {it: 'Un editor di codice potenziato dall\'AI per una programmazione più veloce.', en: 'An AI-powered code editor for faster programming.'}, category: 'Codice', country: 'USA', website: 'https://cursor.com/', isFeatured: false, logoUrl: 'https://paulstamatiou.com/_next/image?url=%2Fgear%2Fcursor-app-icon.png&w=3840&q=75', recommendationId: 'tool-053' }, // Added Lovable
             { id: 'tool-053', name: 'Lovable', description: {it: 'AI per la programmazione e sviluppo di codice.', en: 'AI for coding and software development.'}, category: 'Codice', country: 'USA', website: 'https://lovable.dev/', isFeatured: false, logoUrl: 'https://miro.medium.com/v2/resize:fit:1400/1*8oWCX9tq3LPGxXqs7TRicg.png', recommendationId: 'tool-052' }, // Lovable
             { id: 'tool-054', name: 'Ideogram', description: {it: 'AI per la generazione di immagini creative e artistiche.', en: 'AI for creative and artistic image generation.'}, category: 'Immagini', country: 'USA', website: 'https://ideogram.ai/t/explore', isFeatured: false, logoUrl: 'https://www.fahimai.com/wp-content/uploads/2024/03/CTA-4.png', recommendationId: 'tool-056' }, // Ideogram
             { id: 'tool-055', name: 'Sora', description: {it: 'AI per la generazione di video avanzati da prompt testuali.', en: 'AI for advanced video generation from text prompts.'}, category: 'Video', country: 'USA', website: 'https://openai.com/sora/', isFeatured: false, logoUrl: 'https://whatisai.sirv.com/WP_whatisai.co.uk/2024/12/openai-sora-logo.webp', recommendationId: 'tool-034' }, // Sora
@@ -4386,12 +3988,13 @@
             { id: 'tool-059', name: 'Convex', description: {it: 'AI per la generazione di codice e automazione tramite Chef.', en: 'AI for code generation and automation via Chef.'}, category: 'Codice', country: 'USA', website: 'https://chef.convex.dev//', isFeatured: false, logoUrl: 'https://chef.convex.dev/chef.svg', recommendationId: 'tool-052' }, // Convex
             { id: 'tool-060', name: 'Krea', description: {it: 'AI per la generazione di immagini e creatività visiva.', en: 'AI for image generation and visual creativity.'}, category: 'Immagini', country: 'USA', website: 'https://www.krea.ai/', isFeatured: false, logoUrl: 'https://aithirst.com/wp-content/uploads/2022/11/krealogo.png', recommendationId: 'tool-014' }, // Krea
             { id: 'tool-061', name: 'Gemini', description: {it: "L'alternativa naturale a ChatGPT per la generazione di testo.", en: "The natural alternative to ChatGPT for text generation."}, category: 'Testo', country: 'USA', website: 'https://gemini.google.com/app?hl=it', isFeatured: false, logoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThr7qrIazsvZwJuw-uZCtLzIjaAyVW_ZrlEQ&s', recommendationId: 'tool-001' }, // Gemini
-            { id: 'tool-dzine', name: 'Dzine', description: {it: "AI americana specializzata nell'editing grafico. Può generare e cambiare lo stile delle tue immagini.", en: 'American AI specialized in graphic editing. It can generate and change the style of your images.'}, category: 'Immagini', country: 'USA', website: 'https://www.dzine.ai/', isFeatured: false, logoUrl: 'https://apktodo.io/uploads/2025/3/dzine-ai-download.jpg', recommendationId: 'tool-056' }, // Dzine
-            { id: 'tool-seaart', name: 'SeaArt', description: {it: 'Specializzata in immagini, video, animazioni e audio.', en: 'Specialized in images, videos, animations and audio.'}, category: 'Immagini', country: 'Cina', website: 'https://www.seaart.ai/it', isFeatured: false, logoUrl: 'https://play-lh.googleusercontent.com/BvytlaOWWEOrY0-VNThXm8xATNKZ_Vk_HgwSFXptkt3RRWgd9TF0J6JDED1bFlKyWkg', recommendationId: 'tool-014' }, // SeaArt
+            { id: 'tool-034', name: 'Kling', description: {it: 'Genera video di alta qualità da prompt testuali, concentrandosi sul realismo e sul movimento complesso.', en: 'Generates high-quality videos from text prompts, focusing on realism and complex motion.'}, category: 'Video', country: 'Cina', website: 'https://klingai.com/global/', isFeatured: false, logoUrl: 'https://play-lh.googleusercontent.com/JOfjXqsShK8j1aGBc1xlHBnatoRKRwLsGuoFZUAvKksaEPvK71eLwSg4FbKlky9Es-s', recommendationId: 'tool-035' }, 
             { id: 'tool-seedance', name: 'Seedance', description: {it: 'AI cinese specializzata nella creazione di video, alternativa a Veo3.', en: 'Chinese AI specialized in video creation, alternative to Veo3.'}, category: 'Video', country: 'Cina', website: 'https://seedance.net/seedance', isFeatured: false, logoUrl: 'https://seedance.net/logo.png', recommendationId: 'tool-035' }, // Seedance
             { id: 'tool-heygen', name: 'HeyGen', description: {it: 'AI americana specializzata nella creazione di avatar virtuali e video.', en: 'American AI specialized in virtual avatar and video creation.'}, category: 'Video', country: 'USA', website: 'https://www.heygen.com', isFeatured: false, logoUrl: 'https://img.icons8.com/fluent/512/heygen.png', recommendationId: 'tool-034' }, // HeyGen
             { id: 'tool-genspark', name: 'GenSpark', description: {it: 'AI americana alternativa a Manus; può scrivere testi, fare ricerche web, creare presentazioni e siti web.', en: 'American AI alternative to Manus; can write text, perform web searches, create presentations and websites.'}, category: 'Codice', country: 'USA', website: 'https://www.genspark.ai', isFeatured: false, logoUrl: 'https://pbs.twimg.com/profile_images/1782715833099382784/R6nadR8G_400x400.jpg', recommendationId: 'tool-suna' }, // GenSpark
             { id: 'tool-suna', name: 'Suna', description: {it: "L'alternativa a Manus specializzata in ricerche web, programmazione, presentazioni e testi", en: 'European AI recommended as an alternative to Manus and Genspark; can write text, perform web searches, create presentations and websites.'}, category: 'Codice', country: 'Europe', website: 'https://www.suna.so', isFeatured: false, logoUrl: 'https://pbs.twimg.com/profile_images/1839883420782018560/pqz5Txwt_400x400.jpg', recommendationId: 'tool-genspark' }, // Suna
+            { id: 'tool-dzine', name: 'Dzine', description: {it: "AI americana specializzata nell'editing grafico. Può generare e cambiare lo stile delle tue immagini.", en: 'American AI specialized in graphic editing. It can generate and change the style of your images.'}, category: 'Immagini', country: 'USA', website: 'https://www.dzine.ai/', isFeatured: false, logoUrl: 'https://apktodo.io/uploads/2025/3/dzine-ai-download.jpg', recommendationId: 'tool-056' }, // Dzine
+            { id: 'tool-kimi', name: 'Kimi', description: {it: 'AI cinese specializzata nella programmazione e nello sviluppo di codice.', en: 'Chinese AI specialized in programming and code development.'}, category: 'Codice', country: 'Cina', website: 'https://www.kimi.com/', isFeatured: false, logoUrl: 'https://hdrobots.com/wp-content/uploads/2025/02/kimi-ai-logo.webp', recommendationId: 'tool-047' }, //
             { 
                 id: 'tool-dende', 
                 name: 'Dende', 
@@ -4447,6 +4050,24 @@
 
         const closeModal = () => {
             modalContainer.innerHTML = '';
+        };
+
+        // NUOVA FUNZIONE PER MODALE CONFERMA CANCELLAZIONE (da koda mobile.html)
+        const openConfirmDeleteAllModal = () => {
+            const t = translations[currentLang];
+            const modalHTML = `
+                <div id="confirm-delete-modal" class="modal-overlay visible">
+                    <div class="modal-content" style="text-align: left; max-width: 400px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                        <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 16px; color: white;">${t.deleteAll}</h2>
+                        <p style="color: rgba(255, 255, 255, 0.7); line-height: 1.5; margin-bottom: 24px;">${t.confirmDeleteAll}</p>
+                        <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                            <button class="data-btn" data-action="close-modal">${t.cancel}</button>
+                            <button class="data-btn delete" data-action="confirm-delete-all-chats">${t.deleteAll}</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            modalContainer.innerHTML = modalHTML;
         };
 
         const unmountReactApp = () => {
@@ -4951,15 +4572,17 @@
                     renderChatView();
                     break;
                 case 'delete-all-chats':
-                    const t = translations[currentLang];
-                    if (confirm(t.confirmDeleteAll)) {
-                        deleteAllConversationsFromFirebase().then(() => {
-                            conversations = {};
-                            activeConversationId = null;
-                            renderView(searchTemplate);
-                            showToast(t.deleteAllSuccess + ' ✔');
-                        });
-                    }
+                    openConfirmDeleteAllModal();
+                    break;
+                case 'confirm-delete-all-chats': // NUOVA AZIONE
+                    const t_del = translations[currentLang];
+                    deleteAllConversationsFromFirebase().then(() => {
+                        conversations = {};
+                        activeConversationId = null;
+                        renderView(searchTemplate);
+                        showToast(t_del.deleteAllSuccess + ' ✔');
+                    });
+                    closeModal(); // Chiude il modale di conferma
                     break;
                 case 'select-conversation':
                     const newActiveId = actionTarget.dataset.id;
@@ -5007,10 +4630,7 @@
             initializeAISuggestions();
         }, 1000);
         
-        // Inizializza la sezione ricerca utenti
-        setTimeout(() => {
-            initializeUserSearch();
-        }, 1200);
+        // Inizializzazione ricerca utenti rimossa
         // --- END: AI Logo Population Logic ---
 
 
@@ -5176,12 +4796,7 @@
                 }, 100);
             }
             
-            // Inizializza la sezione ricerca utenti
-            if (sectionName === 'user-search') {
-                setTimeout(() => {
-                    initializeUserSearch();
-                }, 100);
-            }
+            // Logica per la sezione ricerca utenti rimossa
         }
 
         function createToolCardHTML(tool) {
@@ -5546,6 +5161,19 @@
             });
         }
 
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.nextElementSibling.querySelector('i'); // Seleziona l'icona nel bottone
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                input.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons(); // Aggiorna l'icona
+        }
+
         // --- Toast Notification ---
         function showToast(message) {
             let toast = document.getElementById('koda-toast');
@@ -5578,180 +5206,7 @@
 
         // --- AI Suggestions Management (Firebase) ---
 
-        // --- User Search Management ---
-        function initializeUserSearch() {
-            const form = document.getElementById('user-search-form');
-            if (form) {
-                form.addEventListener('submit', handleUserSearch);
-            }
-        }
-
-        async function handleUserSearch(e) {
-            e.preventDefault();
-            
-            const searchInput = document.getElementById('user-search-input');
-            const nickname = searchInput.value.trim();
-            
-            if (!nickname) {
-                showToast('Inserisci un nickname da cercare');
-                return;
-            }
-            
-            try {
-                const users = await searchUsersByNickname(nickname);
-                displayUserSearchResults(users);
-            } catch (error) {
-                console.error('Errore nella ricerca utenti:', error);
-                showToast('Errore nella ricerca utenti');
-            }
-        }
-
-        function displayUserSearchResults(users) {
-            const resultsContainer = document.getElementById('user-search-results');
-            
-            if (users.length === 0) {
-                resultsContainer.innerHTML = `
-                    <div class="text-center py-8 text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-gray-500">
-                            <path d="M15.5 2H8.6c-.4 0-.8.2-1.1.5L2.9 6.9C2.6 7.2 2.4 7.6 2.4 8v10.6c0 .4.2.8.5 1.1l3.6 3.6c.3.3.7.5 1.1.5h6.9c.4 0 .8-.2 1.1-.5l3.6-3.6c.3-.3.5-.7.5-1.1V4.6c0-.4-.2-.8-.5-1.1L16.6.5c-.3-.3-.7-.5-1.1-.5z"/>
-                            <path d="M10 2v6h4"/>
-                        </svg>
-                        <p>Nessun utente trovato con questo nickname</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            resultsContainer.innerHTML = users.map(user => `
-                <div class="bg-gray-700/30 border border-gray-600 rounded-lg p-6 hover:border-green-500 transition-all cursor-pointer" onclick="viewUserProfile('${user.id}')">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h4 class="text-lg font-semibold text-white mb-2">${escapeHtml(user.displayName || 'Utente')}</h4>
-                            <p class="text-green-400 font-semibold">@${escapeHtml(user.nickname)}</p>
-                            <p class="text-gray-400 text-sm mt-1">${escapeHtml(user.email)}</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-xs text-gray-400">Registrato il</p>
-                            <p class="text-xs text-gray-300">${new Date(user.createdAt).toLocaleDateString('it-IT')}</p>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        async function viewUserProfile(userId) {
-            try {
-                const userProfile = await getUserProfile(userId);
-                if (!userProfile) {
-                    showToast('Profilo utente non trovato');
-                    return;
-                }
-                
-                // Mostra il profilo utente
-                document.getElementById('selected-user-name').textContent = userProfile.displayName || 'Utente';
-                document.getElementById('selected-user-nickname').textContent = `@${userProfile.nickname}`;
-                document.getElementById('selected-user-email').textContent = userProfile.email;
-                
-                // Nascondi i risultati della ricerca e mostra il profilo
-                document.getElementById('user-search-results').style.display = 'none';
-                document.getElementById('user-profile-view').style.display = 'block';
-                
-                // Carica i suggerimenti dell'utente
-                await loadUserSuggestions(userId);
-                
-            } catch (error) {
-                console.error('Errore nel caricare il profilo utente:', error);
-                showToast('Errore nel caricare il profilo utente');
-            }
-        }
-
-        async function loadUserSuggestions(userId) {
-            try {
-                console.log('🚀 Inizio caricamento suggerimenti per userId:', userId);
-                
-                const suggestions = await getUserSuggestions(userId);
-                console.log('📦 Suggerimenti ricevuti:', suggestions.length);
-                
-                const suggestionsList = document.getElementById('user-suggestions-list');
-                const noSuggestions = document.getElementById('no-user-suggestions');
-                
-                if (!suggestionsList || !noSuggestions) {
-                    console.error('❌ Elementi per i suggerimenti utente non trovati nel DOM');
-                    showToast('Errore: elementi di visualizzazione non trovati');
-                    return;
-                }
-                
-                if (suggestions.length === 0) {
-                    console.log('📭 Nessun suggerimento trovato');
-                    suggestionsList.style.display = 'none';
-                    noSuggestions.style.display = 'block';
-                    return;
-                }
-                
-                console.log('🔍 Filtraggio suggerimenti...');
-                
-                // Mostra tutti i suggerimenti (non solo quelli approvati)
-                const currentUser = window.firebaseAuth?.currentUser;
-                const isAdmin = currentUser?.email === 'admin@koda.ai' || currentUser?.email === 'riccardo@koda.ai';
-                
-                console.log('👤 Utente corrente:', currentUser?.email, 'Admin:', isAdmin);
-                
-                // Non filtrare più per status - mostra tutti i suggerimenti
-                const filteredSuggestions = suggestions;
-                console.log('✅ Suggerimenti totali:', filteredSuggestions.length);
-                
-                if (filteredSuggestions.length === 0) {
-                    console.log('🚫 Nessun suggerimento trovato');
-                    suggestionsList.style.display = 'none';
-                    noSuggestions.style.display = 'block';
-                    noSuggestions.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-gray-500">
-                            <path d="M9 12l2 2 4-4"></path>
-                            <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"></path>
-                            <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"></path>
-                            <path d="M12 3c0 1-1 2-2 2s-2 1-2 2 1 2 2 2 2-1 2-2 1-2 2-2 2-1 2-2-1-2-2-2z"></path>
-                            <path d="M12 21c0-1-1-2-2-2s-2-1-2-2 1-2 2-2 2 1 2 2 1 2 2 2 2-1 2-2-1-2-2-2z"></path>
-                        </svg>
-                        <p>Questo utente non ha ancora suggerito nessuna AI</p>
-                    `;
-                    return;
-                }
-                
-                console.log('🎨 Creazione card suggerimenti...');
-                suggestionsList.innerHTML = filteredSuggestions.map(suggestion => createUserSuggestionCard(suggestion)).join('');
-                
-                // Assicurati che gli elementi siano visibili
-                suggestionsList.style.display = 'block';
-                noSuggestions.style.display = 'none';
-                
-                // Aggiorna il contatore
-                const countElement = document.getElementById('user-suggestions-count');
-                if (countElement) {
-                    const approvedCount = filteredSuggestions.filter(s => s.status === 'approved').length;
-                    const totalCount = filteredSuggestions.length;
-                    
-                    if (totalCount === approvedCount) {
-                        countElement.textContent = `${totalCount} suggerimento${totalCount !== 1 ? 'i' : ''}`;
-                    } else {
-                        countElement.textContent = `${totalCount} suggerimento${totalCount !== 1 ? 'i' : ''} (${approvedCount} approvati)`;
-                    }
-                }
-                
-                console.log('✅ Caricamento suggerimenti completato con successo');
-                
-            } catch (error) {
-                console.error('❌ Errore nel caricare i suggerimenti utente:', error);
-                console.error('Stack trace:', error.stack);
-                showToast('Errore nel caricare i suggerimenti utente');
-            }
-        }
-
-        function closeUserProfile() {
-            document.getElementById('user-profile-view').style.display = 'none';
-            document.getElementById('user-search-results').style.display = 'block';
-            document.getElementById('user-search-input').value = '';
-            document.getElementById('user-search-results').innerHTML = '';
-        }
+        // --- Logica per la Ricerca Utenti rimossa ---
 
         // --- User Search Management ---
         let suggestionsUnsubscribe = null;
@@ -5958,134 +5413,7 @@
             `;
         }
 
-        function createUserSuggestionCard(suggestion) {
-            try {
-                console.log('🎨 Creazione card per suggerimento:', suggestion.id, suggestion.name);
-                
-                // Validazione dati
-                if (!suggestion.name || !suggestion.description) {
-                    console.warn('⚠️ Suggerimento con dati mancanti:', suggestion);
-                    return '';
-                }
-                
-                // Gestione sicura delle date
-                let date = 'Data non disponibile';
-                try {
-                    if (suggestion.createdAt && suggestion.createdAt.toDate) {
-                        date = suggestion.createdAt.toDate().toLocaleDateString('it-IT', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        });
-                    } else if (suggestion.timestamp) {
-                        date = new Date(suggestion.timestamp).toLocaleDateString('it-IT', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        });
-                    } else if (suggestion.createdAt) {
-                        // Se createdAt è un timestamp normale
-                        date = new Date(suggestion.createdAt).toLocaleDateString('it-IT', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        });
-                    }
-                } catch (dateError) {
-                    console.warn('⚠️ Errore nel parsing della data:', dateError);
-                    date = 'Data non disponibile';
-                }
-
-                const statusBadge = getStatusBadge(suggestion.status || 'pending');
-
-                return `
-                    <div class="bg-gray-800/50 border border-gray-700 rounded-lg p-6 hover:bg-gray-800/70 transition-colors">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="flex-1">
-                                <h3 class="text-xl font-bold text-white mb-2">${escapeHtml(suggestion.name || 'Nome non disponibile')}</h3>
-                                <p class="text-gray-300 mb-3 leading-relaxed">${escapeHtml(suggestion.description || 'Descrizione non disponibile')}</p>
-                            </div>
-                            ${statusBadge}
-                        </div>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 mr-2">
-                                    <path d="M3 3h18v18H3z"></path>
-                                    <path d="M9 9h6v6H9z"></path>
-                                </svg>
-                                <span class="text-sm text-gray-400">Categoria:</span>
-                                <span class="text-white ml-2 font-medium">${escapeHtml(suggestion.category || 'N/A')}</span>
-                            </div>
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 mr-2">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
-                                </svg>
-                                <span class="text-sm text-gray-400">Paese:</span>
-                                <span class="text-white ml-2 font-medium">${escapeHtml(suggestion.country || 'N/A')}</span>
-                            </div>
-                        </div>
-                        
-                        ${suggestion.website ? `
-                            <div class="mb-4">
-                                <div class="flex items-center mb-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 mr-2">
-                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                                    </svg>
-                                    <span class="text-sm text-gray-400">Website:</span>
-                                </div>
-                                <a href="${escapeHtml(suggestion.website)}" target="_blank" rel="noopener noreferrer" 
-                                   class="inline-flex items-center text-green-400 hover:text-green-300 underline transition-colors">
-                                    ${escapeHtml(suggestion.website)}
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1">
-                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                        <polyline points="15 3 21 3 21 9"></polyline>
-                                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                                    </svg>
-                                </a>
-                            </div>
-                        ` : ''}
-                        
-                        ${suggestion.features ? `
-                            <div class="mb-4">
-                                <div class="flex items-center mb-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 mr-2">
-                                        <path d="M9 12l2 2 4-4"></path>
-                                        <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"></path>
-                                        <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"></path>
-                                        <path d="M12 3c0 1-1 2-2 2s-2 1-2 2 1 2 2 2 2-1 2-2 1-2 2-2 2-1 2-2-1-2-2-2z"></path>
-                                        <path d="M12 21c0-1-1-2-2-2s-2-1-2-2 1-2 2-2 2 1 2 2 1 2 2 2 2-1 2-2-1-2-2-2z"></path>
-                                    </svg>
-                                    <span class="text-sm text-gray-400">Caratteristiche:</span>
-                                </div>
-                                <p class="text-white text-sm leading-relaxed">${escapeHtml(suggestion.features)}</p>
-                            </div>
-                        ` : ''}
-                        
-                        <div class="flex justify-between items-center pt-3 border-t border-gray-700">
-                            <div class="text-xs text-gray-500">
-                                Suggerito il ${date}
-                            </div>
-                            <div class="flex items-center text-xs text-gray-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg>
-                                ${escapeHtml(suggestion.userName || suggestion.userEmail || 'Utente sconosciuto')}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } catch (error) {
-                console.error('❌ Errore nella creazione della card:', error);
-                return `
-                    <div class="bg-red-900/20 border border-red-700 rounded-lg p-4">
-                        <p class="text-red-400">Errore nel caricamento del suggerimento</p>
-                    </div>
-                `;
-            }
-        }
+        // Funzione createUserSuggestionCard rimossa
 
         function getStatusBadge(status) {
             const statusMap = {
